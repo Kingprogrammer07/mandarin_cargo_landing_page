@@ -58,9 +58,7 @@ export default function SecurityGuard() {
     window.addEventListener("resize", detectDevTools);
 
     // Subtle console message for curious users
-    // eslint-disable-next-line no-console
     console.log("%cStop!", "color:#EA580C;font-size:40px;font-weight:bold;");
-    // eslint-disable-next-line no-console
     console.log("%cThis is a browser feature intended for developers. Do not paste any code here.", "font-size:14px;");
 
     return () => {

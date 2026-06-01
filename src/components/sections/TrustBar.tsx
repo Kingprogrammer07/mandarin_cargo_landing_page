@@ -149,6 +149,7 @@ export default function TrustBar() {
                 transition={{ duration: 0.3, delay: 0.5 + i * 0.05 }}
                 className="group"
               >
+                {/* eslint-disable-next-line @next/next/no-img-element -- vector SVG logos, variable aspect, tiny + below-fold; next/image adds no benefit */}
                 <img
                   src={`/pay/pay-${logo}.svg`}
                   alt={logo}

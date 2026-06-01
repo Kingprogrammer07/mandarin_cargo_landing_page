@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Instagram, Facebook, Send } from "lucide-react";
@@ -127,9 +128,11 @@ export default function FinalCta() {
           className="mt-8 hidden lg:flex flex-col items-center"
         >
           <div className="bg-white p-3 rounded-xl shadow-lg">
-            <img
+            <Image
               src="/qr-bot.png"
               alt="Telegram bot QR code"
+              width={160}
+              height={160}
               className="w-40 h-40"
             />
           </div>
