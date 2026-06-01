@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Loader2, CheckCircle2, Clock, Circle, PackageSearch } from "lucide-react";
+import { Search, Loader2, CheckCircle2, Clock, Circle, PackageSearch, SearchX, AlertTriangle, AlertCircle, RefreshCw } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as [number, number, number, number];
@@ -53,7 +53,14 @@ export default function TrackOrder() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<"notfound" | "validation" | "network">("network");
   const [result, setResult] = useState<TrackResult | null>(null);
+
+  const fail = (msg: string, type: "notfound" | "validation" | "network") => {
+    setError(msg);
+    setErrorType(type);
+    setResult(null);
+  };
 
   const stepTitles = [0, 1, 2, 3, 4, 5].map((i) => t(`steps.${i}`));
   const statusLabel = (s: StepStatus) =>
@@ -62,8 +69,7 @@ export default function TrackOrder() {
   const handleTrack = async () => {
     const value = code.trim();
     if (value.length < 3) {
-      setError(t("tooShort"));
-      setResult(null);
+      fail(t("tooShort"), "validation");
       return;
     }
     setLoading(true);
@@ -71,30 +77,32 @@ export default function TrackOrder() {
     try {
       const res = await fetch(API + encodeURIComponent(value), { headers: { Accept: "application/json" } });
       if (res.status === 429) {
-        setError(t("rateLimit"));
-        setResult(null);
+        fail(t("rateLimit"), "network");
         return;
       }
       if (res.status === 400) {
-        setError(t("tooShort"));
-        setResult(null);
+        fail(t("tooShort"), "validation");
         return;
       }
       if (!res.ok) throw new Error(String(res.status));
       const data: TrackResult = await res.json();
       if (!data.found) {
-        setError(t("notFound"));
-        setResult(null);
+        fail(t("notFound"), "notfound");
         return;
       }
       setResult(data);
     } catch {
-      setError(t("errorGeneric"));
-      setResult(null);
+      fail(t("errorGeneric"), "network");
     } finally {
       setLoading(false);
     }
   };
+
+  const errorStyle = {
+    notfound: { wrap: "border-slate-200 bg-slate-50", chip: "bg-slate-200 text-slate-500", text: "text-slate-600", Icon: SearchX },
+    validation: { wrap: "border-amber-200 bg-amber-50", chip: "bg-amber-100 text-amber-600", text: "text-amber-700", Icon: AlertCircle },
+    network: { wrap: "border-red-200 bg-red-50", chip: "bg-red-100 text-red-600", text: "text-red-700", Icon: AlertTriangle },
+  }[errorType];
 
   return (
     <section id="track" className="bg-white py-20 lg:py-28">
@@ -132,14 +140,29 @@ export default function TrackOrder() {
         {/* Error */}
         <AnimatePresence>
           {error && (
-            <motion.p
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="mt-4 text-sm font-medium text-red-600"
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              transition={{ duration: 0.35, ease }}
+              className={`mt-6 flex items-start gap-3 rounded-2xl border p-5 ${errorStyle.wrap}`}
             >
-              {error}
-            </motion.p>
+              <span className={`shrink-0 rounded-full p-2 ${errorStyle.chip}`}>
+                <errorStyle.Icon size={20} />
+              </span>
+              <div className="flex-1">
+                <p className={`text-sm font-medium leading-relaxed ${errorStyle.text}`}>{error}</p>
+                {errorType === "network" && (
+                  <button
+                    onClick={handleTrack}
+                    className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-red-600 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-red-700"
+                  >
+                    <RefreshCw size={14} />
+                    {t("button")}
+                  </button>
+                )}
+              </div>
+            </motion.div>
           )}
         </AnimatePresence>
 

@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, CalculatorIcon, TrendingUp, Scale } from "lucide-react";
+import { Loader2, CalculatorIcon, TrendingUp, Scale, AlertTriangle, RefreshCw } from "lucide-react";
 import { site } from "@/config/site";
 import { calculateShippingApi } from "@/lib/calculator";
 import type { CalculatorResult } from "@/lib/calculator";
@@ -274,13 +274,26 @@ export default function Calculator() {
         <AnimatePresence>
           {error && (
             <motion.div
-              initial={{ opacity: 0, x: -5 }}
-              animate={{ opacity: 1, x: [0, 5, -5, 5, 0] }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="mt-6 bg-red-50 border border-red-200 text-red-600 rounded-xl p-4 text-center text-sm max-w-[640px] mx-auto"
+              initial={{ opacity: 0, scale: 0.97, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              transition={{ duration: 0.35, ease }}
+              className="mt-6 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 max-w-[640px] mx-auto"
             >
-              {t("error")}
+              <span className="shrink-0 rounded-full bg-amber-100 p-2 text-amber-600">
+                <AlertTriangle size={20} />
+              </span>
+              <div className="flex-1">
+                <p className="font-semibold text-amber-900">{t("errorTitle")}</p>
+                <p className="mt-0.5 text-sm text-amber-700 leading-relaxed">{t("error")}</p>
+                <button
+                  onClick={handleCalculate}
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-amber-700"
+                >
+                  <RefreshCw size={14} />
+                  {t("retry")}
+                </button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

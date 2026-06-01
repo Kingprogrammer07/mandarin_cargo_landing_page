@@ -2,7 +2,7 @@ const content = {
   nav: {
     howItWorks: "\u5982\u4f55\u5de5\u4f5c",
     calculator: "\u8ba1\u7b97\u5668",
-    pricing: "\u4ef7\u683c",
+    pricing: "\u8d44\u8d39",
     reviews: "\u8bc4\u4ef7",
     faq: "\u5e38\u89c1\u95ee\u9898",
     contact: "\u8054\u7cfb\u6211\u4eec",
@@ -87,6 +87,8 @@ const content = {
     cta: "\u7acb\u5373\u6ce8\u518c",
     ctaSub: "\u83b7\u53d6\u514d\u8d39\u4e2a\u4ebaID\u4ee3\u7801",
     error: "\u53d1\u751f\u9519\u8bef\uff0c\u8bf7\u91cd\u8bd5\u3002",
+    errorTitle: "\u65e0\u6cd5\u8ba1\u7b97",
+    retry: "\u91cd\u8bd5",
   },
   features: {
     eyebrow: "\u4e3a\u4ec0\u4e48\u9009\u62e9\u6211\u4eec",
@@ -101,8 +103,8 @@ const content = {
     ],
   },
   pricing: {
-    eyebrow: "\u4ef7\u683c",
-    h2: "\u900f\u660e\u5b9a\u4ef7",
+    eyebrow: "\u8d44\u8d39",
+    h2: "\u900f\u660e\u8d44\u8d39",
     subtitle: "\u6839\u636e\u8d27\u7269\u7c7b\u578b\u5206 3 \u79cd\u4ef7\u683c\u3002\u65e0\u6700\u4f4e\u8d77\u8fd0\u91cf\u3002",
     tiers: [
       {
@@ -113,6 +115,7 @@ const content = {
       },
       {
         name: "\u54c1\u724c\u8d27\u7269",
+        oldPrice: "$13",
         price: "$11",
         unit: "/ \u516c\u65a4",
         desc: "\u9002\u7528\u4e8e\u6b63\u54c1\u54c1\u724c\u5546\u54c1\uff08Nike\u3001Adidas\u3001Apple \u7b49\uff09\u3002\u54c1\u724c\u8d27\u7269\u9700\u989d\u5916\u68c0\u67e5\u5e76\u8c28\u614e\u8fd0\u8f93\uff0c\u56e0\u6b64\u4ef7\u683c\u7565\u9ad8\u3002",
@@ -122,6 +125,10 @@ const content = {
         price: "$12",
         unit: "/ \u516c\u65a4",
         desc: "\u5982\u679c\u540c\u4e00\u79cd\u5546\u54c1\u8ba2\u8d2d\u8d85\u8fc7 3 \u4ef6\uff0c\u5219\u89c6\u4e3a\u5546\u4e1a\uff08\u7cfb\u5217\uff09\u8d27\u7269\uff0c\u6309\u6b64\u4ef7\u683c\u8ba1\u7b97\u3002",
+        badges: [
+          "\u7535\u5b50\u4ea7\u54c1\uff08\u7535\u6c60/\u901a\u7535\u7c7b\uff09",
+          "\u5316\u5986\u54c1\u7c7b\u5546\u54c1",
+        ],
       },
     ],
     popularBadge: "\u70ed\u95e8",

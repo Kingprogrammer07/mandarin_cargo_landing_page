@@ -2,7 +2,7 @@ const content = {
   nav: {
     howItWorks: "How it works",
     calculator: "Calculator",
-    pricing: "Pricing",
+    pricing: "Tariffs",
     reviews: "Reviews",
     faq: "FAQ",
     contact: "Contact",
@@ -87,6 +87,8 @@ const content = {
     cta: "Register now",
     ctaSub: "Get free personal ID code",
     error: "An error occurred. Please try again.",
+    errorTitle: "Couldn't calculate",
+    retry: "Try again",
   },
   features: {
     eyebrow: "WHY US",
@@ -101,8 +103,8 @@ const content = {
     ],
   },
   pricing: {
-    eyebrow: "PRICING",
-    h2: "Transparent pricing",
+    eyebrow: "TARIFFS",
+    h2: "Transparent tariffs",
     subtitle: "3 tariffs depending on cargo type. No minimum charge.",
     tiers: [
       {
@@ -113,6 +115,7 @@ const content = {
       },
       {
         name: "Branded cargo",
+        oldPrice: "$13",
         price: "$11",
         unit: "/ kg",
         desc: "For original branded goods (Nike, Adidas, Apple, etc.). Branded cargo is shipped with extra inspection and care, so the rate is slightly higher.",
@@ -122,6 +125,10 @@ const content = {
         price: "$12",
         unit: "/ kg",
         desc: "If you order more than 3 units of the same product, it counts as commercial (bulk) cargo and is charged at this rate.",
+        badges: [
+          "Electronics (battery / powered goods)",
+          "Cosmetic products",
+        ],
       },
     ],
     popularBadge: "Popular",

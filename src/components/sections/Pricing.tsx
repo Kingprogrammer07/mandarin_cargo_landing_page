@@ -13,8 +13,10 @@ export default function Pricing() {
   const tiers = [0, 1, 2].map((i) => ({
     name: t(`tiers.${i}.name`),
     price: t(`tiers.${i}.price`),
+    oldPrice: t.has(`tiers.${i}.oldPrice`) ? t(`tiers.${i}.oldPrice`) : null,
     unit: t(`tiers.${i}.unit`),
     desc: t(`tiers.${i}.desc`),
+    badges: t.has(`tiers.${i}.badges`) ? (t.raw(`tiers.${i}.badges`) as string[]) : [],
     popular: i === 0,
     Icon: tierIcons[i],
   }));
@@ -65,14 +67,35 @@ export default function Pricing() {
 
               <h3 className="mt-4 text-lg font-bold text-slate-900">{tier.name}</h3>
 
-              <div className="mt-3 flex items-baseline">
+              <div className="mt-3 flex items-baseline gap-2">
+                {tier.oldPrice && (
+                  <span className="text-xl font-semibold text-slate-300 line-through tabular-nums">
+                    {tier.oldPrice}
+                  </span>
+                )}
                 <span className="text-4xl font-extrabold text-slate-900 tabular-nums">
                   {tier.price}
                 </span>
                 <span className="text-base text-slate-500 ml-1">{tier.unit}</span>
               </div>
 
-              <p className="mt-3 text-sm text-slate-600 leading-relaxed flex-1">{tier.desc}</p>
+              <p className="mt-3 text-sm text-slate-600 leading-relaxed">{tier.desc}</p>
+
+              {tier.badges.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {tier.badges.map((b) => (
+                    <span
+                      key={b}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-orange-100 bg-orange-50 px-2.5 py-1 text-xs font-medium text-orange-700"
+                    >
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-500" />
+                      {b}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex-1" />
 
               <a
                 href="#calculator"

@@ -3,7 +3,7 @@ const content = {
   nav: {
     howItWorks: "Qanday ishlaydi",
     calculator: "Kalkulyator",
-    pricing: "Narxlar",
+    pricing: "Tariflar",
     reviews: "Sharhlar",
     faq: "FAQ",
     contact: "Aloqa",
@@ -121,6 +121,8 @@ const content = {
     cta: "Ro'yxatdan o'tish",
     ctaSub: "Bepul shaxsiy ID kod oling",
     error: "Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.",
+    errorTitle: "Hisoblab bo'lmadi",
+    retry: "Qayta urinish",
   },
 
   // Features
@@ -163,8 +165,8 @@ const content = {
 
   // Pricing
   pricing: {
-    eyebrow: "NARXLAR",
-    h2: "Shaffof narxlar",
+    eyebrow: "TARIFLAR",
+    h2: "Shaffof tariflar",
     subtitle: "Yuk turiga qarab 3 xil tarif. Minimal to'lovsiz.",
     tiers: [
       {
@@ -175,6 +177,7 @@ const content = {
       },
       {
         name: "Brend yuklar",
+        oldPrice: "$13",
         price: "$11",
         unit: "/ kg",
         desc: "Original brend mahsulotlar (Nike, Adidas, Apple va boshqalar) uchun. Brend tovarlar qo'shimcha tekshiruv va ehtiyotkorlik bilan tashilgani uchun narx bir oz yuqori.",
@@ -184,6 +187,10 @@ const content = {
         price: "$12",
         unit: "/ kg",
         desc: "Bitta xil mahsulotdan 3 donadan ko'p buyurtma qilsangiz, yuk tijorat (seriya) hisoblanadi va shu tarif bo'yicha narxlanadi.",
+        badges: [
+          "Elektronika (batareya/tokli mahsulotlar)",
+          "Kosmetikaga aloqador mahsulotlar",
+        ],
       },
     ],
     popularBadge: "Ommabop",
