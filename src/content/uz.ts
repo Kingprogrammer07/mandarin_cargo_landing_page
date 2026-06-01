@@ -12,7 +12,7 @@ const content = {
 
   // Hero
   hero: {
-    eyebrow: "GLOBALLY DELIVERED, EXCEPTIONALLY MANDARIN",
+    eyebrow: "XITOY → O‘ZBEKISTON · HAVO KARGO",
     h1: "Xitoydagi xaridlaringiz \u2014 eshigingizgacha",
     subheadline: "Havo orqali tez yetkazib berish. 1 kg \u2014 atigi $9.5 dan. 50 000+ mijoz bizga ishonadi.",
     ctaPrimary: "Hoziroq boshlash",

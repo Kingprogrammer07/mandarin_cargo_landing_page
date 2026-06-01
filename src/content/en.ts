@@ -9,7 +9,7 @@ const content = {
     cta: "Get started",
   },
   hero: {
-    eyebrow: "GLOBALLY DELIVERED, EXCEPTIONALLY MANDARIN",
+    eyebrow: "CHINA → UZBEKISTAN · AIR CARGO",
     h1: "Your China purchases \u2014 delivered to your door",
     subheadline: "Fast air cargo from China to Uzbekistan. From $9.5/kg. Trusted by 50,000+ customers.",
     ctaPrimary: "Get started now",

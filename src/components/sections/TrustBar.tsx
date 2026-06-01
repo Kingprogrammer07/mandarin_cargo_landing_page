@@ -40,8 +40,13 @@ export default function TrustBar() {
   ] as const;
 
   return (
-    <section id="trust" className="bg-orange-50 py-12 lg:py-16">
-      <div className="max-w-6xl mx-auto px-4">
+    <section id="trust" className="relative overflow-hidden bg-orange-50 py-12 lg:py-16">
+      {/* Warm depth glow — continues Hero's palette */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-0 h-[300px] w-[700px] -translate-x-1/2 rounded-full bg-amber-100/40 blur-[120px]"
+      />
+      <div className="relative max-w-6xl mx-auto px-4">
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map(({ key }, i) => (
@@ -69,7 +74,7 @@ export default function TrustBar() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-10 max-w-4xl mx-auto text-center"
         >
-          <p className="text-sm text-slate-400 mb-6">{t("paymentTitle")}</p>
+          <p className="text-sm text-slate-500 mb-6">{t("paymentTitle")}</p>
           <div className="flex flex-wrap justify-center gap-6 items-center">
             {paymentLogos.map((logo, i) => (
               <motion.img

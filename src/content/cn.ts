@@ -9,7 +9,7 @@ const content = {
     cta: "\u5f00\u59cb",
   },
   hero: {
-    eyebrow: "GLOBALLY DELIVERED, EXCEPTIONALLY MANDARIN",
+    eyebrow: "中国 → 乌兹别克斯坦 · 空运",
     h1: "\u60a8\u7684\u4e2d\u56fd\u5546\u54c1 \u2014 \u76f4\u9001\u5230\u5bb6",
     subheadline: "\u4ece\u4e2d\u56fd\u5230\u4e4c\u5179\u522b\u514b\u65af\u5766\u7684\u5feb\u901f\u7a7a\u8fd0\u8d27\u4ee3\u3002\u6bcf\u516c\u65a4 $9.5 \u8d77\u300250,000+ \u5ba2\u6237\u4fe1\u8d56\u3002",
     ctaPrimary: "\u7acb\u5373\u5f00\u59cb",

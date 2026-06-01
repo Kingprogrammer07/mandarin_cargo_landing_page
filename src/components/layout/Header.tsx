@@ -57,7 +57,7 @@ export default function Header() {
       <header
         className={`sticky top-0 z-50 h-16 transition-all duration-200 ${
           scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm"
+            ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-orange-100/60"
             : "bg-transparent"
         }`}
       >

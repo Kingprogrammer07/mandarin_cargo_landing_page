@@ -9,7 +9,8 @@
       "Bash(npm run *)",
       "Bash(ls -a .vscode)",
       "Bash(ls -a .claude)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(node -e \"const f=require\\('fs'\\).readFileSync\\('public/hero-real-app-light.png'\\);console.log\\('hero light w',f.readUInt32BE\\(16\\),'h',f.readUInt32BE\\(20\\)\\)\")"
     ]
   }
 }
