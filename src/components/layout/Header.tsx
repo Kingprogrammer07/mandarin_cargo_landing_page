@@ -64,7 +64,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8 h-full flex items-center gap-4 lg:gap-8">
           {/* Left: Logo */}
           <div className="flex items-center shrink-0">
-            <Link href="/" className="flex items-center">
+            <Link href="/" prefetch={false} className="flex items-center">
               <Logo className="h-9 w-auto" />
             </Link>
           </div>

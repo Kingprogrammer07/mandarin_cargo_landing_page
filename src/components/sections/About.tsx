@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { CheckCircle, MapPin, Navigation } from "lucide-react";
@@ -65,12 +66,14 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1, ease }}
-                className={img.className || ""}
+                className={`${img.className || ""} relative aspect-[4/3] overflow-hidden rounded-xl shadow-sm`}
               >
-                <img
+                <Image
                   src={img.src}
                   alt={img.alt}
-                  className="w-full h-full object-cover rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-200 aspect-[4/3]"
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                  className="object-cover hover:scale-[1.02] transition-transform duration-200"
                 />
               </motion.div>
             ))}

@@ -76,6 +76,7 @@ export default function LanguageSwitcher({ dark = false }: LanguageSwitcherProps
                 <Link
                   href={pathname}
                   locale={locale.code}
+                  prefetch={false}
                   onClick={() => setOpen(false)}
                   className={`flex items-center justify-between gap-3 px-3.5 py-2 text-sm transition-colors ${
                     isActive

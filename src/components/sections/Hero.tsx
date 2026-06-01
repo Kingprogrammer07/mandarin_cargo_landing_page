@@ -145,7 +145,7 @@ export default function Hero() {
               <div className="relative w-full max-w-[340px] lg:max-w-[480px]">
                 {/* Light screen — base layer */}
                 <Image
-                  src="/hero-app-light-v2.png"
+                  src="/hero-app-light-v2.webp"
                   alt="Mandarin Cargo app"
                   width={420}
                   height={626}
@@ -161,7 +161,7 @@ export default function Hero() {
                   transition={{ duration: 1.2, ease: "easeInOut" }}
                 >
                   <Image
-                    src="/hero-app-dark-v2.png"
+                    src="/hero-app-dark-v2.webp"
                     alt=""
                     width={420}
                     height={626}
