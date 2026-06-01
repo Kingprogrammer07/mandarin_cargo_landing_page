@@ -28,7 +28,8 @@
       "Bash(curl -s -o - -w \"\\\\nHTTP %{http_code} | time %{time_total}s\\\\n\" -m 20 -X POST \"https://bot.webmandarin.uz/api/v1/public/calculator\" -H \"Content-Type: application/json\" -H \"Accept: application/json\" -d '{\"weight\":5}')",
       "Bash(curl -s -o /dev/null -w '%{http_code}' -m 15 -X POST https://bot.webmandarin.uz/api/v1/public/__TRACKED_VAR__ -H 'Content-Type: application/json' -d '{\"weight\":5}')",
       "Bash(curl -s -o /dev/null -w \"openapi.json -> %{http_code}\\\\n\" -m 15 \"https://bot.webmandarin.uz/openapi.json\")",
-      "Bash(curl -s -m 15 \"https://bot.webmandarin.uz/openapi.json\")"
+      "Bash(curl -s -m 15 \"https://bot.webmandarin.uz/openapi.json\")",
+      "Bash(curl -s -D - -o /dev/null -m 15 https://bot.webmandarin.uz/api/v1/public/track/54678908 -H 'Origin: __TRACKED_VAR__' -H 'Accept: application/json')"
     ]
   }
 }
