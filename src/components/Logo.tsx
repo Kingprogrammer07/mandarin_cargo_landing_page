@@ -17,10 +17,10 @@ export default function Logo({ className = "", white = false }: LogoProps) {
       {/* Mandarin icon — native SVG <image>, scales with viewBox */}
       <image
         href="/mandarin-icon.png"
-        x="-30"
-        y="-30"
-        width="130"
-        height="130"
+        x="-5"
+        y="-5"
+        width="70"
+        height="70"
         preserveAspectRatio="xMidYMid meet"
       />
       {/* Text */}
