@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { site } from "@/config/site";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as [number, number, number, number];
 
 interface FaqItemProps {
   question: string;
-  answer: string;
+  answer: ReactNode;
   isOpen: boolean;
   onClick: () => void;
 }
@@ -55,15 +56,21 @@ export default function FAQ() {
   const t = useTranslations("faq");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const items = [
-    { q: t("items.0.q"), a: t("items.0.a") },
-    { q: t("items.1.q"), a: t("items.1.a") },
-    { q: t("items.2.q"), a: t("items.2.a") },
-    { q: t("items.3.q"), a: t("items.3.a") },
-    { q: t("items.4.q"), a: t("items.4.a") },
-    { q: t("items.5.q"), a: t("items.5.a") },
-    { q: t("items.6.q"), a: t("items.6.a") },
-  ];
+  const bot = (chunks: ReactNode) => (
+    <a
+      href={site.botUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-bold italic text-orange-600 hover:underline"
+    >
+      {chunks}
+    </a>
+  );
+
+  const items = Array.from({ length: 6 }, (_, i) => ({
+    q: t(`items.${i}.q`),
+    a: t.rich(`items.${i}.a`, { bot }),
+  }));
 
   return (
     <section id="faq" className="bg-white py-20 lg:py-28">

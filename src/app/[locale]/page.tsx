@@ -11,6 +11,7 @@ import Reviews from "@/components/sections/Reviews";
 import About from "@/components/sections/About";
 import FAQ from "@/components/sections/FAQ";
 import FinalCta from "@/components/sections/FinalCta";
+import Reveal from "@/components/ui/Reveal";
 import { faqJsonLd, aggregateRatingJsonLd, breadcrumbJsonLd } from "@/lib/structuredData";
 
 export function generateStaticParams() {
@@ -65,15 +66,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   const t = await getTranslations({ locale });
 
-  const faqItems = [
-    { q: t("faq.items.0.q"), a: t("faq.items.0.a") },
-    { q: t("faq.items.1.q"), a: t("faq.items.1.a") },
-    { q: t("faq.items.2.q"), a: t("faq.items.2.a") },
-    { q: t("faq.items.3.q"), a: t("faq.items.3.a") },
-    { q: t("faq.items.4.q"), a: t("faq.items.4.a") },
-    { q: t("faq.items.5.q"), a: t("faq.items.5.a") },
-    { q: t("faq.items.6.q"), a: t("faq.items.6.a") },
-  ];
+  const faqItems = Array.from({ length: 6 }, (_, i) => ({
+    q: t(`faq.items.${i}.q`),
+    // t.markup resolves the <bot> tag to plain text for JSON-LD
+    a: t.markup(`faq.items.${i}.a`, { bot: (chunks) => chunks }),
+  }));
 
   const faqLd = faqJsonLd(faqItems);
   const ratingLd = aggregateRatingJsonLd();
@@ -85,15 +82,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ratingLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <Hero />
-      <TrustBar />
-      <HowItWorks />
-      <Calculator />
-      <Features />
-      <Pricing />
-      <Reviews />
-      <About />
-      <FAQ />
-      <FinalCta />
+      <Reveal><TrustBar /></Reveal>
+      <Reveal><HowItWorks /></Reveal>
+      <Reveal><Calculator /></Reveal>
+      <Reveal><Features /></Reveal>
+      <Reveal><Pricing /></Reveal>
+      <Reveal><Reviews /></Reveal>
+      <Reveal><About /></Reveal>
+      <Reveal><FAQ /></Reveal>
+      <Reveal><FinalCta /></Reveal>
     </>
   );
 }

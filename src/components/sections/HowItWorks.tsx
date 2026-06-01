@@ -43,11 +43,11 @@ export default function HowItWorks() {
 
         {/* Steps */}
         <div className="mt-16 relative">
-          {/* Connecting line - desktop */}
-          <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-[3px] bg-orange-200" />
+          {/* Connecting line - desktop (centered on the 72px circles) */}
+          <div className="hidden lg:block absolute top-9 -translate-y-1/2 left-[10%] right-[10%] h-[3px] bg-orange-200" />
 
-          {/* Connecting line - mobile */}
-          <div className="lg:hidden absolute top-0 left-6 bottom-0 w-[3px] bg-orange-200" />
+          {/* Connecting line - mobile (centered on the 64px circles) */}
+          <div className="lg:hidden absolute top-8 bottom-8 left-8 -translate-x-1/2 w-[3px] bg-orange-200" />
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-6 relative">
             {steps.map((step, i) => {

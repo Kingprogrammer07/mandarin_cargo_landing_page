@@ -2,11 +2,22 @@
 
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Package, Tag, Boxes } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
+
+const tierIcons = [Package, Tag, Boxes];
 
 export default function Pricing() {
   const t = useTranslations("pricing");
+
+  const tiers = [0, 1, 2].map((i) => ({
+    name: t(`tiers.${i}.name`),
+    price: t(`tiers.${i}.price`),
+    unit: t(`tiers.${i}.unit`),
+    desc: t(`tiers.${i}.desc`),
+    popular: i === 0,
+    Icon: tierIcons[i],
+  }));
 
   const included = [
     t("included.0"),
@@ -18,82 +29,85 @@ export default function Pricing() {
 
   return (
     <section id="pricing" className="bg-orange-50 py-20 lg:py-28">
-      <div className="max-w-4xl mx-auto px-4 lg:px-8">
-        <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} />
+      <div className="max-w-6xl mx-auto px-4 lg:px-8">
+        <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} subtitle={t("subtitle")} />
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
-          className="mt-10 max-w-[480px] mx-auto"
-        >
-          {/* Card */}
-          <div className="rounded-2xl border-2 border-orange-200 overflow-hidden">
-            {/* Top band */}
-            <div className="bg-orange-100 py-3 text-center">
-              <span className="text-xs font-semibold text-orange-700 uppercase tracking-wider">
-                {t("badge")}
-              </span>
-            </div>
-
-            {/* Body */}
-            <div className="bg-white p-8">
-              <div className="text-center">
-                <span className="text-6xl font-extrabold text-slate-900 tabular-nums">
-                  {t("price")}
+        {/* Tier cards */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {tiers.map((tier, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className={`relative rounded-2xl bg-white p-7 flex flex-col ${
+                tier.popular
+                  ? "border-2 border-orange-500 shadow-lg shadow-orange-100"
+                  : "border border-slate-200 shadow-sm"
+              }`}
+            >
+              {tier.popular && (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-600 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                  {t("popularBadge")}
                 </span>
-                <span className="text-xl text-slate-500 ml-1">{t("unit")}</span>
-                <p className="mt-2 text-slate-500">{t("subtitle")}</p>
+              )}
+
+              <div
+                className={`w-11 h-11 rounded-xl flex items-center justify-center ${
+                  tier.popular ? "bg-orange-600 text-white" : "bg-orange-50 text-orange-600"
+                }`}
+              >
+                <tier.Icon size={22} />
               </div>
 
-              <hr className="my-6 border-slate-100" />
+              <h3 className="mt-4 text-lg font-bold text-slate-900">{tier.name}</h3>
 
-              {/* Included list */}
-              <ul className="space-y-3">
-                {included.map((item, i) => (
-                  <motion.li
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: i * 0.06 }}
-                    className="flex items-start gap-3"
-                  >
-                    <Check size={16} className="text-green-500 mt-1 shrink-0" />
-                    <span className="text-sm text-slate-700">{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
+              <div className="mt-3 flex items-baseline">
+                <span className="text-4xl font-extrabold text-slate-900 tabular-nums">
+                  {tier.price}
+                </span>
+                <span className="text-base text-slate-500 ml-1">{tier.unit}</span>
+              </div>
 
-              {/* Gabarit explanation */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.3 }}
-                className="mt-6 bg-slate-50 rounded-xl p-4"
-              >
-                <h4 className="text-sm font-semibold text-slate-800">{t("gabaritTitle")}</h4>
-                <div className="mt-2 bg-white rounded-lg p-3 font-mono text-sm text-slate-600">
-                  {t("gabaritFormula")}
-                </div>
-                <p className="mt-2 text-xs text-slate-500">{t("gabaritRule")}</p>
-              </motion.div>
+              <p className="mt-3 text-sm text-slate-600 leading-relaxed flex-1">{tier.desc}</p>
 
-              {/* CTA */}
               <a
                 href="#calculator"
                 onClick={(e) => {
                   e.preventDefault();
                   document.getElementById("calculator")?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="mt-8 block w-full text-center bg-orange-600 text-white py-4 rounded-full font-semibold hover:bg-orange-700 transition-all duration-150 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+                className={`mt-6 block w-full text-center py-3 rounded-full font-semibold transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] ${
+                  tier.popular
+                    ? "bg-orange-600 text-white hover:bg-orange-700 hover:shadow-lg"
+                    : "border border-slate-200 text-slate-900 hover:bg-slate-50"
+                }`}
               >
                 {t("cta")}
               </a>
-            </div>
-          </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Shared: included in every tier */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-8 bg-white rounded-2xl border border-slate-200 p-7 max-w-3xl mx-auto"
+        >
+          <h4 className="text-sm font-semibold text-slate-800">{t("includedTitle")}</h4>
+          <ul className="mt-4 grid sm:grid-cols-2 gap-x-6 gap-y-3">
+            {included.map((item, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <Check size={16} className="text-green-500 mt-0.5 shrink-0" />
+                <span className="text-sm text-slate-700">{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-5 text-xs text-slate-400">{t("note")}</p>
         </motion.div>
       </div>
     </section>

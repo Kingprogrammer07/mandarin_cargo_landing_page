@@ -61,13 +61,13 @@ export default function Calculator() {
   // Auto-calculate with debounce
   useEffect(() => {
     const w = parseFloat(weight);
-    if (!w || w <= 0) {
-      setResult(null);
-      setError(false);
-      return;
-    }
     const timer = setTimeout(() => {
-      handleCalculate();
+      if (!w || w <= 0) {
+        setResult(null);
+        setError(false);
+      } else {
+        handleCalculate();
+      }
     }, 500);
     return () => clearTimeout(timer);
   }, [weight, volumetric, length, width, height, handleCalculate]);

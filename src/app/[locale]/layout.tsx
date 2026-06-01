@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Preloader from "@/components/ui/Preloader";
 import {
   organizationJsonLd,
   localBusinessJsonLd,
@@ -71,6 +72,7 @@ export default async function LocaleLayout({
       </head>
       <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
+          <Preloader />
           <Header />
           <main>{children}</main>
           <Footer />

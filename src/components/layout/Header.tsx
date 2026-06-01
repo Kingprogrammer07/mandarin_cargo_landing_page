@@ -25,7 +25,7 @@ export default function Header() {
   const locale = useLocale();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY >= 80);
+    const onScroll = () => setScrolled(window.scrollY >= 10);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

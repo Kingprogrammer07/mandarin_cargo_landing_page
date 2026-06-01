@@ -21,6 +21,7 @@ const content = {
     trust2: "50 000+ mijoz",
     trust3: "Havo orqali 3\u20137 kun",
     channelBadge: "10 000+ obunachi",
+    appCaption: "Mandarin Cargo Botini ochish",
   },
 
   // Trust Bar
@@ -87,8 +88,8 @@ const content = {
     length: "Uzunlik",
     width: "Kenglik",
     height: "Balandlik",
-    dimPlaceholder: "0.00",
-    dimUnit: "m",
+    dimPlaceholder: "30",
+    dimUnit: "sm",
     submit: "Hisoblash",
     calculating: "Hisoblanmoqda...",
     resultLabel: "Taxminiy narx:",
@@ -145,10 +146,29 @@ const content = {
   pricing: {
     eyebrow: "NARXLAR",
     h2: "Shaffof narxlar",
-    badge: "HA VO KARGOSI",
-    price: "$9.5",
-    unit: "/ kg",
-    subtitle: "Minimal to'lovsiz",
+    subtitle: "Yuk turiga qarab 3 xil tarif. Minimal to'lovsiz.",
+    tiers: [
+      {
+        name: "Oddiy yuklar",
+        price: "$9.5",
+        unit: "/ kg",
+        desc: "Kundalik tovarlar (kiyim, jihoz, ehtiyot qism va h.k.) uchun standart havo kargo narxi.",
+      },
+      {
+        name: "Brend yuklar",
+        price: "$11",
+        unit: "/ kg",
+        desc: "Original brend mahsulotlar (Nike, Adidas, Apple va boshqalar) uchun. Brend tovarlar qo'shimcha tekshiruv va ehtiyotkorlik bilan tashilgani uchun narx bir oz yuqori.",
+      },
+      {
+        name: "Seriya yuklar",
+        price: "$12",
+        unit: "/ kg",
+        desc: "Bitta xil mahsulotdan 3 donadan ko'p buyurtma qilsangiz, yuk tijorat (seriya) hisoblanadi va shu tarif bo'yicha narxlanadi.",
+      },
+    ],
+    popularBadge: "Ommabop",
+    includedTitle: "Barcha tariflarga kiradi",
     included: [
       "Havo orqali yetkazib berish (3\u20137 kun)",
       "Xitoy omborida bepul saqlash (7 kun)",
@@ -156,9 +176,7 @@ const content = {
       "Xitoyda sotib olish xizmati (kelajakda)",
       "Yuk sug'urtasi (kelajakda)",
     ],
-    gabaritTitle: "Gabarit hisobi qanday ishlaydi?",
-    gabaritFormula: "L \u00d7 W \u00d7 H (metr) \u00d7 167 = gabarit og'irlik (kg)",
-    gabaritRule: "Haqiqiy og'irlik va gabaritdan kattasi oladi",
+    note: "Yakuniy narx tovar turi va og'irligiga qarab aniqlanadi.",
     cta: "Hisoblash",
   },
 
@@ -205,6 +223,7 @@ const content = {
       "Ish vaqti: Dush-Shan 10:00\u201318:30",
     ],
     mapOverlay: "Toshkent, Chilonzor, Arnasoy 5A",
+    routeCta: "Borish",
   },
 
   // FAQ
@@ -221,10 +240,6 @@ const content = {
         a: "Xitoy omborimizdan Toshkentgacha havo orqali 3\u20137 kun. Bu sellerdan omborga yetib kelish vaqtini hisobga olmaydi. Reyslar haftada bir necha marta amalga oshiriladi.",
       },
       {
-        q: "Narx qanday hisoblanadi? Gabarit nima?",
-        a: "Asosiy narx $9.5/kg. Lekin katta hajmli yuklar uchun gabarit (volumetric) og'irlik hisoblanadi: Uzunlik \u00d7 Kenglik \u00d7 Balandlik (metr) \u00d7 167. Siz haqiqiy og'irlik va gabaritdan kattasini to'laysiz. Kalkulyatorimiz avtomatik hisoblaydi.",
-      },
-      {
         q: "Qanday to'lov qilaman?",
         a: "Click, Payme, Uzum, Alipay, Uzcard, Humo, NBU orqali onlayn to'lov. Naqd pulni ofisimizda ham qabul qilamiz. To'lov yuk yetib kelgidan so'ng amalga oshiriladi.",
       },
@@ -234,7 +249,7 @@ const content = {
       },
       {
         q: "Yukimni qanday kuzataman?",
-        a: "Telegram botimiz va web kabinet (webmandarin.uz) orqali yukingiz holatini real vaqtda kuzatishingiz mumkin: omborga keldi \u2192 yuklandi \u2192 uchdi \u2192 Toshkentda \u2192 yetkazildi.",
+        a: "Telegram botimiz — <bot>Mandarin Cargo Boti</bot> — orqali yukingiz holatini real vaqtda kuzatishingiz mumkin: omborga keldi \u2192 yuklandi \u2192 uchdi \u2192 Toshkentda \u2192 yetkazildi.",
       },
       {
         q: "Passport ma'lumotlari nega kerak?",
@@ -248,8 +263,9 @@ const content = {
     h2: "Bugun birinchi yukingizni yuboring",
     subtitle: "Telegram botda 2 daqiqada ro'yxatdan o'ting",
     ctaPrimary: "Telegram botni ochish",
-    ctaSecondary: "Kabinetga kirish",
+    ctaSecondary: "Admin bilan bog'lanish",
     qrCaption: "Telegram skanerlang",
+    followUs: "Bizni ijtimoiy tarmoqlarda kuzating",
   },
 
   // Footer

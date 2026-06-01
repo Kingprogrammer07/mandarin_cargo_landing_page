@@ -2,6 +2,7 @@ import { site } from "@/config/site";
 
 export interface CalculatorInput {
   weight: number;
+  /** Dimensions are entered in centimetres. */
   length?: number;
   width?: number;
   height?: number;
@@ -22,7 +23,8 @@ export function calculateShipping(input: CalculatorInput): CalculatorResult {
   let volumetricWeight = 0;
 
   if (input.length && input.width && input.height) {
-    volumetricWeight = input.length * input.width * input.height * 167;
+    // Dimensions in cm → volumetric weight: (L × W × H in cm) / 1_000_000 (→ m³) × 167
+    volumetricWeight = (input.length * input.width * input.height * 167) / 1_000_000;
   }
 
   const chargeableWeight = Math.max(actualWeight, volumetricWeight);
@@ -39,33 +41,4 @@ export function calculateShipping(input: CalculatorInput): CalculatorResult {
     rate,
     isFallback: true,
   };
-}
-
-export async function calculateShippingApi(
-  input: CalculatorInput
-): Promise<CalculatorResult> {
-  try {
-    const res = await fetch("https://api.webmandarin.uz/v1/calculate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
-    });
-
-    if (!res.ok) {
-      throw new Error(`API error: ${res.status}`);
-    }
-
-    const data = await res.json();
-    return {
-      priceUsd: data.priceUsd,
-      priceUzs: data.priceUzs,
-      chargeableWeight: data.chargeableWeight,
-      actualWeight: data.actualWeight,
-      volumetricWeight: data.volumetricWeight,
-      rate: data.rate,
-      isFallback: false,
-    };
-  } catch {
-    return calculateShipping(input);
-  }
 }

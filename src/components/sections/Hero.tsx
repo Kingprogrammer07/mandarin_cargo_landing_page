@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { CheckCircle, ExternalLink } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { CheckCircle, ExternalLink, ArrowRight } from "lucide-react";
 import { site } from "@/config/site";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as [number, number, number, number];
@@ -18,19 +18,16 @@ export default function Hero() {
     transition: { duration: 0.45, delay, ease },
   });
 
-  // Parallax: plane drifts down + left (nose direction) as the hero scrolls away
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const planeY = useTransform(scrollYProgress, [0, 1], [0, 320]);
-  const planeX = useTransform(scrollYProgress, [0, 1], [0, -140]);
-  const planeRotate = useTransform(scrollYProgress, [0, 1], [0, -7]);
+  // Auto crossfade between light/dark app screens (same phone, same framing)
+  const [showDark, setShowDark] = useState(false);
+  useEffect(() => {
+    if (reduce) return;
+    const id = setInterval(() => setShowDark((v) => !v), 4000);
+    return () => clearInterval(id);
+  }, [reduce]);
 
   return (
     <section
-      ref={sectionRef}
       id="hero"
       className="relative -mt-16 overflow-hidden bg-gradient-to-b from-orange-100 via-white to-orange-50"
     >
@@ -43,21 +40,6 @@ export default function Hero() {
         aria-hidden
         className="pointer-events-none absolute -left-32 -top-24 h-[420px] w-[420px] rounded-full bg-amber-100/50 blur-[120px]"
       />
-
-      {/* Parallax cargo plane — decorative, desktop only. After glows so it paints on top. */}
-      <motion.div
-        aria-hidden
-        style={reduce ? undefined : { x: planeX, y: planeY, rotate: planeRotate }}
-        className="pointer-events-none absolute right-[7%] top-28 hidden w-44 xl:w-56 lg:block"
-      >
-        <Image
-          src="/mandarin_cargo_plane.png"
-          alt=""
-          width={224}
-          height={224}
-          className="h-auto w-full drop-shadow-xl"
-        />
-      </motion.div>
 
       <div className="relative max-w-7xl mx-auto px-4 lg:px-8 py-20 lg:py-32 min-h-[70vh] lg:min-h-[85vh] flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center w-full">
@@ -145,22 +127,58 @@ export default function Hero() {
             initial={{ opacity: 0, scale: reduce ? 1 : 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.3, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
-            className="order-2 flex justify-center lg:justify-end"
+            className="order-2 flex flex-col items-center lg:items-end"
           >
             <motion.div
               animate={reduce ? undefined : { y: [0, -8, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="relative"
             >
-              <Image
-                src="/hero-real-app-light.png"
-                alt="Mandarin Cargo Telegram app"
-                width={420}
-                height={626}
-                priority
-                className="w-full max-w-[300px] lg:max-w-[420px] h-auto drop-shadow-2xl"
-              />
+              <div className="relative w-full max-w-[340px] lg:max-w-[480px]">
+                {/* Light screen — base layer */}
+                <Image
+                  src="/hero-app-light-v2.png"
+                  alt="Mandarin Cargo app"
+                  width={420}
+                  height={626}
+                  priority
+                  className="h-auto w-full drop-shadow-2xl"
+                />
+                {/* Dark screen — crossfades on top */}
+                <motion.div
+                  aria-hidden
+                  className="absolute inset-0"
+                  initial={false}
+                  animate={{ opacity: showDark ? 1 : 0 }}
+                  transition={{ duration: 1.2, ease: "easeInOut" }}
+                >
+                  <Image
+                    src="/hero-app-dark-v2.png"
+                    alt=""
+                    width={420}
+                    height={626}
+                    className="h-auto w-full drop-shadow-2xl"
+                  />
+                </motion.div>
+              </div>
             </motion.div>
+
+            {/* Mobile caption under the phone — links to the bot, shimmering text */}
+            <a
+              href={site.botUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mt-5 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/70 px-4 py-2 shadow-sm backdrop-blur-sm transition-all hover:border-orange-300 hover:shadow-md lg:hidden"
+            >
+              <span className="text-orange-600">
+                <SendIcon />
+              </span>
+              <span className="text-shimmer text-sm font-bold">{t("appCaption")}</span>
+              <ArrowRight
+                size={15}
+                className="text-orange-500 transition-transform duration-150 group-hover:translate-x-0.5"
+              />
+            </a>
           </motion.div>
         </div>
       </div>

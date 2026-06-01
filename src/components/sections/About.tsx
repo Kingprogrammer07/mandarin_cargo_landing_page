@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, MapPin, Navigation } from "lucide-react";
 import { site } from "@/config/site";
 import SectionHeader from "@/components/ui/SectionHeader";
 
@@ -77,7 +77,7 @@ export default function About() {
           </div>
         </div>
 
-        {/* Map */}
+        {/* Interactive map */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -85,35 +85,32 @@ export default function About() {
           transition={{ duration: 0.5, delay: 0.3, ease }}
           className="mt-10 relative rounded-xl overflow-hidden shadow-sm"
         >
+          <iframe
+            src={`https://www.google.com/maps?q=${site.geo.lat},${site.geo.lng}&z=16&output=embed`}
+            title={t("mapOverlay")}
+            className="block w-full h-72 border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+
+          {/* Address chip */}
+          <div className="pointer-events-none absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 text-sm font-medium text-slate-700 shadow-sm flex items-center gap-1.5">
+            <MapPin size={16} className="text-orange-600" />
+            {t("mapOverlay")}
+          </div>
+
+          {/* Route button */}
           <a
-            href={`https://www.google.com/maps?q=${site.geo.lat},${site.geo.lng}`}
+            href={`https://3.redirect.appmetrica.yandex.com/route?end-lat=${site.geo.lat}&end-lon=${site.geo.lng}&appmetrica_tracking_id=1178268795219780156`}
             target="_blank"
             rel="noopener noreferrer"
-            className="block relative"
+            className="absolute bottom-4 right-4 inline-flex items-center gap-2 bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg hover:bg-orange-700 transition-all duration-150 hover:scale-[1.03] active:scale-[0.97]"
           >
-            <img
-              src="/map-tashkent.jpg"
-              alt="Office location"
-              className="w-full h-64 object-cover"
-            />
-            <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 text-sm font-medium text-slate-700 shadow-sm flex items-center gap-1.5">
-              <span className="text-orange-600">
-                <MapPinIcon />
-              </span>
-              {t("mapOverlay")}
-            </div>
+            <Navigation size={16} />
+            {t("routeCta")}
           </a>
         </motion.div>
       </div>
     </section>
-  );
-}
-
-function MapPinIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
   );
 }
