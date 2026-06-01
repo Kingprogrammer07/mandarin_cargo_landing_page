@@ -1,12 +1,18 @@
 import { site } from "@/config/site";
 
+const SITE_URL = "https://mandarincargo.uz";
+
 export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: site.name,
-    url: "https://webmandarin.uz",
-    logo: "https://webmandarin.uz/logo.svg",
+    legalName: site.company,
+    alternateName: ["Cargo Mandarin", "Mandarin Cargo Uzbekistan", "Mandarin Cargo Tashkent"],
+    url: SITE_URL,
+    logo: `${SITE_URL}/mandarin-icon.png`,
+    image: `${SITE_URL}/og-image.png`,
+    description: "Air cargo delivery from China to Uzbekistan. From $9.5/kg.",
     sameAs: [site.instagram, site.facebook, site.telegram],
     contactPoint: {
       "@type": "ContactPoint",
@@ -23,9 +29,11 @@ export function localBusinessJsonLd() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: site.name,
-    image: "https://webmandarin.uz/og-image.png",
-    url: "https://webmandarin.uz",
+    alternateName: ["Cargo Mandarin", "Mandarin Cargo Uzbekistan"],
+    image: `${SITE_URL}/og-image.png`,
+    url: SITE_URL,
     telephone: site.phoneRaw,
+    email: site.email,
     address: {
       "@type": "PostalAddress",
       streetAddress: "Arnasoy ko'chasi 5A",
@@ -45,6 +53,13 @@ export function localBusinessJsonLd() {
       closes: "18:30",
     },
     priceRange: "$$",
+    // Rating nested here (not standalone) so Google associates stars with the business
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      bestRating: "5",
+      reviewCount: "1200",
+    },
   };
 }
 
@@ -68,20 +83,6 @@ export function serviceJsonLd() {
       priceCurrency: "USD",
       unitText: "kg",
     },
-  };
-}
-
-export function aggregateRatingJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "AggregateRating",
-    itemReviewed: {
-      "@type": "Organization",
-      name: site.name,
-    },
-    ratingValue: "4.9",
-    bestRating: "5",
-    reviewCount: "1200",
   };
 }
 
@@ -109,7 +110,7 @@ export function breadcrumbJsonLd(locale: string) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: `https://webmandarin.uz/${locale}`,
+        item: `${SITE_URL}/${locale}`,
       },
     ],
   };

@@ -13,7 +13,15 @@ import About from "@/components/sections/About";
 import FAQ from "@/components/sections/FAQ";
 import FinalCta from "@/components/sections/FinalCta";
 import Reveal from "@/components/ui/Reveal";
-import { faqJsonLd, aggregateRatingJsonLd, breadcrumbJsonLd } from "@/lib/structuredData";
+import { faqJsonLd, breadcrumbJsonLd } from "@/lib/structuredData";
+
+// Map next-intl locales → BCP-47 for og:locale
+const OG_LOCALE: Record<string, string> = {
+  uz: "uz_UZ",
+  ru: "ru_RU",
+  cn: "zh_CN",
+  en: "en_US",
+};
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -38,8 +46,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description,
       url: `https://mandarincargo.uz/${locale}`,
       siteName: site.name,
-      images: [{ url: "/og-image.png", width: 1200, height: 630 }],
-      locale,
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Mandarin Cargo — Xitoydan O'zbekistonga avia cargo" }],
+      locale: OG_LOCALE[locale] ?? "uz_UZ",
+      alternateLocale: Object.values(OG_LOCALE).filter((l) => l !== (OG_LOCALE[locale] ?? "uz_UZ")),
       type: "website",
     },
     twitter: {
@@ -74,13 +83,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   }));
 
   const faqLd = faqJsonLd(faqItems);
-  const ratingLd = aggregateRatingJsonLd();
   const breadcrumbLd = breadcrumbJsonLd(locale);
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ratingLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <Hero />
       <Reveal><TrustBar /></Reveal>

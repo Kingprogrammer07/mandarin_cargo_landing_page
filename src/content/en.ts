@@ -185,7 +185,7 @@ const content = {
   seo: {
     title: "Air cargo from China to Uzbekistan \u2014 Mandarin Cargo",
     description: "Fast, affordable air cargo from China to Uzbekistan. From $9.5/kg. Register via Telegram bot. Trusted by 50,000+ customers.",
-    keywords: ["china to uzbekistan cargo", "air cargo", "china warehouse", "uzbekistan delivery", "telegram cargo bot"],
+    keywords: ["Mandarin Cargo", "Cargo Mandarin", "Mandarin Cargo Uzbekistan", "Mandarin Cargo Tashkent", "china to uzbekistan cargo", "air cargo", "china warehouse", "uzbekistan delivery", "telegram cargo bot"],
   },
 } as const;
 

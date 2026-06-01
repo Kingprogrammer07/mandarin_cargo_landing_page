@@ -306,6 +306,11 @@ const content = {
     description:
       "Xitoydan O'zbekistonga tez va arzon havo kargosi. $9.5/kg dan. Telegram bot orqali ro'yxatdan o'ting. 50 000+ mijoz ishonchi.",
     keywords: [
+      "Mandarin Cargo",
+      "Cargo Mandarin",
+      "Mandarin Cargo Uzbekistan",
+      "Mandarin Cargo Toshkent",
+      "mandarin kargo",
       "xitoydan yetkazib berish",
       "havo kargosi",
       "xitoy ombori",
