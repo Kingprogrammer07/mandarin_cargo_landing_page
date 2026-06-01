@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand: #EA580C;
+  --brand-hover: #C2410C;
+  --brand-soft: #FFF7ED;
+  --trust: #2563EB;
+  --success: #16A34A;
+  --danger: #DC2626;
+  --bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --text: #0F172A;
+  --muted: #64748B;
+  --border: #E2E8F0;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+  body { color: var(--text); background: var(--bg); }
+}

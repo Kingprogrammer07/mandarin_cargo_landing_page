@@ -1,0 +1,10 @@
+{
+  "files.exclude": {
+    "**/out/**": true,
+    "**/.next/**": true,
+    "**/dist/**": true
+  },
+  "javascript.validate.enable": true,
+  "html.validate.scripts": false,
+  "html.validate.styles": false
+}

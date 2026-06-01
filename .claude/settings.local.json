@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -rf .next out _next _not-found 404 pay)",
+      "Bash(rm -f __next.__PAGE__.txt __next._full.txt __next._head.txt __next._index.txt __next._tree.txt)",
+      "Bash(rm -f 404.html index.html index.txt robots.txt sitemap.xml favicon.ico)",
+      "Bash(rm -f file.svg globe.svg next.svg vercel.svg window.svg)",
+      "Bash(rm -f hero-app-mock.png map-tashkent.jpg office-tashkent-1.jpg office-tashkent-2.jpg og-image.png qr-bot.png review-1.jpg review-2.jpg review-3.jpg team.jpg warehouse-china-1.jpg warehouse-china-2.jpg)",
+      "Bash(npm run *)",
+      "Bash(ls -a .vscode)",
+      "Bash(ls -a .claude)",
+      "Bash(node -e ' *)"
+    ]
+  }
+}
