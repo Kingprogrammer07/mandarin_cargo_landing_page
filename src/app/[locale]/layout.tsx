@@ -10,6 +10,7 @@ import Preloader from "@/components/ui/Preloader";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Eruda from "@/components/ui/Eruda";
 import {
   organizationJsonLd,
   localBusinessJsonLd,
@@ -83,6 +84,7 @@ export default async function LocaleLayout({
         </NextIntlClientProvider>
         <Analytics />
         <SpeedInsights />
+        <Eruda />
       </body>
     </html>
   );

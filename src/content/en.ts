@@ -60,7 +60,7 @@ const content = {
     notFound: "Tracking code not found. Please check the code.",
     tooShort: "Tracking code must be at least 3 characters.",
     rateLimit: "Too many requests. Try again in a minute.",
-    errorGeneric: "Something went wrong. Please try again.",
+    errorGeneric: "Please check your internet connection — there may be a connection issue.",
   },
   calculator: {
     eyebrow: "CALCULATOR",
@@ -86,7 +86,7 @@ const content = {
     fallbackNotice: "*Estimated calculation. Contact Telegram bot for exact quote.",
     cta: "Register now",
     ctaSub: "Get free personal ID code",
-    error: "An error occurred. Please try again.",
+    error: "Please check your internet connection — there may be a connection issue.",
     errorTitle: "Couldn't calculate",
     retry: "Try again",
   },

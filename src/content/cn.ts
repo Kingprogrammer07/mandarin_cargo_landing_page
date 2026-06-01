@@ -60,7 +60,7 @@ const content = {
     notFound: "未找到该运单号。请检查。",
     tooShort: "运单号至少需要 3 个字符。",
     rateLimit: "请求过多，请一分钟后重试。",
-    errorGeneric: "发生错误，请重试。",
+    errorGeneric: "请检查您的网络连接，可能存在连接问题。",
   },
   calculator: {
     eyebrow: "\u8ba1\u7b97\u5668",
@@ -86,7 +86,7 @@ const content = {
     fallbackNotice: "*\u4ec5\u4e3a\u4f30\u7b97\u3002\u8bf7\u8054\u7cfbTelegram\u673a\u5668\u4eba\u83b7\u53d6\u51c6\u786e\u62a5\u4ef7\u3002",
     cta: "\u7acb\u5373\u6ce8\u518c",
     ctaSub: "\u83b7\u53d6\u514d\u8d39\u4e2a\u4ebaID\u4ee3\u7801",
-    error: "\u53d1\u751f\u9519\u8bef\uff0c\u8bf7\u91cd\u8bd5\u3002",
+    error: "\u8bf7\u68c0\u67e5\u60a8\u7684\u7f51\u7edc\u8fde\u63a5\uff0c\u53ef\u80fd\u5b58\u5728\u8fde\u63a5\u95ee\u9898\u3002",
     errorTitle: "\u65e0\u6cd5\u8ba1\u7b97",
     retry: "\u91cd\u8bd5",
   },

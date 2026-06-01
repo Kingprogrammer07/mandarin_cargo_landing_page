@@ -93,7 +93,7 @@ const content = {
     notFound: "Bunday trek kod topilmadi. Kodni tekshiring.",
     tooShort: "Trek kod kamida 3 ta belgidan iborat bo'lsin.",
     rateLimit: "Juda ko'p so'rov. Bir daqiqadan so'ng qayta urinib ko'ring.",
-    errorGeneric: "Xatolik yuz berdi. Qayta urinib ko'ring.",
+    errorGeneric: "Internetingizni tekshiring — ulanishda muammo bo'lishi mumkin.",
   },
 
   calculator: {
@@ -120,7 +120,7 @@ const content = {
     fallbackNotice: "*Taxminiy hisoblagich. Aniq narx uchun Telegram botga murojaat qiling.",
     cta: "Ro'yxatdan o'tish",
     ctaSub: "Bepul shaxsiy ID kod oling",
-    error: "Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.",
+    error: "Internetingizni tekshiring — ulanishda muammo bo'lishi mumkin.",
     errorTitle: "Hisoblab bo'lmadi",
     retry: "Qayta urinish",
   },
