@@ -22,7 +22,8 @@
       "Bash(node _fixfaq.mjs)",
       "Bash(rm -f _fixfaq.mjs)",
       "Bash(grep -c q: src/content/__TRACKED_VAR__.ts)",
-      "Bash(echo \"exit=$?\")"
+      "Bash(echo \"exit=$?\")",
+      "Bash(npm i *)"
     ]
   }
 }
