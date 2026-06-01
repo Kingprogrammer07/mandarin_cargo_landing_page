@@ -1,8 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { CheckCircle, ExternalLink } from "lucide-react";
 import { site } from "@/config/site";
 
@@ -17,10 +18,21 @@ export default function Hero() {
     transition: { duration: 0.45, delay, ease },
   });
 
+  // Parallax: plane drifts down + left (nose direction) as the hero scrolls away
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const planeY = useTransform(scrollYProgress, [0, 1], [0, 320]);
+  const planeX = useTransform(scrollYProgress, [0, 1], [0, -140]);
+  const planeRotate = useTransform(scrollYProgress, [0, 1], [0, -7]);
+
   return (
     <section
+      ref={sectionRef}
       id="hero"
-      className="relative overflow-hidden bg-gradient-to-b from-orange-50/70 via-white to-orange-50"
+      className="relative -mt-16 overflow-hidden bg-gradient-to-b from-orange-100 via-white to-orange-50"
     >
       {/* Warm depth glow behind the phone — also blends the mockup's backdrop */}
       <div
@@ -31,6 +43,21 @@ export default function Hero() {
         aria-hidden
         className="pointer-events-none absolute -left-32 -top-24 h-[420px] w-[420px] rounded-full bg-amber-100/50 blur-[120px]"
       />
+
+      {/* Parallax cargo plane — decorative, desktop only. After glows so it paints on top. */}
+      <motion.div
+        aria-hidden
+        style={reduce ? undefined : { x: planeX, y: planeY, rotate: planeRotate }}
+        className="pointer-events-none absolute right-[7%] top-28 hidden w-44 xl:w-56 lg:block"
+      >
+        <Image
+          src="/mandarin_cargo_plane.png"
+          alt=""
+          width={224}
+          height={224}
+          className="h-auto w-full drop-shadow-xl"
+        />
+      </motion.div>
 
       <div className="relative max-w-7xl mx-auto px-4 lg:px-8 py-20 lg:py-32 min-h-[70vh] lg:min-h-[85vh] flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center w-full">

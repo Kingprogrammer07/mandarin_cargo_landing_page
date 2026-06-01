@@ -18,7 +18,7 @@ export const site = {
     lat: 41.2995,
     lng: 69.2401,
   },
-  exchangeRate: 12520,
+  exchangeRate: 12250,
   pricePerKg: 9.5,
 } as const;
 

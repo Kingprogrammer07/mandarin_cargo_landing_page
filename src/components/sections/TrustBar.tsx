@@ -40,13 +40,8 @@ export default function TrustBar() {
   ] as const;
 
   return (
-    <section id="trust" className="relative overflow-hidden bg-orange-50 py-12 lg:py-16">
-      {/* Warm depth glow — continues Hero's palette */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-0 h-[300px] w-[700px] -translate-x-1/2 rounded-full bg-amber-100/40 blur-[120px]"
-      />
-      <div className="relative max-w-6xl mx-auto px-4">
+    <section id="trust" className="relative bg-white py-12 lg:py-16 shadow-[0_-1px_24px_rgba(15,23,42,0.05)]">
+      <div className="max-w-6xl mx-auto px-4">
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map(({ key }, i) => (
