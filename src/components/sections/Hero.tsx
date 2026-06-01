@@ -52,15 +52,23 @@ export default function Hero() {
               {t("eyebrow")}
             </motion.span>
 
-            <motion.h1
-              initial={{ opacity: 0, y: reduce ? 0 : 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.15, ease }}
+            <h1
               className="mt-4 font-extrabold text-slate-900 leading-[1.05] tracking-tight max-w-[600px]"
               style={{ fontSize: "clamp(2.5rem, 6vw, 4.5rem)" }}
             >
-              {t("h1")}
-            </motion.h1>
+              {t("h1").split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: reduce ? 0 : 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.15 + i * 0.07, ease }}
+                  className="inline-block whitespace-nowrap mr-[0.25em]"
+                >
+                  {word}
+                  {i < t("h1").split(" ").length - 1 ? " " : ""}
+                </motion.span>
+              ))}
+            </h1>
 
             <motion.p
               {...rise(0.25)}

@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Phone, MapPin, Clock, Instagram, Facebook, Send } from "lucide-react";
-import { site, paymentLogos } from "@/config/site";
+import { site } from "@/config/site";
 import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
@@ -28,6 +28,7 @@ const itemVariants = {
 
 export default function Footer() {
   const t = useTranslations();
+  const year = new Date().getFullYear();
   const handleAnchor = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const id = href.replace("#", "");
@@ -131,36 +132,18 @@ export default function Footer() {
           </motion.div>
         </motion.div>
 
-        {/* Payment logos */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-10 flex flex-wrap justify-center gap-6"
-        >
-          {paymentLogos.map((logo) => (
-            <img
-              key={logo}
-              src={`/pay/pay-${logo}.svg`}
-              alt={logo}
-              className="h-6 w-auto opacity-40 grayscale hover:opacity-60 transition-opacity"
-            />
-          ))}
-        </motion.div>
-
         {/* Bottom */}
         <div className="border-t border-slate-700 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-slate-500">
-            {t("footer.copyright")}
+          <p className="text-sm text-slate-500" suppressHydrationWarning>
+            {t("footer.copyright", { year: String(year) })}
           </p>
           <a
-            href={site.adminUrl}
+            href={site.developer}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-slate-600 hover:text-slate-400 transition-colors"
           >
-            {t("footer.admin")}
+            {t("footer.developer")} @java_strong
           </a>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { Check, Package, Tag, Boxes } from "lucide-react";
+import { Check, Package, Tag, Boxes, Sparkles } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 const tierIcons = [Package, Tag, Boxes];
@@ -41,6 +41,8 @@ export default function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
+              whileHover={{ y: -6 }}
+              whileTap={{ scale: 0.98 }}
               className={`relative rounded-2xl bg-white p-7 flex flex-col ${
                 tier.popular
                   ? "border-2 border-orange-500 shadow-lg shadow-orange-100"
@@ -107,7 +109,11 @@ export default function Pricing() {
               </li>
             ))}
           </ul>
-          <p className="mt-5 text-xs text-slate-400">{t("note")}</p>
+          <div className="mt-5 flex items-center gap-2 rounded-lg bg-orange-50 px-3 py-2.5 text-sm font-semibold text-orange-700">
+            <Sparkles size={16} className="shrink-0 text-orange-500" />
+            {t("bonus")}
+          </div>
+          <p className="mt-4 text-xs text-slate-400">{t("note")}</p>
         </motion.div>
       </div>
     </section>

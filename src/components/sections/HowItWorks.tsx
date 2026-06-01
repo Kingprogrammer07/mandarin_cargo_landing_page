@@ -43,11 +43,27 @@ export default function HowItWorks() {
 
         {/* Steps */}
         <div className="mt-16 relative">
-          {/* Connecting line - desktop (centered on the 72px circles) */}
-          <div className="hidden lg:block absolute top-9 -translate-y-1/2 left-[10%] right-[10%] h-[3px] bg-orange-200" />
+          {/* Connecting line - desktop (centered on the 72px circles), fills on scroll */}
+          <div className="hidden lg:block absolute top-9 -translate-y-1/2 left-[10%] right-[10%] h-[3px] bg-slate-200">
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true, margin: "-120px" }}
+              transition={{ duration: 1.1, ease }}
+              className="h-full origin-left bg-orange-400"
+            />
+          </div>
 
-          {/* Connecting line - mobile (centered on the 64px circles) */}
-          <div className="lg:hidden absolute top-8 bottom-8 left-8 -translate-x-1/2 w-[3px] bg-orange-200" />
+          {/* Connecting line - mobile (centered on the 64px circles), fills on scroll */}
+          <div className="lg:hidden absolute top-8 bottom-8 left-8 -translate-x-1/2 w-[3px] bg-slate-200">
+            <motion.div
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 1.1, ease }}
+              className="w-full origin-top bg-orange-400"
+            />
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-6 relative">
             {steps.map((step, i) => {
@@ -79,7 +95,8 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        {/* Address Example Card */}
+        {/* Sample China address card — hidden (mock SXXX data) */}
+        {false && (
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -116,6 +133,7 @@ export default function HowItWorks() {
             </div>
           </div>
         </motion.div>
+        )}
       </div>
     </section>
   );

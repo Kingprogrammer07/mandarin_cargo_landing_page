@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, CalculatorIcon, TrendingUp, Scale } from "lucide-react";
 import { site } from "@/config/site";
-import { calculateShipping } from "@/lib/calculator";
+import { calculateShippingApi } from "@/lib/calculator";
 import type { CalculatorResult } from "@/lib/calculator";
 import SectionHeader from "@/components/ui/SectionHeader";
 
@@ -40,10 +40,8 @@ export default function Calculator() {
     setLoading(true);
     setError(false);
 
-    await new Promise((r) => setTimeout(r, 400));
-
     try {
-      const res = calculateShipping({
+      const res = await calculateShippingApi({
         weight: w,
         length: volumetric ? parseFloat(length) || undefined : undefined,
         width: volumetric ? parseFloat(width) || undefined : undefined,

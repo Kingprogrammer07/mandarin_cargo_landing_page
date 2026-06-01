@@ -4,6 +4,7 @@ import { site } from "@/config/site";
 import Hero from "@/components/sections/Hero";
 import TrustBar from "@/components/sections/TrustBar";
 import HowItWorks from "@/components/sections/HowItWorks";
+import TrackOrder from "@/components/sections/TrackOrder";
 import Calculator from "@/components/sections/Calculator";
 import Features from "@/components/sections/Features";
 import Pricing from "@/components/sections/Pricing";
@@ -84,6 +85,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <Hero />
       <Reveal><TrustBar /></Reveal>
       <Reveal><HowItWorks /></Reveal>
+      <Reveal><TrackOrder /></Reveal>
       <Reveal><Calculator /></Reveal>
       <Reveal><Features /></Reveal>
       <Reveal><Pricing /></Reveal>

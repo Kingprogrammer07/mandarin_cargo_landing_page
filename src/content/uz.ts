@@ -77,6 +77,25 @@ const content = {
   },
 
   // Calculator
+  track: {
+    eyebrow: "KUZATUV",
+    h2: "Yukingizni kuzating",
+    subtitle: "Trek kodingizni kiriting — holatini real vaqtda ko'ring.",
+    placeholder: "Masalan: SAAS30-12345",
+    button: "Tekshirish",
+    checking: "Tekshirilmoqda...",
+    weightLabel: "Og'irlik",
+    progressLabel: "Bajarildi",
+    statusAvailable: "Bajarildi",
+    statusPending: "Jarayonda",
+    statusNodata: "Kutilmoqda",
+    steps: ["Xitoy omborida", "Yo'lda", "Bojxona navbatida", "Saralash bosqichida", "Yetkazishga tayyor", "Olib ketilgan"],
+    notFound: "Bunday trek kod topilmadi. Kodni tekshiring.",
+    tooShort: "Trek kod kamida 3 ta belgidan iborat bo'lsin.",
+    rateLimit: "Juda ko'p so'rov. Bir daqiqadan so'ng qayta urinib ko'ring.",
+    errorGeneric: "Xatolik yuz berdi. Qayta urinib ko'ring.",
+  },
+
   calculator: {
     eyebrow: "KALKULYATOR",
     h2: "Yukingiz narxini hisoblang",
@@ -174,9 +193,10 @@ const content = {
       "Xitoy omborida bepul saqlash (7 kun)",
       "Jonli kuzatuv (Telegram + Web)",
       "Xitoyda sotib olish xizmati (kelajakda)",
-      "Yuk sug'urtasi (kelajakda)",
+      "Yuk sug'urtasi",
     ],
     note: "Yakuniy narx tovar turi va og'irligiga qarab aniqlanadi.",
+    bonus: "Gabarit (hajmli) yuklar uchun maxsus bonus mavjud.",
     cta: "Hisoblash",
   },
 
@@ -275,9 +295,9 @@ const content = {
     contactTitle: "Aloqa",
     legalTitle: "Huquqiy",
     company: "TRITON SUPPLY CHAIN",
-    license: "Litsenziya: MOCK",
-    copyright: "\u00a9 2025 Mandarin Cargo \u2014 TRITON SUPPLY CHAIN",
-    admin: "Admin",
+    license: "Litsenziya: Mavjud",
+    copyright: "\u00a9 {year} Mandarin Cargo \u2014 TRITON SUPPLY CHAIN",
+    developer: "Dasturchi",
   },
 
   // Structured data
