@@ -1,65 +1,39 @@
-"use client";
-
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
-import {
-  DollarSign,
-  Plane,
-  MapPin,
-  Warehouse,
-  CreditCard,
-  Headphones,
-} from "lucide-react";
+import { BadgeDollarSign, Plane, MapPin, Warehouse, CreditCard, MessageCircle } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Spotlight from "@/components/ui/Spotlight";
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  DollarSign,
-  Plane,
-  MapPin,
-  Warehouse,
-  CreditCard,
-  Headphones,
-};
+const ICONS = [BadgeDollarSign, Plane, MapPin, Warehouse, CreditCard, MessageCircle];
 
-const ease = [0.25, 0.46, 0.45, 0.94] as [number, number, number, number];
+/** Live replacement for the delivery card's text; absent keeps the built-in copy. */
+export interface FeaturesLive {
+  deliveryDesc?: string;
+}
 
-export default function Features() {
+export default function Features({ live }: { live?: FeaturesLive }) {
   const t = useTranslations("features");
-  const items = [
-    { icon: "DollarSign", title: t("items.0.title"), desc: t("items.0.desc") },
-    { icon: "Plane", title: t("items.1.title"), desc: t("items.1.desc") },
-    { icon: "MapPin", title: t("items.2.title"), desc: t("items.2.desc") },
-    { icon: "Warehouse", title: t("items.3.title"), desc: t("items.3.desc") },
-    { icon: "CreditCard", title: t("items.4.title"), desc: t("items.4.desc") },
-    { icon: "Headphones", title: t("items.5.title"), desc: t("items.5.desc") },
-  ];
+  const items = ICONS.map((Icon, i) => ({
+    Icon,
+    title: t(`items.${i}.title`),
+    desc: i === 1 && live?.deliveryDesc ? live.deliveryDesc : t(`items.${i}.desc`),
+  }));
 
   return (
-    <section id="features" className="bg-white py-20 lg:py-28">
-      <div className="max-w-6xl mx-auto px-4 lg:px-8">
-        <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} />
+    <section id="features" className="bg-canvas py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 lg:px-8">
+        <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} centered={false} />
 
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {items.map((item, i) => {
-            const Icon = iconMap[item.icon];
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.4, delay: i * 0.08, ease }}
-                className="group bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center text-orange-600 group-hover:scale-110 transition-transform duration-200">
-                  {Icon && <Icon size={24} />}
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-slate-900">{item.title}</h3>
-                <p className="mt-2 text-sm text-slate-500 leading-relaxed">{item.desc}</p>
-              </motion.div>
-            );
-          })}
-        </div>
+        <Spotlight className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-ui-lg border border-border bg-border sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
+          {items.map(({ Icon, title, desc }) => (
+            <article key={title} data-spot className="bg-surface p-6 lg:p-8">
+              <span className="flex h-10 w-10 items-center justify-center rounded-ui-md bg-brand-soft text-brand-text">
+                <Icon size={20} strokeWidth={1.75} aria-hidden />
+              </span>
+              <h3 className="mt-5 text-lg font-semibold text-ink">{title}</h3>
+              <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted">{desc}</p>
+            </article>
+          ))}
+        </Spotlight>
       </div>
     </section>
   );

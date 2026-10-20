@@ -91,6 +91,12 @@ const content = {
     errorTitle: "\u65e0\u6cd5\u8ba1\u7b97",
     retry: "\u91cd\u8bd5",
   },
+  stores: {
+    eyebrow: "商店",
+    h2: "在中国任何商店下单",
+    subtitle: "将商品寄到我们的中国仓库地址并注明您的ID代码，其余由我们负责。",
+  },
+
   features: {
     eyebrow: "\u4e3a\u4ec0\u4e48\u9009\u62e9\u6211\u4eec",
     h2: "\u4e3a\u4ec0\u4e48\u9009\u62e9\u6211\u4eec\uff1f",
@@ -196,6 +202,7 @@ const content = {
   },
   // Live numbers from the Mandarin API (filled at build time)
   live: {
+    featureDelivery: "从中国仓库到塔什干取件平均 {days} 天。每周多个航班。",
     subheadline: "从中国到乌兹别克斯坦的快速空运货代。每公斤 {price} 起。{clients} 客户信赖。",
     subheadlineNoClients: "从中国到乌兹别克斯坦的快速空运货代。每公斤 {price} 起。",
     years: "{years}年行业经验",

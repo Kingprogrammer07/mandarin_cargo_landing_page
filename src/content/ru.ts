@@ -91,6 +91,12 @@ const content = {
     errorTitle: "\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0440\u0430\u0441\u0441\u0447\u0438\u0442\u0430\u0442\u044c",
     retry: "\u041f\u043e\u043f\u0440\u043e\u0431\u043e\u0432\u0430\u0442\u044c \u0441\u043d\u043e\u0432\u0430",
   },
+  stores: {
+    eyebrow: "МАГАЗИНЫ",
+    h2: "Заказывайте в любом магазине Китая",
+    subtitle: "Отправьте товар на адрес нашего склада в Китае с вашим ID-кодом — остальное сделаем мы.",
+  },
+
   features: {
     eyebrow: "\u041f\u0420\u0415\u0418\u041c\u0423\u0429\u0415\u0421\u0422\u0412\u0410",
     h2: "\u041f\u043e\u0447\u0435\u043c\u0443 \u043c\u044b?",
@@ -99,7 +105,7 @@ const content = {
       { icon: "Plane", title: "\u0411\u044b\u0441\u0442\u0440\u0430\u044f \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0430", desc: "\u0410\u0432\u0438\u0430 3\u20137 \u0434\u043d\u0435\u0439 \u0432 \u0422\u0430\u0448\u043a\u0435\u043d\u0442. \u041d\u0435\u0441\u043a\u043e\u043b\u044c\u043a\u043e \u0440\u0435\u0439\u0441\u043e\u0432 \u0432 \u043d\u0435\u0434\u0435\u043b\u044e." },
       { icon: "MapPin", title: "\u041e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u043d\u0438\u0435", desc: "\u0421\u043b\u0435\u0434\u0438\u0442\u0435 \u0437\u0430 \u0433\u0440\u0443\u0437\u043e\u043c \u0432 Telegram \u0431\u043e\u0442\u0435 \u0438 \u0432\u0435\u0431-\u043a\u0430\u0431\u0438\u043d\u0435\u0442\u0435 \u043e\u043d\u043b\u0430\u0439\u043d." },
       { icon: "Warehouse", title: "\u041d\u0430\u0434\u0451\u0436\u043d\u044b\u0435 \u0441\u043a\u043b\u0430\u0434\u044b", desc: "\u0421\u043e\u0431\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 \u0441\u043a\u043b\u0430\u0434 \u0432 \u041a\u0438\u0442\u0430\u0435 (Shaanxi) \u0438 \u043e\u0444\u0438\u0441 \u0432 \u0422\u0430\u0448\u043a\u0435\u043d\u0442\u0435." },
-      { icon: "CreditCard", title: "\d042\u0443\u0434\u043e\u0431\u043d\u0430\u044f \u043e\u043f\u043b\u0430\u0442\u0430", desc: "Click, Payme, Uzum, Alipay, Uzcard, Humo, \u043d\u0430\u043b\u0438\u0447\u043d\u044b\u0435." },
+      { icon: "CreditCard", title: "\u0423\u0434\u043e\u0431\u043d\u0430\u044f \u043e\u043f\u043b\u0430\u0442\u0430", desc: "Click, Payme, Uzum, Alipay, Uzcard, Humo, \u043d\u0430\u043b\u0438\u0447\u043d\u044b\u0435." },
       { icon: "Headphones", title: "\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430", desc: "\u0411\u044b\u0441\u0442\u0440\u044b\u0435 \u043e\u0442\u0432\u0435\u0442\u044b \u0432 Telegram. \u041d\u0430\u0434\u0451\u0436\u043d\u0430\u044f \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430." },
     ],
   },
@@ -197,6 +203,7 @@ const content = {
   },
   // Live numbers from the Mandarin API (filled at build time)
   live: {
+    featureDelivery: "В среднем {days} дн. от склада в Китае до выдачи в Ташкенте. Несколько рейсов в неделю.",
     subheadline: "Быстрая авиадоставка из Китая в Узбекистан. От {price} за кг. Нам доверяют {clients} клиентов.",
     subheadlineNoClients: "Быстрая авиадоставка из Китая в Узбекистан. От {price} за кг.",
     years: "{years, plural, one {# год} few {# года} many {# лет} other {# года}} на рынке",

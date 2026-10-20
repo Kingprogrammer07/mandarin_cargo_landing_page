@@ -126,6 +126,12 @@ const content = {
     retry: "Qayta urinish",
   },
 
+  stores: {
+    eyebrow: "DO\u2018KONLAR",
+    h2: "Xitoyning istalgan do\u2018konidan buyurtma bering",
+    subtitle: "Tovarni Xitoydagi omborimiz manziliga va ID kodingizga yuboring \u2014 qolganini biz qilamiz.",
+  },
+
   // Features
   features: {
     eyebrow: "AFZALLIKLAR",
@@ -328,6 +334,7 @@ const content = {
   },
   // Live numbers from the Mandarin API (filled at build time)
   live: {
+    featureDelivery: "O\u2018rtacha {days} kunda: Xitoy omboridan Toshkentda olib ketishgacha. Haftada bir necha reys.",
     subheadline: "Havo orqali tez yetkazib berish. 1 kg \u2014 atigi {price} dan. {clients} mijoz bizga ishonadi.",
     subheadlineNoClients: "Havo orqali tez yetkazib berish. 1 kg \u2014 atigi {price} dan.",
     years: "{years} yildan beri",

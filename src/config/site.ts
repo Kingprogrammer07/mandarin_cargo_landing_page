@@ -27,4 +27,12 @@ export const paymentLogos = [
   "click", "payme", "alipay", "uzcard", "humo", "nbu", "uzum", "terminal",
 ] as const;
 
+/**
+ * Shops clients order from (shown as plain names in the "where to buy" strip).
+ * Names only, no logos: these are trademarks of their owners, not partners.
+ */
+export const marketplaces = [
+  "Taobao", "1688", "Pinduoduo", "Tmall", "JD.com", "Alibaba", "AliExpress", "Poizon", "Xianyu",
+] as const;
+
 export type SiteConfig = typeof site;

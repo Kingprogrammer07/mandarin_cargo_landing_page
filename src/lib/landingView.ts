@@ -6,6 +6,7 @@
  * old hardcoded claim.
  */
 
+import type { FeaturesLive } from "@/components/sections/Features";
 import type { HeroLive } from "@/components/sections/Hero";
 import type { PricingTierLive } from "@/components/sections/Pricing";
 import type { ReviewsLive } from "@/components/sections/Reviews";
@@ -19,6 +20,7 @@ const MAX_TESTIMONIALS = 6;
 
 export interface LiveSections {
   hero: HeroLive;
+  features: FeaturesLive;
   trustBar: TrustBarLive;
   pricing?: PricingTierLive[];
   reviews: ReviewsLive;
@@ -89,8 +91,12 @@ export function buildLiveSections(data: LandingData, locale: string, t: Translat
       popular: tier.is_popular,
     }));
 
+  const features: FeaturesLive = {};
+  if (days != null && days > 0) features.deliveryDesc = t("live.featureDelivery", { days });
+
   return {
     hero,
+    features,
     trustBar,
     pricing: pricing.length > 0 ? pricing : undefined,
     reviews: {

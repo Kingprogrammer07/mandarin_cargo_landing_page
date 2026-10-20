@@ -7,6 +7,7 @@ import HowItWorks from "@/components/sections/HowItWorks";
 import TrackOrder from "@/components/sections/TrackOrder";
 import Calculator from "@/components/sections/Calculator";
 import Features from "@/components/sections/Features";
+import Stores from "@/components/sections/Stores";
 import Pricing from "@/components/sections/Pricing";
 import Reviews from "@/components/sections/Reviews";
 import About from "@/components/sections/About";
@@ -98,9 +99,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <Hero live={live?.hero} />
       <Reveal><TrustBar live={live?.trustBar} /></Reveal>
       <Reveal><HowItWorks /></Reveal>
-      <Reveal><TrackOrder /></Reveal>
       <Reveal><Calculator /></Reveal>
-      <Reveal><Features /></Reveal>
+      <Reveal><TrackOrder /></Reveal>
+      <Reveal><Stores /></Reveal>
+      <Reveal><Features live={live?.features} /></Reveal>
       <Reveal><Pricing live={live?.pricing} /></Reveal>
       <Reveal><Reviews live={live?.reviews} /></Reveal>
       <Reveal><About /></Reveal>

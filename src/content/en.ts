@@ -91,6 +91,12 @@ const content = {
     errorTitle: "Couldn't calculate",
     retry: "Try again",
   },
+  stores: {
+    eyebrow: "STORES",
+    h2: "Order from any store in China",
+    subtitle: "Ship to our China warehouse address with your ID code — we handle the rest.",
+  },
+
   features: {
     eyebrow: "WHY US",
     h2: "Why choose us?",
@@ -197,6 +203,7 @@ const content = {
   },
   // Live numbers from the Mandarin API (filled at build time)
   live: {
+    featureDelivery: "{days} days on average from our China warehouse to pickup in Tashkent. Several flights a week.",
     subheadline: "Fast air cargo from China to Uzbekistan. From {price}/kg. Trusted by {clients} customers.",
     subheadlineNoClients: "Fast air cargo from China to Uzbekistan. From {price}/kg.",
     years: "{years, plural, one {# year} other {# years}} in business",
