@@ -1,7 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 interface SectionHeaderProps {
   eyebrow: string;
   title: string;
@@ -18,26 +14,30 @@ export default function SectionHeader({
   light = false,
 }: SectionHeaderProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
-      className={`${centered ? "text-center" : ""}`}
-    >
-      <span className="text-xs font-semibold uppercase tracking-[0.15em] text-orange-600">
+    <div className={centered ? "text-center" : ""}>
+      <span
+        className={`text-xs font-semibold uppercase tracking-[0.14em] ${
+          light ? "text-white/70" : "text-brand-text"
+        }`}
+      >
         {eyebrow}
       </span>
       <h2
-        className={`mt-2 text-3xl lg:text-4xl font-bold tracking-tight ${
-          light ? "text-white" : "text-slate-900"
+        className={`mt-3 text-[1.875rem] leading-[1.1] lg:text-[2.5rem] font-extrabold tracking-tight text-balance ${
+          light ? "text-white" : "text-ink"
         }`}
       >
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-3 text-lg text-slate-500 max-w-2xl mx-auto">{subtitle}</p>
+        <p
+          className={`mt-3 text-base lg:text-lg leading-relaxed max-w-2xl ${centered ? "mx-auto" : ""} ${
+            light ? "text-white/75" : "text-muted"
+          }`}
+        >
+          {subtitle}
+        </p>
       )}
-    </motion.div>
+    </div>
   );
 }

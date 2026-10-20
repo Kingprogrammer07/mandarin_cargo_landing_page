@@ -19,6 +19,7 @@ const content = {
     trust3: "Air delivery 3\u20137 days",
     channelBadge: "10,000+ subscribers",
     appCaption: "Open the Mandarin Cargo bot",
+    globeLabel: "Map of cargo routes from Chinese cities to Tashkent",
   },
   trustBar: {
     years: { number: "5", label: "Years experience" },

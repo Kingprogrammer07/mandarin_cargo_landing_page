@@ -19,6 +19,7 @@ const content = {
     trust3: "\u0410\u0432\u0438\u0430 3\u20137 \u0434\u043d\u0435\u0439",
     channelBadge: "10 000+ \u043f\u043e\u0434\u043f\u0438\u0441\u0447\u0438\u043a\u043e\u0432",
     appCaption: "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u0431\u043e\u0442 Mandarin Cargo",
+    globeLabel: "Карта грузовых маршрутов из городов Китая в Ташкент",
   },
   trustBar: {
     years: { number: "5", label: "\u041b\u0435\u0442 \u043e\u043f\u044b\u0442\u0430" },

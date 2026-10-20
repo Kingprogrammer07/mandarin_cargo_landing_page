@@ -19,6 +19,7 @@ const content = {
     trust3: "\u7a7a\u8fd03\u20137\u5929",
     channelBadge: "10,000+ \u8ba2\u9605\u8005",
     appCaption: "\u6253\u5f00 Mandarin Cargo \u673a\u5668\u4eba",
+    globeLabel: "从中国各城市到塔什干的货运航线图",
   },
   trustBar: {
     years: { number: "5", label: "\u5e74\u7ecf\u9a8c" },

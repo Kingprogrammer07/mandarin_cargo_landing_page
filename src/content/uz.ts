@@ -22,6 +22,7 @@ const content = {
     trust3: "Havo orqali 3\u20137 kun",
     channelBadge: "10 000+ obunachi",
     appCaption: "Mandarin Cargo Botini ochish",
+    globeLabel: "Xitoy shaharlaridan Toshkentga yuk yo\u2018nalishlari xaritasi",
   },
 
   // Trust Bar
