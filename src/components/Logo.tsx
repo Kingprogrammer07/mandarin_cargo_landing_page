@@ -16,7 +16,7 @@ export default function Logo({ className = "", white = false }: LogoProps) {
     >
       {/* Mandarin icon — native SVG <image>, scales with viewBox */}
       <image
-        href="/mandarin-icon.png"
+        href="/mandarin-icon.webp"
         x="-5"
         y="-5"
         width="70"

@@ -2,21 +2,18 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { site } from "@/config/site";
 import Hero from "@/components/sections/Hero";
-import TrustBar from "@/components/sections/TrustBar";
 import HowItWorks from "@/components/sections/HowItWorks";
 import TrackOrder from "@/components/sections/TrackOrder";
-import Calculator from "@/components/sections/Calculator";
 import Features from "@/components/sections/Features";
-import Stores from "@/components/sections/Stores";
 import Pricing from "@/components/sections/Pricing";
-import Reviews from "@/components/sections/Reviews";
+import Proof from "@/components/sections/Proof";
 import About from "@/components/sections/About";
 import FAQ from "@/components/sections/FAQ";
-import FinalCta from "@/components/sections/FinalCta";
+import Cta from "@/components/sections/Cta";
 import Reveal from "@/components/ui/Reveal";
 import { faqJsonLd, breadcrumbJsonLd } from "@/lib/structuredData";
 import { getLandingData } from "@/lib/landingData";
-import { buildLiveSections } from "@/lib/landingView";
+import { buildLiveFacts } from "@/lib/landingView";
 
 // Map next-intl locales → BCP-47 for og:locale
 const OG_LOCALE: Record<string, string> = {
@@ -87,7 +84,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   // Real numbers from the Mandarin API; null keeps the built-in copy.
   const landing = await getLandingData();
-  const live = landing ? buildLiveSections(landing, locale, (key, values) => t(key, values)) : undefined;
+  const live = landing ? buildLiveFacts(landing, locale) : undefined;
 
   const faqLd = faqJsonLd(faqItems);
   const breadcrumbLd = breadcrumbJsonLd(locale);
@@ -96,18 +93,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <Hero live={live?.hero} />
-      <Reveal><TrustBar live={live?.trustBar} /></Reveal>
+      <Hero live={live} />
       <Reveal><HowItWorks /></Reveal>
-      <Reveal><Calculator /></Reveal>
       <Reveal><TrackOrder /></Reveal>
-      <Reveal><Stores /></Reveal>
-      <Reveal><Features live={live?.features} /></Reveal>
-      <Reveal><Pricing live={live?.pricing} /></Reveal>
-      <Reveal><Reviews live={live?.reviews} /></Reveal>
+      <Reveal><Features price={live?.price} /></Reveal>
+      <Reveal><Pricing tiers={live?.tiers} days={live?.days} /></Reveal>
+      <Reveal><Proof live={live} /></Reveal>
       <Reveal><About /></Reveal>
       <Reveal><FAQ /></Reveal>
-      <Reveal><FinalCta /></Reveal>
+      <Reveal><Cta /></Reveal>
     </>
   );
 }

@@ -1,29 +1,42 @@
 /**
- * Turns the API payload into the strings each section renders.
+ * Turns the API payload into the facts the page prints.
  *
  * Rule: without API data every section keeps its built-in copy. With API data
- * a metric that is `null` (an admin hid it) is left out, never replaced by the
+ * a metric that is `null` (an admin hid it) is left out, never replaced by an
  * old hardcoded claim.
  */
 
-import type { FeaturesLive } from "@/components/sections/Features";
-import type { HeroLive } from "@/components/sections/Hero";
-import type { PricingLive } from "@/components/sections/Pricing";
-import type { ReviewsLive } from "@/components/sections/Reviews";
-import type { TrustBarLive } from "@/components/sections/TrustBar";
 import { formatCount, formatPrice, localized, type LandingData } from "@/lib/landingData";
 
-type Translate = (key: string, values?: Record<string, string | number>) => string;
-
 /** Shown on the page; the rest stay in the admin panel only. */
-const MAX_TESTIMONIALS = 6;
+const MAX_QUOTES = 4;
 
-export interface LiveSections {
-  hero: HeroLive;
-  features: FeaturesLive;
-  trustBar: TrustBarLive;
-  pricing: PricingLive;
-  reviews: ReviewsLive;
+export interface PricingTier {
+  name: string;
+  price: string;
+  oldPrice: string | null;
+  desc: string;
+  badges: string[];
+  popular: boolean;
+}
+
+export interface Quote {
+  name: string;
+  date: string;
+  rating: number;
+  text: string;
+}
+
+export interface LiveFacts {
+  price: string | null;
+  days: number | null;
+  clients: string | null;
+  years: number | null;
+  tons: string | null;
+  subscribers: string | null;
+  rating: { average: string; count: number } | null;
+  quotes: Quote[];
+  tiers: PricingTier[] | null;
 }
 
 const INTL_LOCALE: Record<string, string> = { uz: "uz-Latn-UZ", ru: "ru-RU", en: "en-US", cn: "zh-CN" };
@@ -40,47 +53,11 @@ function formatMonth(date: string | null, locale: string): string {
   }).format(parsed);
 }
 
-export function buildLiveSections(data: LandingData, locale: string, t: Translate): LiveSections {
+export function buildLiveFacts(data: LandingData, locale: string): LiveFacts {
   const { stats, reviews } = data;
-  const clients = stats.clients != null ? formatCount(stats.clients, locale) : null;
-  const price = data.pricing.price_per_kg_usd;
-  const days = stats.delivery_days_median != null ? Math.round(stats.delivery_days_median) : null;
-  const years = stats.years != null ? Math.floor(stats.years) : null;
+  const positive = (n: number | null) => (n != null && n > 0 ? n : null);
 
-  const trust: string[] = [];
-  if (years != null && years > 0) trust.push(t("live.years", { years }));
-  if (clients) trust.push(t("live.clients", { clients }));
-  if (days != null && days > 0) trust.push(t("live.delivery", { days }));
-
-  const hero: HeroLive = {
-    trust,
-    channelBadge:
-      stats.channel_subscribers != null
-        ? t("live.subscribers", { count: formatCount(stats.channel_subscribers, locale) })
-        : t("live.channelCta"),
-  };
-  if (price != null) {
-    hero.subheadline = clients
-      ? t("live.subheadline", { price: formatPrice(price), clients })
-      : t("live.subheadlineNoClients", { price: formatPrice(price) });
-  }
-
-  const trustBar: TrustBarLive = {};
-  if (years != null && years > 0) trustBar.years = String(years);
-  if (clients) trustBar.clients = clients;
-  if (stats.cargo_kg != null && stats.cargo_kg >= 1000) {
-    trustBar.cargo = formatCount(stats.cargo_kg / 1000, locale);
-  }
-  if (stats.channel_subscribers != null) {
-    trustBar.subscribers = formatCount(stats.channel_subscribers, locale);
-  }
-
-  // Quotes in the visitor's language first, then the rest, newest first within each.
-  const quotes = [...reviews.items].sort(
-    (a, b) => Number(b.language === locale) - Number(a.language === locale),
-  );
-
-  const pricing = data.tiers
+  const tiers = data.tiers
     .filter((tier) => tier.price_usd != null && localized(tier.name, locale))
     .map((tier) => ({
       name: localized(tier.name, locale) ?? "",
@@ -91,28 +68,27 @@ export function buildLiveSections(data: LandingData, locale: string, t: Translat
       popular: tier.is_popular,
     }));
 
-  const features: FeaturesLive = {};
-  if (days != null && days > 0) features.deliveryDesc = t("live.featureDelivery", { days });
+  // Quotes in the visitor's language first.
+  const quotes = [...reviews.items]
+    .sort((a, b) => Number(b.language === locale) - Number(a.language === locale))
+    .slice(0, MAX_QUOTES)
+    .map((r) => ({ name: r.author_name, date: formatMonth(r.date, locale), rating: r.rating, text: r.text }));
+
+  const days = positive(stats.delivery_days_median);
+  const years = positive(stats.years);
 
   return {
-    hero,
-    features,
-    trustBar,
-    pricing: {
-      tiers: pricing.length > 0 ? pricing : undefined,
-      subtitle: pricing.length > 0 ? t("live.pricingSubtitle") : undefined,
-      includedDelivery: days != null && days > 0 ? t("live.includedDelivery", { days }) : undefined,
-    },
-    reviews: {
-      h2: clients ? t("live.reviewsH2", { clients }) : t("live.reviewsH2Plain"),
-      rating: reviews.count > 0 && reviews.average != null ? reviews.average.toFixed(1) : null,
-      countText: t("live.reviewCount", { count: reviews.count }),
-      testimonials: quotes.slice(0, MAX_TESTIMONIALS).map((r) => ({
-        name: r.author_name,
-        city: formatMonth(r.date, locale),
-        rating: r.rating,
-        quote: r.text,
-      })),
-    },
+    price: data.pricing.price_per_kg_usd != null ? formatPrice(data.pricing.price_per_kg_usd) : null,
+    days: days != null ? Math.round(days) : null,
+    clients: stats.clients != null ? formatCount(stats.clients, locale) : null,
+    years: years != null ? Math.floor(years) : null,
+    tons: stats.cargo_kg != null && stats.cargo_kg >= 1000 ? formatCount(stats.cargo_kg / 1000, locale) : null,
+    subscribers: stats.channel_subscribers != null ? formatCount(stats.channel_subscribers, locale) : null,
+    rating:
+      reviews.count > 0 && reviews.average != null
+        ? { average: reviews.average.toFixed(1), count: reviews.count }
+        : null,
+    quotes,
+    tiers: tiers.length > 0 ? tiers : null,
   };
 }

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Inter } from "next/font/google";
+import { Onest, Unbounded } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -16,9 +16,17 @@ import {
 } from "@/lib/structuredData";
 import { getLandingData } from "@/lib/landingData";
 
-const inter = Inter({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-inter",
+const display = Unbounded({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const text = Onest({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["400", "500", "600"],
+  variable: "--font-text",
   display: "swap",
 });
 
@@ -53,7 +61,7 @@ export default async function LocaleLayout({
   const svcLd = serviceJsonLd();
 
   return (
-    <html lang={locale} className={inter.variable}>
+    <html lang={locale} className={`${display.variable} ${text.variable}`}>
       <head>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />

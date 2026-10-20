@@ -1,54 +1,34 @@
 import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
-import { Plus } from "lucide-react";
 import { site } from "@/config/site";
-import SectionHeader from "@/components/ui/SectionHeader";
 
 const ITEM_COUNT = 6;
 
 /**
- * Native <details>: every answer is in the HTML (search engines and Ctrl+F
- * find it), keyboard and screen readers work without any script.
+ * Questions and answers set as reading text, like the notes at the back of a
+ * programme: the question is a run-in, the answer follows on the same line.
+ * Everything is answered at a glance, no toggles.
  */
 export default function FAQ() {
   const t = useTranslations("faq");
+  const tp = useTranslations("page.faq");
 
   const bot = (chunks: ReactNode) => (
-    <a
-      href={site.botUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="font-semibold text-brand-text underline decoration-brand/40 underline-offset-2"
-    >
+    <a href={site.botUrl} target="_blank" rel="noopener noreferrer" className="link font-medium">
       {chunks}
     </a>
   );
 
-  const items = Array.from({ length: ITEM_COUNT }, (_, i) => ({
-    q: t(`items.${i}.q`),
-    a: t.rich(`items.${i}.a`, { bot }),
-  }));
-
   return (
-    <section id="faq" className="bg-canvas py-20 lg:py-28">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 lg:px-8">
-        <div className="lg:sticky lg:top-28 lg:self-start">
-          <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} centered={false} />
-        </div>
-
-        <div className="border-t border-border">
-          {items.map((item) => (
-            <details key={item.q} className="group border-b border-border">
-              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-5 text-left [&::-webkit-details-marker]:hidden">
-                <span className="text-base font-semibold text-ink">{item.q}</span>
-                <Plus
-                  size={20}
-                  aria-hidden
-                  className="shrink-0 text-muted transition-transform duration-200 group-open:rotate-45"
-                />
-              </summary>
-              <p className="max-w-[40rem] pb-6 pr-8 text-[0.9375rem] leading-relaxed text-muted">{item.a}</p>
-            </details>
+    <section id="faq" aria-labelledby="faq-title" className="bg-paper py-24 lg:py-40">
+      <div className="grid gap-8 px-5 sm:px-8 lg:grid-cols-12">
+        <h2 id="faq-title" className="r t-head lg:col-span-4" style={{ "--i": 0 } as React.CSSProperties}>{tp("h2")}</h2>
+        <div className="t-body lg:col-span-8 lg:col-start-5 lg:columns-2 lg:gap-14">
+          {Array.from({ length: ITEM_COUNT }, (_, i) => (
+            <p key={i} className="r mb-5 break-inside-avoid sm:mb-6" style={{ "--i": i + 1 } as React.CSSProperties}>
+              <strong className="font-semibold">{t(`items.${i}.q`)}</strong>{" "}
+              {t.rich(`items.${i}.a`, { bot })}
+            </p>
           ))}
         </div>
       </div>

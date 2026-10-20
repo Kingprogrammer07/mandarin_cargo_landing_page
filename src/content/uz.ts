@@ -1,38 +1,6 @@
 const content = {
-  // Nav
-  nav: {
-    howItWorks: "Qanday ishlaydi",
-    calculator: "Kalkulyator",
-    pricing: "Tariflar",
-    reviews: "Sharhlar",
-    faq: "FAQ",
-    contact: "Aloqa",
-    cta: "Boshlash",
-  },
 
-  // Hero
-  hero: {
-    eyebrow: "XITOY → O‘ZBEKISTON · HAVO KARGO",
-    h1: "Xitoydagi xaridlaringiz \u2014 eshigingizgacha",
-    subheadline: "Havo orqali tez yetkazib berish. 1 kg \u2014 atigi $9.5 dan. 50\u00a0000+ mijoz bizga ishonadi.",
-    ctaPrimary: "Hoziroq boshlash",
-    ctaSecondary: "Kabinetga kirish",
-    trust1: "5 yildan beri",
-    trust2: "50\u00a0000+ mijoz",
-    trust3: "Havo orqali 3\u20137 kun",
-    channelBadge: "10\u00a0000+ obunachi",
-    appCaption: "Mandarin Cargo Botini ochish",
-    globeLabel: "Xitoy shaharlaridan Toshkentga yuk yo\u2018nalishlari xaritasi",
-  },
 
-  // Trust Bar
-  trustBar: {
-    years: { number: "5", label: "Yillik tajriba" },
-    clients: { number: "50\u00a0000+", label: "Mijozlar" },
-    cargo: { number: "160+", label: "Tonna yuk yetkazildi" },
-    subscribers: { number: "10\u00a0000+", label: "Telegram obunachi" },
-    paymentTitle: "Biz qabul qilamiz",
-  },
 
   // How It Works
   howItWorks: {
@@ -94,7 +62,7 @@ const content = {
     notFound: "Bunday trek kod topilmadi. Kodni tekshiring.",
     tooShort: "Trek kod kamida 3 ta belgidan iborat bo'lsin.",
     rateLimit: "Juda ko'p so'rov. Bir daqiqadan so'ng qayta urinib ko'ring.",
-    errorGeneric: "Internetingizni tekshiring — ulanishda muammo bo'lishi mumkin.",
+    errorGeneric: "Internetingizni tekshiring: ulanishda muammo bo'lishi mumkin.",
   },
 
   calculator: {
@@ -121,54 +89,12 @@ const content = {
     fallbackNotice: "*Taxminiy hisoblagich. Aniq narx uchun Telegram botga murojaat qiling.",
     cta: "Ro'yxatdan o'tish",
     ctaSub: "Bepul shaxsiy ID kod oling",
-    error: "Internetingizni tekshiring — ulanishda muammo bo'lishi mumkin.",
+    error: "Internetingizni tekshiring: ulanishda muammo bo'lishi mumkin.",
     errorTitle: "Hisoblab bo'lmadi",
     retry: "Qayta urinish",
   },
 
-  stores: {
-    eyebrow: "DO\u2018KONLAR",
-    h2: "Xitoyning istalgan do\u2018konidan buyurtma bering",
-    subtitle: "Tovarni Xitoydagi omborimiz manziliga va ID kodingizga yuboring \u2014 qolganini biz qilamiz.",
-  },
 
-  // Features
-  features: {
-    eyebrow: "AFZALLIKLAR",
-    h2: "Nima uchun biz?",
-    items: [
-      {
-        icon: "DollarSign",
-        title: "Arzon narx",
-        desc: "$9.5/kg dan. Minimal to'lovsiz. Faqat haqiqiy havo kargosi.",
-      },
-      {
-        icon: "Plane",
-        title: "Tezkor yetkazib berish",
-        desc: "Havo orqali 3\u20137 kun ichida Toshkentga. Haftada bir necha reys.",
-      },
-      {
-        icon: "MapPin",
-        title: "Jonli kuzatuv",
-        desc: "Yukingiz holatini Telegram bot va web kabinetdan real vaqtda kuzating.",
-      },
-      {
-        icon: "Warehouse",
-        title: "Ishonchli omborlar",
-        desc: "O'zimizning ombor Xitoyda (Shaanxi) va Toshkent ofisimiz.",
-      },
-      {
-        icon: "CreditCard",
-        title: "Qulay to'lov",
-        desc: "Click, Payme, Uzum, Alipay, Uzcard, Humo, naqd.",
-      },
-      {
-        icon: "Headphones",
-        title: "Qo'llab-quvvatlash",
-        desc: "Telegram orqali tez javob. Ishonchli mijoz xizmati.",
-      },
-    ],
-  },
 
   // Pricing
   pricing: {
@@ -214,51 +140,7 @@ const content = {
     cta: "Hisoblash",
   },
 
-  // Reviews
-  reviews: {
-    eyebrow: "MIJOZLAR FIKRI",
-    h2: "50\u00a0000+ mijoz ishonchi",
-    rating: "4.9",
-    outOf: "/ 5",
-    reviewCount: "1\u00a0200+ sharh",
-    testimonials: [
-      {
-        name: "Dilshod K.",
-        city: "Toshkent",
-        rating: 5,
-        quote: "Birinchi marta ishladim \u2014 5 kunda yetkazdilar. Telegram bot juda qulay.",
-      },
-      {
-        name: "Nodira R.",
-        city: "Samarqand",
-        rating: 5,
-        quote: "5 yildan beri Mandarin Cargo bilan ishlayman. Har doim ishonchli.",
-      },
-      {
-        name: "Akmal B.",
-        city: "Farg'ona",
-        rating: 5,
-        quote: "Narx arzon, yetkazish tez. Mijoz xizmati ajoyib. Tavsiya etaman!",
-      },
-    ],
-    screenshotCaption: "Haqiqiy sharhlar",
-  },
 
-  // About
-  about: {
-    eyebrow: "BIZ HAQIMIZDA",
-    h2: "5 yillik tajriba, to'g'ri Xitoy bilan",
-    intro:
-      "Mandarin Cargo \u2014 bu TRITON SUPPLY CHAIN kompaniyasi tarkibidagi xizmat. 5 yildan beri Xitoydan O'zbekistonga havo kargosi yetkazib beramiz. O'zimizning omborimiz Xitoyning Shaanxi viloyatida joylashgan.",
-    facts: [
-      "O'z ombor Xitoyda (Shaanxi, Xianyang)",
-      "Rasmiy kompaniya: TRITON SUPPLY CHAIN",
-      "Toshkent ofisi: Chilonzor tumani, Arnasoy 5A",
-      "Ish vaqti: Dush-Shan 10:00\u201318:30",
-    ],
-    mapOverlay: "Toshkent, Chilonzor, Arnasoy 5A",
-    routeCta: "Borish",
-  },
 
   // FAQ
   faq: {
@@ -283,7 +165,7 @@ const content = {
       },
       {
         q: "Yukimni qanday kuzataman?",
-        a: "Telegram botimiz — <bot>Mandarin Cargo Boti</bot> — orqali yukingiz holatini real vaqtda kuzatishingiz mumkin: omborga keldi \u2192 yuklandi \u2192 uchdi \u2192 Toshkentda \u2192 yetkazildi.",
+        a: "Telegram botimiz <bot>Mandarin Cargo Boti</bot> orqali yukingiz holatini real vaqtda kuzatishingiz mumkin: omborga keldi \u2192 yuklandi \u2192 uchdi \u2192 Toshkentda \u2192 yetkazildi.",
       },
       {
         q: "Passport ma'lumotlari nega kerak?",
@@ -292,28 +174,7 @@ const content = {
     ],
   },
 
-  // Final CTA
-  finalCta: {
-    appAlt: "Mandarin Cargo ilovasi",
-    h2: "Bugun birinchi yukingizni yuboring",
-    subtitle: "Telegram botda 2 daqiqada ro'yxatdan o'ting",
-    ctaPrimary: "Telegram botni ochish",
-    ctaSecondary: "Admin bilan bog'lanish",
-    qrCaption: "Telegram skanerlang",
-    followUs: "Bizni ijtimoiy tarmoqlarda kuzating",
-  },
 
-  // Footer
-  footer: {
-    tagline: "Globally delivered, exceptionally Mandarin",
-    siteTitle: "Sayt",
-    contactTitle: "Aloqa",
-    legalTitle: "Huquqiy",
-    company: "TRITON SUPPLY CHAIN",
-    license: "Litsenziya: Mavjud",
-    copyright: "\u00a9 {year} Mandarin Cargo \u2014 TRITON SUPPLY CHAIN",
-    developer: "Dasturchi",
-  },
 
   // Structured data
   seo: {
@@ -348,6 +209,102 @@ const content = {
     reviewCount: "{count} ta baho",
     reviewsH2Plain: "Mijozlarimiz fikri",
     channelCta: "Telegram kanalimiz",
+  },
+  page: {
+    nav: { how: "Jarayon", track: "Kuzatish", pricing: "Narxlar", faq: "Savollar", contact: "Aloqa", cta: "Botni ochish", menu: "Menyu", close: "Yopish" },
+    hero: {
+      h1: "Xitoydan havo kargo",
+      lead: "Taobao, 1688 va Pinduoduo buyurtmalaringiz Xitoydagi omborimizga tushadi, biz ularni samolyotda Toshkentga olib kelamiz.",
+      fromCity: "Syanyan, Xitoy",
+      toCity: "Toshkent",
+      route: "Syanyandagi omborimizdan Toshkentga",
+      price: "1 kg narxi",
+      transit: "Yo‘lda",
+      transitFallback: "3–7 kun",
+      transitLive: "{days} kun",
+      clients: "Mijozlar",
+      since: "Ishlaymiz",
+      sinceValue: "2019-yildan",
+      weight: "Yukingiz og‘irligi",
+      dims: "O‘lchamlari bilan",
+      result: "Taxminiy narx",
+      resultHint: "Og‘irlikni kiriting",
+      cta: "Botda shaxsiy kod olish",
+      photos: ["Xitoydagi ombor: javonlardagi qutilar", "Saralash liniyasidagi posilkalar", "Toshkentdagi ofis binosi"],
+    },
+    how: {
+      h2: "Botdan eshigingizgacha",
+      lead: "Hammasi Telegramda. Ro‘yxatdan o‘tishdan yukni olishgacha besh qadam.",
+      prev: "Oldingi qadam",
+      next: "Keyingi qadam",
+      steps: [
+        { title: "Avval botda ro‘yxatdan o‘tasiz", desc: "/start bosing va ism, pasport ma’lumoti hamda rasmingizni yuboring." },
+        { title: "Bir kun ichida tasdiqlaymiz", desc: "Admin ma’lumotlaringizni tekshiradi. Bojxona uchun bu majburiy." },
+        { title: "Kod va manzil keladi", desc: "Shaxsiy kodingiz va Xitoydagi ombor manzili botga yuboriladi." },
+        { title: "Do‘kondan buyurtma berasiz", desc: "Yetkazish manziliga ombor manzili va kodingizni yozasiz." },
+        { title: "Samolyotda Toshkentga", desc: "Ofisdan olib ketasiz yoki viloyatlarga pochta orqali jo‘natamiz." },
+      ],
+      codeLabel: "Shaxsiy kod",
+      addressLabel: "Ombor manzili",
+    },
+    track: {
+      h2: "Yukingiz qayerda?",
+      lead: "Trek kodni kiriting: Xitoy omboridan qo‘lingizga yetguncha har bir bosqichni ko‘rasiz.",
+    },
+    sheets: {
+      h2: "Siz uchun nima qilamiz",
+      items: [
+        { title: "Istalgan do‘kondan", desc: "Xitoy do‘koniga ombor manzilimiz va kodingizni yozasiz. Qaysi saytdan bo‘lmasin, tovar omborimizga tushadi." },
+        { title: "O‘z omborimiz", desc: "Ombor Syanyandagi aviakargo logistika parkida, Shensi viloyatida. Yuklar shu yerda yig‘iladi, tortiladi va reysga tayyorlanadi." },
+        { title: "Har qadamini ko‘rasiz", desc: "Yuk omborga kelganda, reysga yuklanganda va Toshkentga yetganda bot xabar beradi. Web kabinetda ham ko‘rinadi." },
+        { title: "Qulay to‘lov", desc: "Yuk yetib kelgach to‘laysiz: Click, Payme, Uzum, Uzcard, Humo, NBU, Alipay yoki ofisda naqd." },
+      ],
+      appAlt: "Mandarin Cargo ilovasi: yuklar ro‘yxati",
+    },
+    pricing: {
+      h2: "Narx kilogramiga",
+      lead: "Yuk turiga qarab tarif. Minimal to‘lov yo‘q, narx hisoblangan og‘irlikdan olinadi.",
+      perKg: "1 kg uchun",
+      cta: "Botda boshlash",
+      included: "Har bir tarifga kiradi",
+    },
+    proof: {
+      h2: "{clients} mijoz",
+      h2Plain: "Mijozlarimiz",
+      years: "{years} yildan beri ishlaymiz",
+      cargo: "{tons} tonna yuk yetkazdik",
+      subscribers: "Telegram kanalimizda {count} obunachi",
+      rating: "O‘rtacha baho {rating} / 5, {count} ta baho",
+      photoAlt: "Xitoydagi omborda qutilar",
+    },
+    about: {
+      h2: "Biz haqimizda",
+      paragraphs: [
+        "Biz 2019-yildan beri Xitoydan O‘zbekistonga havo yo‘li bilan yuk olib kelamiz. Mandarin Cargo TRITON SUPPLY CHAIN kompaniyasining xizmati.",
+        "Omborimiz Xitoyning Shensi viloyatida, Syanyan shahridagi aviakargo logistika parkida. Har bir posilka shu yerda kodingiz bo‘yicha qabul qilinadi va tortiladi.",
+        "Toshkentdagi ofisimiz Chilonzorda. Yukingizni o‘zingiz olib ketishingiz yoki viloyatga pochta orqali jo‘natishimiz mumkin.",
+      ],
+      signoff: "Mandarin Cargo jamoasi",
+      role: "TRITON SUPPLY CHAIN",
+      hours: "Dushanba–shanba, 10:00–18:30",
+      route: "Xaritada ochish",
+    },
+    faq: { h2: "Savollar" },
+    cta: {
+      lead: "Ro‘yxatdan o‘tish ikki daqiqa. Shaxsiy kod va Xitoydagi ombor manzili botda keladi.",
+      h2: "Birinchi yukingiz",
+      text: "Telegram botni oching va /start bosing.",
+      button: "Telegram botni ochish",
+      admin: "Admin bilan bog‘lanish",
+      qr: "Telefon kamerasi bilan skanerlang",
+    },
+    footer: {
+      signoff: "Toshkentda kutamiz",
+      message: "Savolingiz bo‘lsa, Telegramda yozing yoki qo‘ng‘iroq qiling.",
+      stampAlt: "Ombordagi posilkalar",
+      imprint: "© {year} Mandarin Cargo, TRITON SUPPLY CHAIN",
+      developer: "Sayt dasturchisi",
+    },
   },
 } as const;
 

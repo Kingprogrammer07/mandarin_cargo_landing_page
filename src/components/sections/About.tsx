@@ -1,73 +1,52 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Check, MapPin, Navigation } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { site } from "@/config/site";
-import SectionHeader from "@/components/ui/SectionHeader";
 
-const FACT_COUNT = 4;
+const SCALLOPS =
+  "polygon(" +
+  Array.from({ length: 33 }, (_, i) => `${(i / 32) * 100}% ${i % 2 === 0 ? "100%" : "calc(100% - 10px)"}`)
+    .reverse()
+    .concat(["0 0", "100% 0"])
+    .reverse()
+    .join(",") +
+  ")";
 
-const IMAGES = [
-  { src: "/warehouse-china-1.jpg", alt: "Warehouse China", className: "col-span-2" },
-  { src: "/warehouse-china-2.jpg", alt: "Sorting station" },
-  { src: "/office-tashkent-1.jpg", alt: "Tashkent office" },
-];
-
+/**
+ * Who we are, written as a letter on a sheet whose bottom edge is cut in
+ * scallops, with the office address on a tear-off strip below.
+ */
 export default function About() {
-  const t = useTranslations("about");
-  const facts = Array.from({ length: FACT_COUNT }, (_, i) => t(`facts.${i}`));
+  const t = useTranslations("page.about");
+  const paragraphs = t.raw("paragraphs") as string[];
+  const mapUrl = `https://yandex.uz/maps/?pt=${site.geo.lng},${site.geo.lat}&z=17&l=map`;
 
   return (
-    <section id="about" className="bg-canvas py-20 lg:py-28">
-      <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} centered={false} />
-            <p className="mt-6 max-w-[36rem] text-base leading-relaxed text-muted">{t("intro")}</p>
-            <ul className="mt-6 space-y-3">
-              {facts.map((fact) => (
-                <li key={fact} className="flex items-start gap-3 text-[0.9375rem] text-ink">
-                  <Check size={16} className="mt-1 shrink-0 text-brand-text" aria-hidden />
-                  {fact}
-                </li>
-              ))}
-            </ul>
+    <section id="about" aria-labelledby="about-title" className="bg-ground px-5 py-24 sm:px-8 lg:pb-40 lg:pt-28">
+      <div className="mx-auto max-w-[640px]">
+        <article className="r bg-paper px-6 pb-14 pt-10 sm:px-14 sm:pt-14" style={{ "--i": 0, clipPath: SCALLOPS } as React.CSSProperties}>
+          <div className="flex items-center gap-4">
+            <Image src="/mandarin-icon.webp" alt="" width={44} height={44} className="h-11 w-11 rounded-full" />
+            <h2 id="about-title" className="font-display text-2xl font-bold tracking-tight">{t("h2")}</h2>
           </div>
+          <div className="t-body mt-7 space-y-5">
+            {paragraphs.map((p) => <p key={p}>{p}</p>)}
+          </div>
+          <p className="mt-8 text-xl font-semibold">{t("signoff")}</p>
+          <p className="t-small text-muted">{t("role")}</p>
+        </article>
 
-          <div className="grid grid-cols-2 gap-3">
-            {IMAGES.map((img) => (
-              <div
-                key={img.src}
-                className={`relative aspect-[4/3] overflow-hidden rounded-ui-md bg-surface-2 ${img.className ?? ""}`}
-              >
-                <Image src={img.src} alt={img.alt} fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" />
-              </div>
-            ))}
-          </div>
-        </div>
+        <div className="perf-x mx-3 mt-3" style={{ "--perf": "var(--paper)" } as React.CSSProperties} aria-hidden />
 
-        <div className="relative mt-10 overflow-hidden rounded-ui-lg border border-border">
-          <iframe
-            src={`https://www.google.com/maps?q=${site.geo.lat},${site.geo.lng}&z=16&output=embed`}
-            title={t("mapOverlay")}
-            className="block h-72 w-full border-0 lg:h-80"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-          <div className="flex flex-col gap-3 border-t border-border bg-surface p-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="flex items-start gap-2 text-sm font-medium text-ink">
-              <MapPin size={16} className="mt-0.5 shrink-0 text-brand-text" aria-hidden />
-              {t("mapOverlay")}
-            </p>
-            <a
-              href={`https://3.redirect.appmetrica.yandex.com/route?end-lat=${site.geo.lat}&end-lon=${site.geo.lng}&appmetrica_tracking_id=1178268795219780156`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-5 text-sm font-semibold text-surface transition-opacity hover:opacity-90 active:scale-[0.98]"
-            >
-              <Navigation size={16} aria-hidden />
-              {t("routeCta")}
-            </a>
+        <div className="r mt-3 flex flex-col gap-4 bg-paper p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10" style={{ "--i": 1 } as React.CSSProperties}>
+          <div className="min-w-0">
+            <p className="font-medium">{site.address}</p>
+            <p className="t-small text-muted">{t("hours")}</p>
           </div>
+          <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ink shrink-0">
+            <MapPin size={18} aria-hidden />
+            {t("route")}
+          </a>
         </div>
       </div>
     </section>

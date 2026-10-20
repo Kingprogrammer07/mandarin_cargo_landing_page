@@ -18,7 +18,7 @@ export interface CalculatorResult {
   isFallback: boolean;
 }
 
-export function calculateShipping(input: CalculatorInput): CalculatorResult {
+export function calculateShipping(input: CalculatorInput, pricePerKg: number = site.pricePerKg): CalculatorResult {
   const actualWeight = input.weight;
   let volumetricWeight = 0;
 
@@ -28,7 +28,7 @@ export function calculateShipping(input: CalculatorInput): CalculatorResult {
   }
 
   const chargeableWeight = Math.max(actualWeight, volumetricWeight);
-  const priceUsd = chargeableWeight * site.pricePerKg;
+  const priceUsd = chargeableWeight * pricePerKg;
   const rate = site.exchangeRate;
   const priceUzs = Math.round(priceUsd * rate);
 
@@ -46,7 +46,10 @@ export function calculateShipping(input: CalculatorInput): CalculatorResult {
 const API = "https://bot.webmandarin.uz/api/v1/public/calculator";
 
 /** Calls the public calculator API; falls back to local math on any error. */
-export async function calculateShippingApi(input: CalculatorInput): Promise<CalculatorResult> {
+export async function calculateShippingApi(
+  input: CalculatorInput,
+  fallbackPricePerKg: number = site.pricePerKg,
+): Promise<CalculatorResult> {
   const hasDims = !!(input.length && input.width && input.height);
   try {
     const res = await fetch(API, {
@@ -79,6 +82,6 @@ export async function calculateShippingApi(input: CalculatorInput): Promise<Calc
       isFallback: false,
     };
   } catch {
-    return calculateShipping(input);
+    return calculateShipping(input, fallbackPricePerKg);
   }
 }

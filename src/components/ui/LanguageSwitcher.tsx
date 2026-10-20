@@ -5,6 +5,9 @@ import { useLocale } from "next-intl";
 import { Globe, ChevronDown, Check } from "lucide-react";
 import { usePathname, Link } from "@/i18n/navigation";
 
+// A dropdown really floats over the page, so it may cast a shadow.
+const MENU_SHADOW = "shadow-[0_12px_32px_-8px_rgba(0,0,0,0.25)]"; // taste-skill-ignore
+
 const locales = [
   { code: "uz", label: "UZ", name: "O‘zbekcha" },
   { code: "ru", label: "RU", name: "Русский" },
@@ -50,8 +53,8 @@ export default function LanguageSwitcher({ dark = false, openUp = dark }: Langua
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={`${current.label} — language`}
-        className={`flex h-10 items-center gap-1.5 rounded-full px-3 text-sm font-medium transition-colors duration-150 ${
-          dark ? "text-white/70 hover:bg-white/10 hover:text-white" : "text-muted hover:bg-surface-2 hover:text-ink"
+        className={`flex h-11 items-center gap-1.5 px-3 text-[0.9375rem] font-medium transition-colors duration-150 ${
+          dark ? "text-white/70 hover:bg-white/10 hover:text-white" : "text-ink hover:bg-paper-2"
         }`}
       >
         <Globe size={16} className="shrink-0" />
@@ -65,7 +68,7 @@ export default function LanguageSwitcher({ dark = false, openUp = dark }: Langua
       {open && (
         <ul
           role="listbox"
-          className={`absolute z-50 w-44 rounded-ui-md border border-border bg-surface py-1.5 shadow-card ${
+          className={`absolute z-50 w-48 bg-paper py-1.5 ${MENU_SHADOW} ${
             openUp ? "bottom-full left-0 mb-2 origin-bottom-left" : "right-0 mt-2 origin-top-right"
           }`}
         >
@@ -78,12 +81,12 @@ export default function LanguageSwitcher({ dark = false, openUp = dark }: Langua
                   locale={locale.code}
                   prefetch={false}
                   onClick={() => setOpen(false)}
-                  className={`flex items-center justify-between gap-3 min-h-11 px-3.5 py-2 text-sm transition-colors ${
-                    isActive ? "font-semibold text-brand-text" : "text-ink hover:bg-surface-2"
+                  className={`flex items-center justify-between gap-3 min-h-11 px-3.5 py-2 text-[0.9375rem] transition-colors ${
+                    isActive ? "font-semibold text-brand-text" : "text-ink hover:bg-paper-2"
                   }`}
                 >
                   <span className="flex items-center gap-2.5">
-                    <span className="w-7 text-xs font-semibold text-muted">{locale.label}</span>
+                    <span className="w-7 text-sm font-semibold text-muted">{locale.label}</span>
                     <span>{locale.name}</span>
                   </span>
                   {isActive && <Check size={15} className="shrink-0 text-brand-text" />}
