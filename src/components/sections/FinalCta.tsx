@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Instagram, Facebook, Send } from "lucide-react";
 import { site } from "@/config/site";
+import Tilt from "@/components/ui/Tilt";
 
 const SOCIALS = [
   { Icon: Send, href: site.telegram, label: "Telegram" },
@@ -63,6 +64,7 @@ export default function FinalCta() {
         </div>
 
         <div className="relative mx-auto -mb-24 w-full max-w-[300px] sm:max-w-[340px] lg:-mb-32 lg:mt-12 lg:max-w-[380px]">
+          <Tilt max={10}>
           <Image
             src="/hero-app-light-v2.webp"
             alt={t("appAlt")}
@@ -71,6 +73,7 @@ export default function FinalCta() {
             sizes="(max-width: 1024px) 300px, 380px"
             className="h-auto w-full"
           />
+          </Tilt>
         </div>
       </div>
     </section>

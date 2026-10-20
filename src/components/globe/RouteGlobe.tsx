@@ -10,6 +10,11 @@ import { LAND_DOTS_B64, LAND_POINT_COUNT } from "./landDots";
  * arcs draw in well under a frame on a budget phone, with no WebGL context
  * to lose and no 3D library to ship. The loop stops when the globe is off
  * screen or the tab is hidden; reduced motion gets one still frame.
+ *
+ * Interaction: drag to spin (with inertia; the view drifts back home after a
+ * pause so the routes stay in front), and scrolling the hero away turns the
+ * globe towards Tashkent and zooms in a little. Touch uses `pan-y`, so a
+ * vertical swipe still scrolls the page and only a sideways drag spins.
  */
 
 type LatLon = readonly [lat: number, lon: number];
@@ -34,6 +39,14 @@ const ARC_MS = 2600;
 const ARC_GAP_MS = 900;
 const TRAIL = 0.32;
 const DEG = Math.PI / 180;
+/** Degrees of rotation per pixel dragged. */
+const DRAG_GAIN = 0.25;
+const INERTIA = 0.93;
+const HOME_AFTER_MS = 2500;
+/** Scroll parallax: how far the view turns, tilts and zooms as the hero leaves. */
+const SCROLL_LON = TASHKENT[1] - CENTER_LON;
+const SCROLL_LAT = 12;
+const SCROLL_ZOOM = 0.22;
 
 type Vec3 = [number, number, number];
 
@@ -109,16 +122,48 @@ export default function RouteGlobe({ label }: { label: string }) {
     };
     resize();
 
+    // User rotation on top of the idle sway, in degrees.
+    let dragLon = 0;
+    let dragLat = 0;
+    let velLon = 0;
+    let velLat = 0;
+    let dragging = false;
+    let lastX = 0;
+    let lastY = 0;
+    let releasedAt = 0;
+
+    /** 0 while the hero is on screen at the top, 1 once it has scrolled away. */
+    const scrollProgress = (): number => {
+      const section = canvas.closest("section") ?? canvas;
+      const rect = section.getBoundingClientRect();
+      return Math.min(1, Math.max(0, -rect.top / Math.max(1, rect.height * 0.8)));
+    };
+
     const draw = (now: number) => {
+      const still = reduceMotion.matches;
+      const scroll = still ? 0 : scrollProgress();
+      const eased = scroll * scroll * (3 - 2 * scroll);
+
+      if (!still && !dragging) {
+        dragLon += velLon;
+        dragLat += velLat;
+        velLon *= INERTIA;
+        velLat *= INERTIA;
+        if (now - releasedAt > HOME_AFTER_MS) {
+          dragLon *= 0.96;
+          dragLat *= 0.96;
+        }
+      }
+
       const w = canvas.width / dpr;
       const h = canvas.height / dpr;
-      const radius = size * 0.42;
+      const radius = size * 0.42 * (1 + SCROLL_ZOOM * eased);
       const cx = w / 2;
       const cy = h / 2;
-      const still = reduceMotion.matches;
 
-      const lon0 = (CENTER_LON + (still ? 0 : SWAY_DEG * Math.sin((now / SWAY_PERIOD_MS) * Math.PI * 2))) * DEG;
-      const lat0 = CENTER_LAT * DEG;
+      const sway = still ? 0 : SWAY_DEG * Math.sin((now / SWAY_PERIOD_MS) * Math.PI * 2) * (1 - eased);
+      const lon0 = (CENTER_LON + sway + SCROLL_LON * eased - dragLon) * DEG;
+      const lat0 = Math.min(70, Math.max(-20, CENTER_LAT + SCROLL_LAT * eased + dragLat)) * DEG;
       const cosL = Math.cos(lon0);
       const sinL = Math.sin(lon0);
       const cosP = Math.cos(lat0);
@@ -257,9 +302,43 @@ export default function RouteGlobe({ label }: { label: string }) {
     intersection.observe(canvas);
     document.addEventListener("visibilitychange", start);
     reduceMotion.addEventListener("change", start);
+
+    const onDown = (e: PointerEvent) => {
+      if (reduceMotion.matches) return;
+      dragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      velLon = 0;
+      velLat = 0;
+      canvas.setPointerCapture(e.pointerId);
+      canvas.style.cursor = "grabbing";
+    };
+    const onMove = (e: PointerEvent) => {
+      if (!dragging) return;
+      velLon = (e.clientX - lastX) * DRAG_GAIN;
+      velLat = (e.clientY - lastY) * DRAG_GAIN;
+      dragLon += velLon;
+      dragLat += velLat;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    };
+    const onUp = () => {
+      if (!dragging) return;
+      dragging = false;
+      releasedAt = performance.now();
+      canvas.style.cursor = "";
+    };
+    canvas.addEventListener("pointerdown", onDown);
+    canvas.addEventListener("pointermove", onMove);
+    canvas.addEventListener("pointerup", onUp);
+    canvas.addEventListener("pointercancel", onUp);
     start();
 
     return () => {
+      canvas.removeEventListener("pointerdown", onDown);
+      canvas.removeEventListener("pointermove", onMove);
+      canvas.removeEventListener("pointerup", onUp);
+      canvas.removeEventListener("pointercancel", onUp);
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();
       intersection.disconnect();
@@ -268,5 +347,12 @@ export default function RouteGlobe({ label }: { label: string }) {
     };
   }, []);
 
-  return <canvas ref={canvasRef} role="img" aria-label={label} className="block h-full w-full" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      role="img"
+      aria-label={label}
+      className="block h-full w-full cursor-grab touch-pan-y select-none motion-reduce:cursor-default"
+    />
+  );
 }

@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { Check } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Tilt from "@/components/ui/Tilt";
 
 /** A tariff as managed in the admin panel, already in the page's language. */
 export interface PricingTierLive {
@@ -54,9 +55,9 @@ export default function Pricing({ live }: { live?: PricingLive }) {
 
         <div className={`mt-10 grid grid-cols-1 gap-4 lg:mt-12 lg:gap-6 ${columns}`}>
           {tiers.map((tier) => (
+            <Tilt key={tier.name} max={4} className="flex">
             <article
-              key={tier.name}
-              className={`relative flex flex-col rounded-ui-lg bg-surface p-6 lg:p-8 ${
+              className={`relative flex w-full flex-col rounded-ui-lg bg-surface p-6 lg:p-8 ${
                 tier.popular ? "border-2 border-ink" : "border border-border"
               }`}
             >
@@ -104,6 +105,7 @@ export default function Pricing({ live }: { live?: PricingLive }) {
                 {t("cta")}
               </a>
             </article>
+            </Tilt>
           ))}
         </div>
 
