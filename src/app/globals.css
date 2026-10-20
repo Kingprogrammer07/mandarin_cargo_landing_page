@@ -13,10 +13,11 @@
   --text: #14161A;
   --muted: #5B616B;
 
-  /* Single accent. --brand fills buttons and marks; --brand-text is the
-     darker tone for orange words on light surfaces (4.5:1). */
-  --brand: #EA580C;
-  --brand-hover: #C2410C;
+  /* Single accent. --brand fills buttons and marks and is one step deeper
+     than the logo orange (#EA580C) so white button text clears 4.5:1;
+     --brand-text is the tone for orange words on light surfaces. */
+  --brand: #CF4A0C;
+  --brand-hover: #B23F09;
   --brand-text: #C2410C;
   --brand-soft: #FFF4EC;
   --on-brand: #FFFFFF;

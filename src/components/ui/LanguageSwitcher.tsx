@@ -49,7 +49,7 @@ export default function LanguageSwitcher({ dark = false, openUp = dark }: Langua
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Select language"
+        aria-label={`${current.label} — language`}
         className={`flex h-10 items-center gap-1.5 rounded-full px-3 text-sm font-medium transition-colors duration-150 ${
           dark ? "text-white/70 hover:bg-white/10 hover:text-white" : "text-muted hover:bg-surface-2 hover:text-ink"
         }`}

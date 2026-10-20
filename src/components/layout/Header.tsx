@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { site } from "@/config/site";
@@ -68,7 +67,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8 h-full flex items-center gap-4 lg:gap-8">
           {/* Left: Logo */}
           <div className="flex items-center shrink-0">
-            <Link href="/" prefetch={false} className="flex items-center">
+            <Link href="/" prefetch={false} aria-label="Mandarin Cargo" className="flex items-center">
               <Logo className="h-9 w-auto" />
             </Link>
           </div>
@@ -123,27 +122,24 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile drawer */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 bg-ink/30"
-              onClick={() => setMobileOpen(false)}
-            />
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
-              role="dialog"
-              aria-modal="true"
-              aria-label="Menu"
-              className="fixed right-0 top-0 z-50 flex h-dvh w-[min(18rem,85vw)] flex-col overflow-y-auto overscroll-contain bg-surface p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-card"
-            >
+      {/* Mobile drawer: always mounted so CSS can animate both ways; `inert`
+          keeps it out of the tab order and screen readers while closed. */}
+      <div
+        aria-hidden
+        onClick={() => setMobileOpen(false)}
+        className={`fixed inset-0 z-50 bg-ink/30 transition-opacity duration-300 lg:hidden ${
+          mobileOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu"
+        inert={!mobileOpen}
+        className={`fixed right-0 top-0 z-50 flex h-dvh w-[min(18rem,85vw)] flex-col overflow-y-auto overscroll-contain bg-surface p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-card transition-[transform,visibility] duration-300 ease-out motion-reduce:transition-none lg:hidden ${
+          mobileOpen ? "visible translate-x-0" : "invisible translate-x-full"
+        }`}
+      >
               <div className="flex justify-between items-center mb-6">
                 <LanguageSwitcher />
                 <button
@@ -176,10 +172,7 @@ export default function Header() {
               >
                 {t("cta")}
               </a>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      </div>
     </>
   );
 }
