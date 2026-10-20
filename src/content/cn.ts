@@ -178,6 +178,7 @@ const content = {
     ],
   },
   finalCta: {
+    appAlt: "Mandarin Cargo 应用",
     h2: "\u4eca\u5929\u53d1\u9001\u60a8\u7684\u7b2c\u4e00\u6279\u8d27\u7269",
     subtitle: "2\u5206\u949f\u5728Telegram\u673a\u5668\u4eba\u4e2d\u5b8c\u6210\u6ce8\u518c",
     ctaPrimary: "\u6253\u5f00Telegram\u673a\u5668\u4eba",
@@ -202,6 +203,8 @@ const content = {
   },
   // Live numbers from the Mandarin API (filled at build time)
   live: {
+    pricingSubtitle: "按货物类型计费。无最低消费。",
+    includedDelivery: "空运配送（平均 {days} 天）",
     featureDelivery: "从中国仓库到塔什干取件平均 {days} 天。每周多个航班。",
     subheadline: "从中国到乌兹别克斯坦的快速空运货代。每公斤 {price} 起。{clients} 客户信赖。",
     subheadlineNoClients: "从中国到乌兹别克斯坦的快速空运货代。每公斤 {price} 起。",

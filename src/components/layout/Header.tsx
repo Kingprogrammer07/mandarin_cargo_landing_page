@@ -31,12 +31,16 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
+    if (!mobileOpen) return;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
       document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
+      document.removeEventListener("keydown", onKey);
+    };
   }, [mobileOpen]);
 
   const handleAnchor = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -57,8 +61,8 @@ export default function Header() {
       <header
         className={`sticky top-0 z-50 h-16 transition-all duration-200 ${
           scrolled
-            ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-orange-100/60"
-            : "bg-transparent"
+            ? "border-b border-border bg-canvas/90 backdrop-blur-md"
+            : "border-b border-transparent bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 lg:px-8 h-full flex items-center gap-4 lg:gap-8">
@@ -76,10 +80,9 @@ export default function Header() {
                 key={link.key}
                 href={link.href}
                 onClick={(e) => handleAnchor(e, link.href)}
-                className="relative text-sm font-medium text-slate-600 hover:text-orange-600 transition-colors duration-150 group whitespace-nowrap"
+                className="whitespace-nowrap text-sm font-medium text-muted transition-colors duration-150 hover:text-ink"
               >
                 {t(link.key)}
-                <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-orange-600 transition-all duration-200 group-hover:w-full" />
               </a>
             ))}
           </nav>
@@ -87,31 +90,32 @@ export default function Header() {
           {/* Right: Language + CTA */}
           <div className="hidden lg:flex items-center gap-2 shrink-0">
             <LanguageSwitcher />
-            <span className="h-5 w-px bg-slate-200" aria-hidden />
+            <span className="h-5 w-px bg-border" aria-hidden />
             <a
               href={site.botUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-1 bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-700 transition-all duration-150 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+              className="ml-1 inline-flex h-10 items-center rounded-full bg-brand px-5 text-sm font-semibold text-on-brand transition-colors duration-150 hover:bg-brand-hover active:scale-[0.98]"
             >
               {t("cta")}
             </a>
           </div>
 
           {/* Mobile: CTA + Hamburger */}
-          <div className="flex lg:hidden items-center gap-3 ml-auto">
+          <div className="ml-auto flex items-center gap-1 lg:hidden">
             <a
               href={site.botUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-orange-700 transition-all duration-150"
+              className="inline-flex h-10 items-center rounded-full bg-brand px-4 text-sm font-semibold text-on-brand transition-colors duration-150 hover:bg-brand-hover active:scale-[0.98]"
             >
               {t("cta")}
             </a>
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
-              className="text-slate-700 p-1"
+              aria-expanded={mobileOpen}
+              className="-mr-1.5 flex h-11 w-11 items-center justify-center text-ink"
             >
               <Menu size={24} />
             </button>
@@ -127,7 +131,7 @@ export default function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50"
+              className="fixed inset-0 z-50 bg-ink/30"
               onClick={() => setMobileOpen(false)}
             />
             <motion.div
@@ -135,12 +139,19 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
-              className="fixed top-0 right-0 w-72 h-full bg-white shadow-2xl z-50 p-6 flex flex-col"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menu"
+              className="fixed right-0 top-0 z-50 flex h-dvh w-[min(18rem,85vw)] flex-col overflow-y-auto overscroll-contain bg-surface p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-card"
             >
               <div className="flex justify-between items-center mb-6">
                 <LanguageSwitcher />
-                <button onClick={() => setMobileOpen(false)} aria-label="Close menu">
-                  <X size={24} className="text-slate-700" />
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Close menu"
+                  className="-mr-2 flex h-11 w-11 items-center justify-center text-ink"
+                >
+                  <X size={24} />
                 </button>
               </div>
 
@@ -150,7 +161,7 @@ export default function Header() {
                     key={link.key}
                     href={`/${locale}${link.href}`}
                     onClick={(e) => handleAnchor(e, link.href)}
-                    className="text-lg font-medium text-slate-700 py-3 border-b border-slate-100 hover:text-orange-600 transition-colors"
+                    className="border-b border-border py-3.5 text-lg font-medium text-ink"
                   >
                     {t(link.key)}
                   </a>
@@ -161,7 +172,7 @@ export default function Header() {
                 href={site.botUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 w-full bg-orange-600 text-white text-center py-3 rounded-full font-semibold hover:bg-orange-700 transition-all"
+                className="mt-6 inline-flex h-12 w-full items-center justify-center rounded-full bg-brand font-semibold text-on-brand"
               >
                 {t("cta")}
               </a>

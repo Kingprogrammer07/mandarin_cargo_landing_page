@@ -1,11 +1,6 @@
-"use client";
-
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
-import { Check, Package, Tag, Boxes, Sparkles } from "lucide-react";
+import { Check } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
-
-const tierIcons = [Package, Tag, Boxes];
 
 /** A tariff as managed in the admin panel, already in the page's language. */
 export interface PricingTierLive {
@@ -17,144 +12,118 @@ export interface PricingTierLive {
   popular: boolean;
 }
 
-export default function Pricing({ live }: { live?: PricingTierLive[] }) {
+/** Live pricing; any missing field keeps the built-in copy. */
+export interface PricingLive {
+  tiers?: PricingTierLive[];
+  subtitle?: string;
+  includedDelivery?: string;
+}
+
+const INCLUDED_COUNT = 5;
+
+export default function Pricing({ live }: { live?: PricingLive }) {
   const t = useTranslations("pricing");
   const unit = t("tiers.0.unit");
 
-  const tiers = live
-    ? live.map((tier, i) => ({ ...tier, unit, Icon: tierIcons[i % tierIcons.length] }))
-    : [0, 1, 2].map((i) => ({
-        name: t(`tiers.${i}.name`),
-        price: t(`tiers.${i}.price`),
-        oldPrice: t.has(`tiers.${i}.oldPrice`) ? t(`tiers.${i}.oldPrice`) : null,
-        unit: t(`tiers.${i}.unit`),
-        desc: t(`tiers.${i}.desc`),
-        badges: t.has(`tiers.${i}.badges`) ? (t.raw(`tiers.${i}.badges`) as string[]) : [],
-        popular: i === 0,
-        Icon: tierIcons[i],
-      }));
+  const tiers: PricingTierLive[] =
+    live?.tiers ??
+    [0, 1, 2].map((i) => ({
+      name: t(`tiers.${i}.name`),
+      price: t(`tiers.${i}.price`),
+      oldPrice: t.has(`tiers.${i}.oldPrice`) ? t(`tiers.${i}.oldPrice`) : null,
+      desc: t(`tiers.${i}.desc`),
+      badges: t.has(`tiers.${i}.badges`) ? (t.raw(`tiers.${i}.badges`) as string[]) : [],
+      popular: i === 0,
+    }));
 
-  const included = [
-    t("included.0"),
-    t("included.1"),
-    t("included.2"),
-    t("included.3"),
-    t("included.4"),
-  ];
+  const included = Array.from({ length: INCLUDED_COUNT }, (_, i) =>
+    i === 0 && live?.includedDelivery ? live.includedDelivery : t(`included.${i}`),
+  );
+
+  const columns = tiers.length >= 3 ? "md:grid-cols-3" : tiers.length === 2 ? "md:grid-cols-2" : "";
 
   return (
-    <section id="pricing" className="bg-orange-50 py-20 lg:py-28">
-      <div className="max-w-6xl mx-auto px-4 lg:px-8">
-        <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} subtitle={t("subtitle")} />
+    <section id="pricing" className="bg-canvas py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 lg:px-8">
+        <SectionHeader
+          eyebrow={t("eyebrow")}
+          title={t("h2")}
+          subtitle={live?.subtitle ?? t("subtitle")}
+          centered={false}
+        />
 
-        {/* Tier cards */}
-        <div
-          className={`mt-12 grid grid-cols-1 gap-6 ${
-            tiers.length >= 3 ? "md:grid-cols-3" : tiers.length === 2 ? "md:grid-cols-2" : ""
-          }`}
-        >
-          {tiers.map((tier, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -6 }}
-              whileTap={{ scale: 0.98 }}
-              className={`relative rounded-2xl bg-white p-7 flex flex-col ${
-                tier.popular
-                  ? "border-2 border-orange-500 shadow-lg shadow-orange-100"
-                  : "border border-slate-200 shadow-sm"
+        <div className={`mt-10 grid grid-cols-1 gap-4 lg:mt-12 lg:gap-6 ${columns}`}>
+          {tiers.map((tier) => (
+            <article
+              key={tier.name}
+              className={`relative flex flex-col rounded-ui-lg bg-surface p-6 lg:p-8 ${
+                tier.popular ? "border-2 border-ink" : "border border-border"
               }`}
             >
-              {tier.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-600 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
-                  {t("popularBadge")}
-                </span>
-              )}
-
-              <div
-                className={`w-11 h-11 rounded-xl flex items-center justify-center ${
-                  tier.popular ? "bg-orange-600 text-white" : "bg-orange-50 text-orange-600"
-                }`}
-              >
-                <tier.Icon size={22} />
-              </div>
-
-              <h3 className="mt-4 text-lg font-bold text-slate-900">{tier.name}</h3>
-
-              <div className="mt-3 flex items-baseline gap-2">
-                {tier.oldPrice && (
-                  <span className="text-xl font-semibold text-slate-300 line-through tabular-nums">
-                    {tier.oldPrice}
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-lg font-semibold text-ink">{tier.name}</h3>
+                {tier.popular && (
+                  <span className="shrink-0 rounded-full bg-ink px-2.5 py-1 text-[0.6875rem] font-semibold uppercase tracking-wider text-surface">
+                    {t("popularBadge")}
                   </span>
                 )}
-                <span className="text-4xl font-extrabold text-slate-900 tabular-nums">
-                  {tier.price}
-                </span>
-                <span className="text-base text-slate-500 ml-1">{tier.unit}</span>
               </div>
 
-              <p className="mt-3 text-sm text-slate-600 leading-relaxed">{tier.desc}</p>
+              <p className="mt-5 flex flex-wrap items-baseline gap-x-2">
+                {tier.oldPrice && (
+                  <span className="text-xl font-semibold text-muted line-through tabular-nums">{tier.oldPrice}</span>
+                )}
+                <span className="whitespace-nowrap text-5xl font-extrabold tracking-tight text-ink tabular-nums">
+                  {tier.price}
+                </span>
+                <span className="text-base text-muted">{unit}</span>
+              </p>
+
+              {tier.desc && <p className="mt-4 text-[0.9375rem] leading-relaxed text-muted">{tier.desc}</p>}
 
               {tier.badges.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {tier.badges.map((b) => (
-                    <span
-                      key={b}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-orange-100 bg-orange-50 px-2.5 py-1 text-xs font-medium text-orange-700"
-                    >
-                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-500" />
-                      {b}
-                    </span>
+                <ul className="mt-5 space-y-2 border-t border-border pt-5">
+                  {tier.badges.map((badge) => (
+                    <li key={badge} className="flex items-start gap-2.5 text-sm text-ink">
+                      <Check size={16} className="mt-0.5 shrink-0 text-brand-text" aria-hidden />
+                      {badge}
+                    </li>
                   ))}
-                </div>
+                </ul>
               )}
 
               <div className="flex-1" />
-
               <a
                 href="#calculator"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById("calculator")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className={`mt-6 block w-full text-center py-3 rounded-full font-semibold transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] ${
+                className={`mt-7 inline-flex h-12 items-center justify-center rounded-full text-base font-semibold transition-colors active:scale-[0.98] ${
                   tier.popular
-                    ? "bg-orange-600 text-white hover:bg-orange-700 hover:shadow-lg"
-                    : "border border-slate-200 text-slate-900 hover:bg-slate-50"
+                    ? "bg-brand text-on-brand hover:bg-brand-hover"
+                    : "border border-border text-ink hover:border-ink/25"
                 }`}
               >
                 {t("cta")}
               </a>
-            </motion.div>
+            </article>
           ))}
         </div>
 
-        {/* Shared: included in every tier */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-8 bg-white rounded-2xl border border-slate-200 p-7 max-w-3xl mx-auto"
-        >
-          <h4 className="text-sm font-semibold text-slate-800">{t("includedTitle")}</h4>
-          <ul className="mt-4 grid sm:grid-cols-2 gap-x-6 gap-y-3">
-            {included.map((item, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <Check size={16} className="text-green-500 mt-0.5 shrink-0" />
-                <span className="text-sm text-slate-700">{item}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-5 flex items-center gap-2 rounded-lg bg-orange-50 px-3 py-2.5 text-sm font-semibold text-orange-700">
-            <Sparkles size={16} className="shrink-0 text-orange-500" />
-            {t("bonus")}
+        <div className="mt-6 grid gap-6 rounded-ui-lg border border-border bg-surface p-6 lg:grid-cols-[0.8fr_2fr] lg:p-8">
+          <div>
+            <h3 className="text-base font-semibold text-ink">{t("includedTitle")}</h3>
+            <p className="mt-2 text-sm font-medium text-brand-text">{t("bonus")}</p>
           </div>
-          <p className="mt-4 text-xs text-slate-400">{t("note")}</p>
-        </motion.div>
+          <div>
+            <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
+              {included.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm text-ink">
+                  <Check size={16} className="mt-0.5 shrink-0 text-success" aria-hidden />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 text-xs leading-relaxed text-muted">{t("note")}</p>
+          </div>
+        </div>
       </div>
     </section>
   );

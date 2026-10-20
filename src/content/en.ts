@@ -179,6 +179,7 @@ const content = {
     ],
   },
   finalCta: {
+    appAlt: "Mandarin Cargo app",
     h2: "Send your first cargo today",
     subtitle: "Register in the bot in 2 minutes",
     ctaPrimary: "Open Telegram bot",
@@ -203,6 +204,8 @@ const content = {
   },
   // Live numbers from the Mandarin API (filled at build time)
   live: {
+    pricingSubtitle: "Rates depend on the type of goods. No minimum charge.",
+    includedDelivery: "Air delivery ({days} days on average)",
     featureDelivery: "{days} days on average from our China warehouse to pickup in Tashkent. Several flights a week.",
     subheadline: "Fast air cargo from China to Uzbekistan. From {price}/kg. Trusted by {clients} customers.",
     subheadlineNoClients: "Fast air cargo from China to Uzbekistan. From {price}/kg.",

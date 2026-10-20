@@ -8,7 +8,7 @@
 
 import type { FeaturesLive } from "@/components/sections/Features";
 import type { HeroLive } from "@/components/sections/Hero";
-import type { PricingTierLive } from "@/components/sections/Pricing";
+import type { PricingLive } from "@/components/sections/Pricing";
 import type { ReviewsLive } from "@/components/sections/Reviews";
 import type { TrustBarLive } from "@/components/sections/TrustBar";
 import { formatCount, formatPrice, localized, type LandingData } from "@/lib/landingData";
@@ -22,7 +22,7 @@ export interface LiveSections {
   hero: HeroLive;
   features: FeaturesLive;
   trustBar: TrustBarLive;
-  pricing?: PricingTierLive[];
+  pricing: PricingLive;
   reviews: ReviewsLive;
 }
 
@@ -98,7 +98,11 @@ export function buildLiveSections(data: LandingData, locale: string, t: Translat
     hero,
     features,
     trustBar,
-    pricing: pricing.length > 0 ? pricing : undefined,
+    pricing: {
+      tiers: pricing.length > 0 ? pricing : undefined,
+      subtitle: pricing.length > 0 ? t("live.pricingSubtitle") : undefined,
+      includedDelivery: days != null && days > 0 ? t("live.includedDelivery", { days }) : undefined,
+    },
     reviews: {
       h2: clients ? t("live.reviewsH2", { clients }) : t("live.reviewsH2Plain"),
       rating: reviews.count > 0 && reviews.average != null ? reviews.average.toFixed(1) : null,

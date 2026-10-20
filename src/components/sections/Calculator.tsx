@@ -1,26 +1,27 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useId, useState } from "react";
 import { useTranslations } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, CalculatorIcon, TrendingUp, Scale, AlertTriangle, RefreshCw } from "lucide-react";
+import { Loader2, RefreshCw } from "lucide-react";
 import { site } from "@/config/site";
 import { calculateShippingApi } from "@/lib/calculator";
 import type { CalculatorResult } from "@/lib/calculator";
 import SectionHeader from "@/components/ui/SectionHeader";
 
-const ease = [0.25, 0.46, 0.45, 0.94] as [number, number, number, number];
-
 function formatUzs(n: number) {
-  return Math.round(n).toLocaleString("ru-RU").replace(/\./g, " ").replace(/,/g, " ");
+  return Math.round(n).toLocaleString("ru-RU").replace(/[.,\s]/g, "\u00a0");
 }
 
 function formatUsd(n: number) {
   return n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+const INPUT =
+  "w-full rounded-ui-md border border-border bg-surface text-base tabular-nums text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-brand focus:ring-2 focus:ring-brand-soft";
+
 export default function Calculator() {
   const t = useTranslations("calculator");
+  const ids = useId();
   const [weight, setWeight] = useState("");
   const [volumetric, setVolumetric] = useState(false);
   const [length, setLength] = useState("");
@@ -30,24 +31,24 @@ export default function Calculator() {
   const [result, setResult] = useState<CalculatorResult | null>(null);
   const [error, setError] = useState(false);
 
-  const handleCalculate = useCallback(async () => {
+  const calculate = useCallback(async () => {
     const w = parseFloat(weight);
     if (!w || w <= 0) {
       setResult(null);
+      setError(false);
       return;
     }
-
     setLoading(true);
     setError(false);
-
     try {
-      const res = await calculateShippingApi({
-        weight: w,
-        length: volumetric ? parseFloat(length) || undefined : undefined,
-        width: volumetric ? parseFloat(width) || undefined : undefined,
-        height: volumetric ? parseFloat(height) || undefined : undefined,
-      });
-      setResult(res);
+      setResult(
+        await calculateShippingApi({
+          weight: w,
+          length: volumetric ? parseFloat(length) || undefined : undefined,
+          width: volumetric ? parseFloat(width) || undefined : undefined,
+          height: volumetric ? parseFloat(height) || undefined : undefined,
+        }),
+      );
     } catch {
       setError(true);
       setResult(null);
@@ -56,266 +57,173 @@ export default function Calculator() {
     }
   }, [weight, volumetric, length, width, height]);
 
-  // Auto-calculate with debounce
+  // Recalculate as the visitor types; no submit button to hunt for.
   useEffect(() => {
-    const w = parseFloat(weight);
-    const timer = setTimeout(() => {
-      if (!w || w <= 0) {
-        setResult(null);
-        setError(false);
-      } else {
-        handleCalculate();
-      }
-    }, 500);
+    const timer = setTimeout(calculate, 450);
     return () => clearTimeout(timer);
-  }, [weight, volumetric, length, width, height, handleCalculate]);
+  }, [calculate]);
 
-  const isValidWeight = !!weight && parseFloat(weight) > 0;
+  const dims = [
+    { key: "l", label: t("length"), value: length, onChange: setLength },
+    { key: "w", label: t("width"), value: width, onChange: setWidth },
+    { key: "h", label: t("height"), value: height, onChange: setHeight },
+  ];
 
   return (
-    <section id="calculator" className="bg-slate-50 py-20 lg:py-28">
-      <div className="max-w-4xl mx-auto px-4 lg:px-8">
-        <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} subtitle={t("subtitle")} />
+    <section id="calculator" className="bg-canvas py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 lg:px-8">
+        <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} subtitle={t("subtitle")} centered={false} />
 
-        {/* Calculator Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2, ease }}
-          className="mt-10 bg-white rounded-2xl shadow-lg border border-slate-100 p-6 lg:p-10 max-w-[640px] mx-auto"
-        >
-          {/* Weight Input */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-          >
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+        <div className="mt-10 grid overflow-hidden rounded-ui-lg border border-border bg-surface shadow-card lg:mt-12 lg:grid-cols-2">
+          {/* Inputs */}
+          <div className="p-5 sm:p-8 lg:p-10">
+            <label htmlFor={`${ids}-weight`} className="block text-sm font-semibold text-ink">
               {t("weightLabel")}
             </label>
-            <div className="relative">
+            <div className="relative mt-2">
               <input
+                id={`${ids}-weight`}
                 type="number"
+                inputMode="decimal"
                 min="0.1"
                 step="0.1"
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
                 placeholder={t("weightPlaceholder")}
-                className="w-full border border-slate-200 rounded-xl px-4 py-3.5 text-lg tabular-nums focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition-all bg-slate-50/50 hover:bg-white"
+                className={`${INPUT} h-14 px-4 pr-12 text-lg`}
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">
+              <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted">
                 kg
               </span>
             </div>
-          </motion.div>
 
-          {/* Volumetric toggle */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-            className="mt-5"
-          >
-            <label className="flex items-center gap-3 cursor-pointer group">
-              <div className="relative flex items-center">
-                <input
-                  type="checkbox"
-                  checked={volumetric}
-                  onChange={(e) => setVolumetric(e.target.checked)}
-                  className="peer sr-only"
-                />
-                <div className="w-11 h-6 bg-slate-200 peer-focus:ring-2 peer-focus:ring-orange-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600" />
-              </div>
-              <div>
-                <span className="text-sm font-semibold text-slate-700 group-hover:text-orange-600 transition-colors">
-                  {t("volumetricToggle")}
-                </span>
-                <p className="text-xs text-slate-400">{t("volumetricDesc")}</p>
-              </div>
-            </label>
-          </motion.div>
-
-          {/* Dimensions */}
-          <AnimatePresence>
-            {volumetric && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="mt-5 grid grid-cols-3 gap-3 overflow-hidden"
+            <button
+              type="button"
+              role="switch"
+              aria-checked={volumetric}
+              onClick={() => setVolumetric((v) => !v)}
+              className="mt-6 flex min-h-11 w-full items-center gap-3 text-left"
+            >
+              <span
+                aria-hidden
+                className={`relative inline-block h-6 w-11 shrink-0 rounded-full transition-colors ${
+                  volumetric ? "bg-brand" : "bg-border"
+                }`}
               >
-                {[
-                  { label: t("length"), value: length, onChange: setLength },
-                  { label: t("width"), value: width, onChange: setWidth },
-                  { label: t("height"), value: height, onChange: setHeight },
-                ].map((dim) => (
-                  <div key={dim.label}>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                      {dim.label}
+                <span
+                  className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-surface shadow-sm transition-transform ${
+                    volumetric ? "translate-x-5" : ""
+                  }`}
+                />
+              </span>
+              <span>
+                <span className="block text-sm font-semibold text-ink">{t("volumetricToggle")}</span>
+                <span className="block text-sm text-muted">{t("volumetricDesc")}</span>
+              </span>
+            </button>
+
+            {volumetric && (
+              <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+                {dims.map((dim) => (
+                  <div key={dim.key} className="min-w-0">
+                    <label htmlFor={`${ids}-${dim.key}`} className="block truncate text-xs font-semibold text-muted">
+                      {dim.label}, {t("dimUnit")}
                     </label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={dim.value}
-                        onChange={(e) => dim.onChange(e.target.value)}
-                        placeholder={t("dimPlaceholder")}
-                        className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm tabular-nums focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition-all bg-slate-50/50 hover:bg-white"
-                      />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-medium">
-                        {t("dimUnit")}
-                      </span>
-                    </div>
+                    <input
+                      id={`${ids}-${dim.key}`}
+                      type="number"
+                      inputMode="decimal"
+                      min="0"
+                      step="0.1"
+                      value={dim.value}
+                      onChange={(e) => dim.onChange(e.target.value)}
+                      placeholder={t("dimPlaceholder")}
+                      className={`${INPUT} mt-1.5 h-12 px-2 sm:px-3`}
+                    />
                   </div>
                 ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Submit */}
-          <motion.button
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: 0.3 }}
-            onClick={handleCalculate}
-            disabled={loading || !isValidWeight}
-            className="mt-6 w-full bg-orange-600 text-white py-4 rounded-full text-base font-bold hover:bg-orange-700 transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
-          >
-            {loading && <Loader2 size={20} className="animate-spin" />}
-            {!loading && <CalculatorIcon size={20} />}
-            {loading ? t("calculating") : t("submit")}
-          </motion.button>
-        </motion.div>
-
-        {/* Result Card */}
-        <AnimatePresence>
-          {result && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
-              className="mt-6 max-w-[640px] mx-auto"
-            >
-              <div className="bg-white rounded-2xl shadow-lg border-2 border-orange-200 overflow-hidden">
-                {/* Top: Primary Price (UZS) */}
-                <div className="bg-gradient-to-br from-orange-500 to-orange-600 px-6 py-8 text-center text-white">
-                  <p className="text-sm font-medium text-orange-100 opacity-90">
-                    {t("resultLabel")}
-                  </p>
-                  <p className="text-4xl lg:text-5xl font-extrabold tabular-nums mt-2 tracking-tight">
-                    {formatUzs(result.priceUzs)} so&apos;m
-                  </p>
-                  <p className="text-base text-orange-100 mt-2 opacity-90">
-                    ≈ ${formatUsd(result.priceUsd)}
-                  </p>
-                </div>
-
-                {/* Middle: Breakdown */}
-                <div className="px-6 py-5 space-y-3">
-                  {/* Price math */}
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="flex items-center gap-2 text-slate-500">
-                      <Scale size={16} className="text-orange-500" />
-                      {result.chargeableWeight} kg × {t("perKg")}
-                    </span>
-                    <span className="font-bold text-slate-700 tabular-nums">
-                      ${formatUsd(result.priceUsd)}
-                    </span>
-                  </div>
-
-                  {/* Exchange rate */}
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="flex items-center gap-2 text-slate-500">
-                      <TrendingUp size={16} className="text-green-500" />
-                      {t("exchangeRate")}
-                    </span>
-                    <span className="font-semibold text-slate-700 tabular-nums">
-                      1 USD = {formatUzs(result.rate)} so&apos;m
-                    </span>
-                  </div>
-
-                  {/* Divider */}
-                  <div className="border-t border-slate-100" />
-
-                  {/* Weight details */}
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-sm text-slate-500">
-                      {t("calculatedWeight")}: <strong className="text-slate-700 tabular-nums">{result.chargeableWeight} kg</strong>
-                    </span>
-                    {(result.volumetricWeight > 0 || volumetric) && (
-                      <span className="text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded-md">
-                        {t("real")}: {result.actualWeight} kg · {t("volumetric")}: {result.volumetricWeight} kg
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Bottom: Disclaimer */}
-                {result.isFallback && (
-                  <div className="bg-slate-50 px-6 py-3 border-t border-slate-100">
-                    <p className="text-xs text-slate-400 leading-relaxed">
-                      {t("fallbackNotice")}
-                    </p>
-                  </div>
-                )}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            )}
+          </div>
 
-        {/* Error */}
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.35, ease }}
-              className="mt-6 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 max-w-[640px] mx-auto"
-            >
-              <span className="shrink-0 rounded-full bg-amber-100 p-2 text-amber-600">
-                <AlertTriangle size={20} />
-              </span>
-              <div className="flex-1">
-                <p className="font-semibold text-amber-900">{t("errorTitle")}</p>
-                <p className="mt-0.5 text-sm text-amber-700 leading-relaxed">{t("error")}</p>
+          {/* Result */}
+          <div
+            aria-live="polite"
+            className="flex flex-col justify-between gap-6 border-t border-border bg-surface-2 p-5 sm:p-8 lg:border-l lg:border-t-0 lg:p-10"
+          >
+            {error ? (
+              <div>
+                <p className="font-semibold text-ink">{t("errorTitle")}</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{t("error")}</p>
                 <button
-                  onClick={handleCalculate}
-                  className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-amber-700"
+                  type="button"
+                  onClick={calculate}
+                  className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-semibold text-ink"
                 >
-                  <RefreshCw size={14} />
+                  <RefreshCw size={14} aria-hidden />
                   {t("retry")}
                 </button>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            ) : (
+              <div>
+                <p className="flex items-center gap-2 text-sm font-medium text-muted">
+                  {t("resultLabel")}
+                  {loading && <Loader2 size={14} className="animate-spin" aria-label={t("calculating")} />}
+                </p>
+                <p
+                  className={`mt-2 whitespace-nowrap text-[clamp(1.75rem,9vw,3rem)] font-extrabold leading-none tracking-tight tabular-nums ${
+                    result ? "text-ink" : "text-muted/40"
+                  }`}
+                >
+                  {result ? `${formatUzs(result.priceUzs)} so‘m` : "—"}
+                </p>
+                <p className="mt-2 text-base text-muted tabular-nums">
+                  {result ? `≈ $${formatUsd(result.priceUsd)}` : t("perKg")}
+                </p>
 
-        {/* CTA below */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-8 text-center"
-        >
-          <a
-            href={site.botUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center bg-orange-600 text-white px-8 py-3.5 rounded-full font-bold hover:bg-orange-700 transition-all duration-150 hover:scale-[1.02] hover:shadow-lg"
-          >
-            {t("cta")}
-          </a>
-          <p className="mt-2 text-sm text-slate-500">{t("ctaSub")}</p>
-        </motion.div>
+                {result && (
+                  <dl className="mt-6 divide-y divide-border border-y border-border text-sm">
+                    <Row label={`${result.chargeableWeight} kg × ${t("perKg")}`} value={`$${formatUsd(result.priceUsd)}`} />
+                    <Row label={t("exchangeRate")} value={`1 USD = ${formatUzs(result.rate)} so‘m`} />
+                    <Row
+                      label={t("calculatedWeight")}
+                      value={
+                        result.volumetricWeight > 0 || volumetric
+                          ? `${result.chargeableWeight} kg (${t("real")} ${result.actualWeight} · ${t("volumetric")} ${result.volumetricWeight})`
+                          : `${result.chargeableWeight} kg`
+                      }
+                    />
+                  </dl>
+                )}
+                {result?.isFallback && (
+                  <p className="mt-3 text-xs leading-relaxed text-muted">{t("fallbackNotice")}</p>
+                )}
+              </div>
+            )}
+
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+              <a
+                href={site.botUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-brand px-7 text-base font-semibold text-on-brand transition-colors hover:bg-brand-hover active:scale-[0.98]"
+              >
+                {t("cta")}
+              </a>
+              <span className="text-sm text-muted">{t("ctaSub")}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
+  );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5 py-2.5">
+      <dt className="text-muted">{label}</dt>
+      <dd className="font-semibold text-ink tabular-nums">{value}</dd>
+    </div>
   );
 }

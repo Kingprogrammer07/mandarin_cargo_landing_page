@@ -146,11 +146,14 @@ export function niceFloor(value: number): number {
   return Math.floor(n / magnitude) * magnitude;
 }
 
-/** "48 000+" for uz/ru, "48,000+" for en/cn. */
+/**
+ * "48 000+" for uz/ru, "48,000+" for en/cn. The uz/ru group separator is a
+ * no-break space so a figure never splits across two lines.
+ */
 export function formatCount(value: number, locale: string): string {
   const grouped = niceFloor(value)
     .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, locale === "en" || locale === "cn" ? "," : " ");
+    .replace(/\B(?=(\d{3})+(?!\d))/g, locale === "en" || locale === "cn" ? "," : "\u00a0");
   return `${grouped}+`;
 }
 

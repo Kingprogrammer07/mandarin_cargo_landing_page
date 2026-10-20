@@ -1,147 +1,99 @@
-"use client";
-
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
 import { Phone, MapPin, Clock, Instagram, Facebook, Send } from "lucide-react";
 import { site } from "@/config/site";
 import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
-const quickLinks = [
+const QUICK_LINKS = [
   { key: "howItWorks", href: "#how-it-works" },
   { key: "calculator", href: "#calculator" },
   { key: "pricing", href: "#pricing" },
   { key: "reviews", href: "#reviews" },
   { key: "faq", href: "#faq" },
-  { key: "contact", href: "#contact" },
 ];
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-};
+const SOCIALS = [
+  { Icon: Send, href: site.channelUrl, label: "Telegram" },
+  { Icon: Instagram, href: site.instagram, label: "Instagram" },
+  { Icon: Facebook, href: site.facebook, label: "Facebook" },
+];
 
 export default function Footer() {
   const t = useTranslations();
   const year = new Date().getFullYear();
-  const handleAnchor = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const id = href.replace("#", "");
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
 
   return (
-    <footer id="contact" className="bg-slate-900 text-slate-300">
-      <div className="max-w-6xl mx-auto px-4 lg:px-8 py-16">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"
-        >
-          {/* Brand */}
-          <motion.div variants={itemVariants}>
-            <Logo className="h-10 w-auto" white />
-            <p className="mt-3 text-sm text-slate-400 italic">
-              {t("footer.tagline")}
-            </p>
-            <div className="flex items-center gap-4 mt-4">
-              <a
-                href={site.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-white transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram size={20} />
-              </a>
-              <a
-                href={site.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-white transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href={site.channelUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-white transition-colors"
-                aria-label="Telegram"
-              >
-                <Send size={20} />
-              </a>
+    <footer id="contact" className="border-t border-border bg-surface">
+      <div className="mx-auto max-w-7xl px-4 py-14 lg:px-8 lg:py-16">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.4fr_1fr]">
+          <div>
+            <Logo className="h-9 w-auto" />
+            <p className="mt-3 text-sm text-muted">{t("footer.tagline")}</p>
+            <div className="-ml-2.5 mt-4 flex items-center">
+              {SOCIALS.map(({ Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="flex h-11 w-11 items-center justify-center text-muted transition-colors hover:text-ink"
+                >
+                  <Icon size={19} aria-hidden />
+                </a>
+              ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Quick Links */}
-          <motion.div variants={itemVariants}>
-            <h4 className="text-white font-semibold mb-4">{t("footer.siteTitle")}</h4>
-            <ul className="space-y-2">
-              {quickLinks.map((link) => (
+          <nav aria-label={t("footer.siteTitle")}>
+            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{t("footer.siteTitle")}</h2>
+            <ul className="mt-3">
+              {QUICK_LINKS.map((link) => (
                 <li key={link.key}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => handleAnchor(e, link.href)}
-                    className="text-sm text-slate-400 hover:text-white transition-colors"
-                  >
+                  <a href={link.href} className="inline-flex min-h-9 items-center text-sm text-ink hover:text-brand-text">
                     {t(`nav.${link.key}`)}
                   </a>
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </nav>
 
-          {/* Contact */}
-          <motion.div variants={itemVariants}>
-            <h4 className="text-white font-semibold mb-4">{t("footer.contactTitle")}</h4>
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{t("footer.contactTitle")}</h2>
             <a
               href={`tel:${site.phoneRaw}`}
-              className="text-lg font-semibold text-white hover:text-orange-400 transition-colors flex items-center gap-2"
+              className="mt-3 inline-flex min-h-11 items-center gap-2 whitespace-nowrap text-lg font-semibold text-ink hover:text-brand-text"
             >
-              <Phone size={18} />
+              <Phone size={18} aria-hidden />
               {site.phone}
             </a>
-            <p className="mt-2 text-sm text-slate-400 flex items-start gap-2">
-              <MapPin size={16} className="mt-0.5 shrink-0" />
+            <p className="mt-1 flex items-start gap-2 text-sm text-muted">
+              <MapPin size={16} className="mt-0.5 shrink-0" aria-hidden />
               {site.address}
             </p>
-            <p className="mt-1 text-sm text-slate-400 flex items-center gap-2">
-              <Clock size={16} />
+            <p className="mt-2 flex items-start gap-2 text-sm text-muted">
+              <Clock size={16} className="mt-0.5 shrink-0" aria-hidden />
               {site.hours}
             </p>
-          </motion.div>
+          </div>
 
-          {/* Legal */}
-          <motion.div variants={itemVariants}>
-            <h4 className="text-white font-semibold mb-4">{t("footer.legalTitle")}</h4>
-            <p className="text-sm text-slate-400">{t("footer.company")}</p>
-            <p className="text-sm text-slate-400 mt-1">{t("footer.license")}</p>
-            <div className="mt-4">
-              <LanguageSwitcher dark />
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{t("footer.legalTitle")}</h2>
+            <p className="mt-3 text-sm text-ink">{t("footer.company")}</p>
+            <p className="mt-1 text-sm text-muted">{t("footer.license")}</p>
+            <div className="mt-4 -ml-3">
+              <LanguageSwitcher openUp />
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        {/* Bottom */}
-        <div className="border-t border-slate-700 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-slate-500" suppressHydrationWarning>
-            {t("footer.copyright", { year: String(year) })}
-          </p>
+        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 sm:flex-row sm:items-center">
+          <p className="text-sm text-muted">{t("footer.copyright", { year: String(year) })}</p>
           <a
             href={site.developer}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-slate-600 hover:text-slate-400 transition-colors"
+            className="text-xs text-muted hover:text-ink"
           >
             {t("footer.developer")} @java_strong
           </a>

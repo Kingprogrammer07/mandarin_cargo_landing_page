@@ -14,13 +14,13 @@ const content = {
   hero: {
     eyebrow: "XITOY → O‘ZBEKISTON · HAVO KARGO",
     h1: "Xitoydagi xaridlaringiz \u2014 eshigingizgacha",
-    subheadline: "Havo orqali tez yetkazib berish. 1 kg \u2014 atigi $9.5 dan. 50 000+ mijoz bizga ishonadi.",
+    subheadline: "Havo orqali tez yetkazib berish. 1 kg \u2014 atigi $9.5 dan. 50\u00a0000+ mijoz bizga ishonadi.",
     ctaPrimary: "Hoziroq boshlash",
     ctaSecondary: "Kabinetga kirish",
     trust1: "5 yildan beri",
-    trust2: "50 000+ mijoz",
+    trust2: "50\u00a0000+ mijoz",
     trust3: "Havo orqali 3\u20137 kun",
-    channelBadge: "10 000+ obunachi",
+    channelBadge: "10\u00a0000+ obunachi",
     appCaption: "Mandarin Cargo Botini ochish",
     globeLabel: "Xitoy shaharlaridan Toshkentga yuk yo\u2018nalishlari xaritasi",
   },
@@ -28,9 +28,9 @@ const content = {
   // Trust Bar
   trustBar: {
     years: { number: "5", label: "Yillik tajriba" },
-    clients: { number: "50 000+", label: "Mijozlar" },
+    clients: { number: "50\u00a0000+", label: "Mijozlar" },
     cargo: { number: "160+", label: "Tonna yuk yetkazildi" },
-    subscribers: { number: "10 000+", label: "Telegram obunachi" },
+    subscribers: { number: "10\u00a0000+", label: "Telegram obunachi" },
     paymentTitle: "Biz qabul qilamiz",
   },
 
@@ -217,10 +217,10 @@ const content = {
   // Reviews
   reviews: {
     eyebrow: "MIJOZLAR FIKRI",
-    h2: "50 000+ mijoz ishonchi",
+    h2: "50\u00a0000+ mijoz ishonchi",
     rating: "4.9",
     outOf: "/ 5",
-    reviewCount: "1 200+ sharh",
+    reviewCount: "1\u00a0200+ sharh",
     testimonials: [
       {
         name: "Dilshod K.",
@@ -294,6 +294,7 @@ const content = {
 
   // Final CTA
   finalCta: {
+    appAlt: "Mandarin Cargo ilovasi",
     h2: "Bugun birinchi yukingizni yuboring",
     subtitle: "Telegram botda 2 daqiqada ro'yxatdan o'ting",
     ctaPrimary: "Telegram botni ochish",
@@ -318,7 +319,7 @@ const content = {
   seo: {
     title: "Xitoydan O'zbekistonga havo kargosi \u2014 Mandarin Cargo",
     description:
-      "Xitoydan O'zbekistonga tez va arzon havo kargosi. $9.5/kg dan. Telegram bot orqali ro'yxatdan o'ting. 50 000+ mijoz ishonchi.",
+      "Xitoydan O'zbekistonga tez va arzon havo kargosi. $9.5/kg dan. Telegram bot orqali ro'yxatdan o'ting. 50\u00a0000+ mijoz ishonchi.",
     keywords: [
       "Mandarin Cargo",
       "Cargo Mandarin",
@@ -334,6 +335,8 @@ const content = {
   },
   // Live numbers from the Mandarin API (filled at build time)
   live: {
+    pricingSubtitle: "Yuk turiga qarab tarif. Minimal to\u2018lovsiz.",
+    includedDelivery: "Havo orqali yetkazib berish (o\u2018rtacha {days} kun)",
     featureDelivery: "O\u2018rtacha {days} kunda: Xitoy omboridan Toshkentda olib ketishgacha. Haftada bir necha reys.",
     subheadline: "Havo orqali tez yetkazib berish. 1 kg \u2014 atigi {price} dan. {clients} mijoz bizga ishonadi.",
     subheadlineNoClients: "Havo orqali tez yetkazib berish. 1 kg \u2014 atigi {price} dan.",

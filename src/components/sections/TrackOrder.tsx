@@ -2,11 +2,9 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
-import { Search, Loader2, CheckCircle2, Clock, Circle, PackageSearch, SearchX, AlertTriangle, AlertCircle, RefreshCw } from "lucide-react";
+import { Search, Loader2, CheckCircle2, Clock, Circle, PackageSearch, RefreshCw } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 
-const ease = [0.25, 0.46, 0.45, 0.94] as [number, number, number, number];
 const API = "https://bot.webmandarin.uz/api/v1/public/track/";
 
 type StepStatus = "available" | "pending" | "nodata";
@@ -29,10 +27,10 @@ interface TrackResult {
   steps: TrackStep[];
 }
 
-const statusStyle: Record<StepStatus, { dot: string; ring: string; text: string }> = {
-  available: { dot: "bg-green-500 text-white", ring: "ring-green-100", text: "text-green-600" },
-  pending: { dot: "bg-amber-400 text-white", ring: "ring-amber-100", text: "text-amber-600" },
-  nodata: { dot: "bg-slate-200 text-slate-400", ring: "ring-slate-100", text: "text-slate-400" },
+const statusStyle: Record<StepStatus, { dot: string; text: string }> = {
+  available: { dot: "bg-success text-white", text: "text-success" },
+  pending: { dot: "bg-brand text-on-brand", text: "text-brand-text" },
+  nodata: { dot: "bg-surface-2 text-muted border border-border", text: "text-muted" },
 };
 
 function StatusIcon({ status }: { status: StepStatus }) {
@@ -98,135 +96,113 @@ export default function TrackOrder() {
     }
   };
 
-  const errorStyle = {
-    notfound: { wrap: "border-slate-200 bg-slate-50", chip: "bg-slate-200 text-slate-500", text: "text-slate-600", Icon: SearchX },
-    validation: { wrap: "border-amber-200 bg-amber-50", chip: "bg-amber-100 text-amber-600", text: "text-amber-700", Icon: AlertCircle },
-    network: { wrap: "border-red-200 bg-red-50", chip: "bg-red-100 text-red-600", text: "text-red-700", Icon: AlertTriangle },
-  }[errorType];
-
   return (
-    <section id="track" className="bg-white py-20 lg:py-28">
-      <div className="max-w-3xl mx-auto px-4 lg:px-8">
-        <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} subtitle={t("subtitle")} />
+    <section id="track" className="border-y border-border bg-surface py-20 lg:py-28">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 lg:px-8">
+        <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} subtitle={t("subtitle")} centered={false} />
 
-        {/* Input */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease }}
-          className="mt-10 flex flex-col sm:flex-row gap-3"
-        >
-          <div className="relative flex-1">
-            <PackageSearch size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleTrack()}
-              placeholder={t("placeholder")}
-              className="w-full border border-slate-200 rounded-xl pl-12 pr-4 py-3.5 text-base focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition-all bg-slate-50/50 hover:bg-white uppercase tracking-wide"
-            />
-          </div>
-          <button
-            onClick={handleTrack}
-            disabled={loading}
-            className="inline-flex items-center justify-center gap-2 bg-orange-600 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-orange-700 transition-all duration-150 disabled:opacity-50 hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg"
+        <div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleTrack();
+            }}
+            className="flex flex-col gap-3 sm:flex-row"
           >
-            {loading ? <Loader2 size={18} className="animate-spin" /> : <Search size={18} />}
-            {loading ? t("checking") : t("button")}
-          </button>
-        </motion.div>
-
-        {/* Error */}
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.35, ease }}
-              className={`mt-6 flex items-start gap-3 rounded-2xl border p-5 ${errorStyle.wrap}`}
+            <div className="relative flex-1">
+              <PackageSearch size={20} aria-hidden className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
+              <input
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder={t("placeholder")}
+                aria-label={t("placeholder")}
+                autoCapitalize="characters"
+                autoComplete="off"
+                spellCheck={false}
+                className="h-12 w-full rounded-ui-md border border-border bg-surface pl-12 pr-4 text-base uppercase tracking-wide text-ink outline-none transition-colors placeholder:normal-case placeholder:tracking-normal placeholder:text-muted/60 focus:border-brand focus:ring-2 focus:ring-brand-soft"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-brand px-7 text-base font-semibold text-on-brand transition-colors hover:bg-brand-hover disabled:opacity-60 active:scale-[0.98]"
             >
-              <span className={`shrink-0 rounded-full p-2 ${errorStyle.chip}`}>
-                <errorStyle.Icon size={20} />
-              </span>
-              <div className="flex-1">
-                <p className={`text-sm font-medium leading-relaxed ${errorStyle.text}`}>{error}</p>
+              {loading ? <Loader2 size={18} className="animate-spin" aria-hidden /> : <Search size={18} aria-hidden />}
+              {loading ? t("checking") : t("button")}
+            </button>
+          </form>
+
+          <div aria-live="polite">
+            {error && (
+              <div
+                className={`mt-4 rounded-ui-md border p-4 text-sm leading-relaxed ${
+                  errorType === "network" ? "border-danger/30 bg-danger/5 text-danger" : "border-border bg-surface-2 text-ink"
+                }`}
+              >
+                <p className="font-medium">{error}</p>
                 {errorType === "network" && (
                   <button
+                    type="button"
                     onClick={handleTrack}
-                    className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-red-600 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-red-700"
+                    className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface px-5 font-semibold text-ink"
                   >
-                    <RefreshCw size={14} />
+                    <RefreshCw size={14} aria-hidden />
                     {t("button")}
                   </button>
                 )}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            )}
 
-        {/* Result */}
-        <AnimatePresence>
-          {result && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
-              className="mt-6 rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
-            >
-              {/* Header */}
-              <div className="bg-slate-900 p-6">
-                <div className="flex items-center justify-between flex-wrap gap-3">
-                  <div>
-                    <p className="text-xs uppercase tracking-wider text-orange-400">{result.track_code}</p>
+            {result && (
+              <div className="mt-4 overflow-hidden rounded-ui-lg border border-border">
+                <div className="flex flex-wrap items-end justify-between gap-3 border-b border-border bg-surface-2 p-5">
+                  <div className="min-w-0">
+                    <p className="break-all text-sm font-semibold tracking-wide text-ink">{result.track_code}</p>
                     {result.weight && (
-                      <p className="mt-1 text-sm text-slate-300">
-                        {t("weightLabel")}: <span className="font-semibold text-white">{result.weight} kg</span>
+                      <p className="mt-1 text-sm text-muted">
+                        {t("weightLabel")}: <span className="font-semibold text-ink">{result.weight} kg</span>
                       </p>
                     )}
                   </div>
-                  <div className="text-right">
-                    <p className="text-3xl font-extrabold text-white tabular-nums">{result.progress_percentage}%</p>
-                    <p className="text-xs text-slate-400">{t("progressLabel")}</p>
+                  <p className="text-right">
+                    <span className="block text-3xl font-extrabold leading-none text-ink tabular-nums">
+                      {result.progress_percentage}%
+                    </span>
+                    <span className="text-xs text-muted">{t("progressLabel")}</span>
+                  </p>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-border">
+                    <div
+                      className="h-full rounded-full bg-brand transition-[width] duration-700"
+                      style={{ width: `${Math.min(100, Math.max(0, result.progress_percentage))}%` }}
+                    />
                   </div>
                 </div>
-                <div className="mt-4 h-2 rounded-full bg-white/10 overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${result.progress_percentage}%` }}
-                    transition={{ duration: 0.8, ease }}
-                    className="h-full rounded-full bg-orange-500"
-                  />
-                </div>
-              </div>
 
-              {/* Steps */}
-              <ol className="p-6 space-y-1">
-                {result.steps.map((s, i) => {
-                  const st = statusStyle[s.status] ?? statusStyle.nodata;
-                  const isLast = i === result.steps.length - 1;
-                  return (
-                    <li key={s.step} className="relative flex gap-4 pb-5 last:pb-0">
-                      {!isLast && <span className="absolute left-[15px] top-8 bottom-0 w-0.5 bg-slate-100" />}
-                      <span className={`relative z-10 shrink-0 w-8 h-8 rounded-full flex items-center justify-center ring-4 ${st.dot} ${st.ring}`}>
-                        <StatusIcon status={s.status} />
-                      </span>
-                      <div className="pt-0.5">
-                        <p className="text-sm font-semibold text-slate-900">{stepTitles[i] ?? s.title}</p>
-                        <p className={`text-xs font-medium ${st.text}`}>
-                          {statusLabel(s.status)}
-                          {s.updated_at && <span className="text-slate-400 font-normal"> · {formatDate(s.updated_at)}</span>}
-                        </p>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ol>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <ol className="p-5">
+                  {result.steps.map((s, i) => {
+                    const st = statusStyle[s.status] ?? statusStyle.nodata;
+                    const isLast = i === result.steps.length - 1;
+                    return (
+                      <li key={s.step} className="relative flex gap-4 pb-5 last:pb-0">
+                        {!isLast && <span aria-hidden className="absolute bottom-0 left-[15px] top-8 w-px bg-border" />}
+                        <span className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${st.dot}`}>
+                          <StatusIcon status={s.status} />
+                        </span>
+                        <div className="min-w-0 pt-0.5">
+                          <p className="text-sm font-semibold text-ink">{stepTitles[i] ?? s.title}</p>
+                          <p className={`text-xs font-medium ${st.text}`}>
+                            {statusLabel(s.status)}
+                            {s.updated_at && <span className="font-normal text-muted"> · {formatDate(s.updated_at)}</span>}
+                          </p>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );
