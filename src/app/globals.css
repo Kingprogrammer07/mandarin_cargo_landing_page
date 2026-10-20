@@ -3,22 +3,47 @@
 @tailwind utilities;
 
 :root {
+  /* Surfaces */
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --surface-2: #F3F2EE;
+  --border: #E6E4DE;
+
+  /* Text — both clear 4.5:1 on --bg and --surface */
+  --text: #14161A;
+  --muted: #5B616B;
+
+  /* Single accent. --brand fills buttons and marks; --brand-text is the
+     darker tone for orange words on light surfaces (4.5:1). */
   --brand: #EA580C;
   --brand-hover: #C2410C;
-  --brand-soft: #FFF7ED;
-  --trust: #2563EB;
-  --success: #16A34A;
+  --brand-text: #C2410C;
+  --brand-soft: #FFF4EC;
+  --on-brand: #FFFFFF;
+
+  --success: #15803D;
   --danger: #DC2626;
-  --bg: #FFFFFF;
-  --surface: #FFFFFF;
-  --text: #0F172A;
-  --muted: #64748B;
-  --border: #E2E8F0;
+
+  --shadow-card: 0 1px 2px rgba(20, 22, 26, 0.04), 0 4px 16px -8px rgba(20, 22, 26, 0.08);
 }
 
 @layer base {
   html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
   body { color: var(--text); background: var(--bg); }
+  ::selection { background: var(--brand-soft); color: var(--text); }
+}
+
+/* Scroll reveal (see components/ui/Reveal.tsx). Content is visible in the
+   static HTML; JS arms only blocks that start below the fold. */
+.reveal-armed {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+}
+.reveal-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Floating sphere blobs */
@@ -75,17 +100,8 @@
   animation: text-shimmer 3.5s linear infinite;
 }
 
-/* Preloader progress bar */
-@keyframes loader-slide {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(300%); }
-}
-.animate-loader {
-  animation: loader-slide 1s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .text-shimmer { animation: none; }
   .animate-float-1, .animate-float-2, .animate-float-3 { animation: none; }
-  .animate-loader { animation: none; }
+  .reveal-armed { opacity: 1; transform: none; }
 }
