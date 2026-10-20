@@ -24,7 +24,11 @@ export function organizationJsonLd() {
   };
 }
 
-export function localBusinessJsonLd() {
+/**
+ * `rating` comes from real client reviews; without it no rating is claimed —
+ * Google treats invented review markup as spam.
+ */
+export function localBusinessJsonLd(rating?: { average: number; count: number } | null) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -54,12 +58,16 @@ export function localBusinessJsonLd() {
     },
     priceRange: "$$",
     // Rating nested here (not standalone) so Google associates stars with the business
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      bestRating: "5",
-      reviewCount: "1200",
-    },
+    ...(rating && rating.count > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: rating.average.toFixed(1),
+            bestRating: "5",
+            ratingCount: String(rating.count),
+          },
+        }
+      : {}),
   };
 }
 

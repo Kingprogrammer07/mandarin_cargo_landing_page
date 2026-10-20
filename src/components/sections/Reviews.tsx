@@ -17,22 +17,43 @@ function getInitials(name: string) {
     .toUpperCase();
 }
 
-export default function Reviews() {
+export interface Testimonial {
+  name: string;
+  city: string;
+  rating: number;
+  quote: string;
+}
+
+/** Real reviews collected by the bot; `rating` null hides the average block. */
+export interface ReviewsLive {
+  h2?: string;
+  rating: string | null;
+  countText: string;
+  testimonials: Testimonial[];
+}
+
+export default function Reviews({ live }: { live?: ReviewsLive }) {
   const t = useTranslations("reviews");
-  const testimonials = [
-    { name: t("testimonials.0.name"), city: t("testimonials.0.city"), rating: 5, quote: t("testimonials.0.quote") },
-    { name: t("testimonials.1.name"), city: t("testimonials.1.city"), rating: 5, quote: t("testimonials.1.quote") },
-    { name: t("testimonials.2.name"), city: t("testimonials.2.city"), rating: 5, quote: t("testimonials.2.quote") },
-  ];
+  const testimonials: Testimonial[] = live
+    ? live.testimonials
+    : [0, 1, 2].map((i) => ({
+        name: t(`testimonials.${i}.name`),
+        city: t(`testimonials.${i}.city`),
+        rating: 5,
+        quote: t(`testimonials.${i}.quote`),
+      }));
+  const rating = live ? live.rating : t("rating");
+  const countText = live ? live.countText : t("reviewCount");
 
   const [activeSlide, setActiveSlide] = useState(0);
 
   return (
     <section id="reviews" className="bg-white py-20 lg:py-28">
       <div className="max-w-6xl mx-auto px-4 lg:px-8">
-        <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} />
+        <SectionHeader eyebrow={t("eyebrow")} title={live?.h2 ?? t("h2")} />
 
         {/* Aggregate Rating */}
+        {rating && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -54,12 +75,15 @@ export default function Reviews() {
             ))}
           </div>
           <div className="flex items-baseline gap-2 mt-2">
-            <span className="text-5xl font-extrabold text-slate-900 tabular-nums">{t("rating")}</span>
+            <span className="text-5xl font-extrabold text-slate-900 tabular-nums">{rating}</span>
             <span className="text-xl text-slate-400">{t("outOf")}</span>
           </div>
-          <p className="text-slate-500 mt-1">{t("reviewCount")}</p>
+          <p className="text-slate-500 mt-1">{countText}</p>
         </motion.div>
+        )}
 
+        {testimonials.length > 0 && (
+        <>
         {/* Testimonials Desktop */}
         <div className="hidden lg:grid lg:grid-cols-3 gap-6 mt-10">
           {testimonials.map((item, i) => (
@@ -158,6 +182,9 @@ export default function Reviews() {
             </button>
           </div>
         </div>
+
+        </>
+        )}
 
         {/* Review screenshots */}
         <motion.div

@@ -16,6 +16,7 @@ import {
   localBusinessJsonLd,
   serviceJsonLd,
 } from "@/lib/structuredData";
+import { getLandingData } from "@/lib/landingData";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -52,7 +53,12 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   const orgLd = organizationJsonLd();
-  const bizLd = localBusinessJsonLd();
+  const landing = await getLandingData();
+  const bizLd = localBusinessJsonLd(
+    landing?.reviews.average != null
+      ? { average: landing.reviews.average, count: landing.reviews.count }
+      : null,
+  );
   const svcLd = serviceJsonLd();
 
   return (

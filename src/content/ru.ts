@@ -194,6 +194,19 @@ const content = {
     description: "\u0411\u044b\u0441\u0442\u0440\u0430\u044f \u0430\u0432\u0438\u0430\u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0430 \u0438\u0437 \u041a\u0438\u0442\u0430\u044f \u0432 \u0423\u0437\u0431\u0435\u043a\u0438\u0441\u0442\u0430\u043d. \u041e\u0442 $9.5/\u043a\u0433. \u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f \u0432 Telegram \u0431\u043e\u0442.",
     keywords: ["Mandarin Cargo", "Cargo Mandarin", "Mandarin Cargo Uzbekistan", "Mandarin Cargo Tashkent", "\u043c\u0430\u043d\u0434\u0430\u0440\u0438\u043d \u043a\u0430\u0440\u0433\u043e", "\u043a\u0430\u0440\u0433\u043e \u0438\u0437 \u043a\u0438\u0442\u0430\u044f", "\u0430\u0432\u0438\u0430\u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0430", "\u0441\u043a\u043b\u0430\u0434 \u0432 \u043a\u0438\u0442\u0430\u0435", "\u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0430 \u0443\u0437\u0431\u0435\u043a\u0438\u0441\u0442\u0430\u043d", "telegram \u0431\u043e\u0442 \u043a\u0430\u0440\u0433\u043e"],
   },
+  // Live numbers from the Mandarin API (filled at build time)
+  live: {
+    subheadline: "Быстрая авиадоставка из Китая в Узбекистан. От {price} за кг. Нам доверяют {clients} клиентов.",
+    subheadlineNoClients: "Быстрая авиадоставка из Китая в Узбекистан. От {price} за кг.",
+    years: "{years, plural, one {# год} few {# года} many {# лет} other {# года}} на рынке",
+    clients: "{clients} клиентов",
+    delivery: "В среднем {days} дн.",
+    subscribers: "{count} подписчиков",
+    reviewsH2: "Доверие {clients} клиентов",
+    reviewCount: "{count, plural, one {# оценка} few {# оценки} many {# оценок} other {# оценки}}",
+    reviewsH2Plain: "Отзывы наших клиентов",
+    channelCta: "Наш Telegram-канал",
+  },
 } as const;
 
 export default content;

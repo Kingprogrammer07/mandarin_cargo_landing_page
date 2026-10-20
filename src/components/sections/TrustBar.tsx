@@ -87,14 +87,23 @@ function AnimatedStat({
   );
 }
 
-export default function TrustBar() {
+type StatKey = keyof typeof statIcons;
+
+/**
+ * Live figures keyed by stat; a key missing from the map means an admin hid
+ * it (the card is dropped). Without `live` the built-in copy is shown.
+ */
+export type TrustBarLive = Partial<Record<StatKey, string>>;
+
+const STAT_KEYS: StatKey[] = ["years", "clients", "cargo", "subscribers"];
+
+export default function TrustBar({ live }: { live?: TrustBarLive }) {
   const t = useTranslations("trustBar");
-  const stats = [
-    { key: "years", icon: statIcons.years },
-    { key: "clients", icon: statIcons.clients },
-    { key: "cargo", icon: statIcons.cargo },
-    { key: "subscribers", icon: statIcons.subscribers },
-  ] as const;
+  const stats = STAT_KEYS.filter((key) => !live || live[key] !== undefined).map((key) => ({
+    key,
+    icon: statIcons[key],
+    numberRaw: live?.[key] ?? t(`${key}.number`),
+  }));
 
   return (
     <section
@@ -108,11 +117,15 @@ export default function TrustBar() {
 
       <div className="relative max-w-6xl mx-auto px-4">
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-          {stats.map(({ key, icon }, i) => (
+        <div
+          className={`grid grid-cols-2 gap-4 lg:gap-6 ${
+            stats.length === 4 ? "lg:grid-cols-4" : stats.length === 3 ? "lg:grid-cols-3" : ""
+          }`}
+        >
+          {stats.map(({ key, icon, numberRaw }, i) => (
             <AnimatedStat
               key={key}
-              numberRaw={t(`${key}.number`)}
+              numberRaw={numberRaw}
               label={t(`${key}.label`)}
               icon={icon}
               delay={i * 0.1}

@@ -9,8 +9,17 @@ import { site } from "@/config/site";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as [number, number, number, number];
 
-export default function Hero() {
+/** Texts built from live API numbers; omitted fields keep the built-in copy. */
+export interface HeroLive {
+  subheadline?: string;
+  trust?: string[];
+  channelBadge?: string;
+}
+
+export default function Hero({ live }: { live?: HeroLive }) {
   const t = useTranslations("hero");
+  const trustItems = live?.trust ?? [t("trust1"), t("trust2"), t("trust3")];
+  const channelBadge = live?.channelBadge ?? t("channelBadge");
   const reduce = useReducedMotion();
   const rise = (delay: number) => ({
     initial: { opacity: 0, y: reduce ? 0 : 20 },
@@ -74,7 +83,7 @@ export default function Hero() {
               {...rise(0.25)}
               className="mt-4 text-lg text-slate-500 leading-relaxed max-w-[520px]"
             >
-              {t("subheadline")}
+              {live?.subheadline ?? t("subheadline")}
             </motion.p>
 
             {/* CTA Row */}
@@ -102,18 +111,12 @@ export default function Hero() {
               {...rise(0.45)}
               className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-semibold text-slate-600"
             >
-              <span className="flex items-center gap-1.5">
-                <CheckCircle size={16} className="text-green-600" />
-                {t("trust1")}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle size={16} className="text-green-600" />
-                {t("trust2")}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle size={16} className="text-green-600" />
-                {t("trust3")}
-              </span>
+              {trustItems.map((item) => (
+                <span key={item} className="flex items-center gap-1.5">
+                  <CheckCircle size={16} className="text-green-600" />
+                  {item}
+                </span>
+              ))}
             </motion.div>
 
             {/* Channel badge */}
@@ -125,7 +128,7 @@ export default function Hero() {
               className="mt-6 inline-flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:border-slate-300 transition-all"
             >
               <SendIcon />
-              {t("channelBadge")}
+              {channelBadge}
               <ExternalLink size={14} className="text-slate-400" />
             </motion.a>
           </div>

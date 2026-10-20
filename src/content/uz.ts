@@ -325,6 +325,19 @@ const content = {
       "telegram bot cargo",
     ],
   },
+  // Live numbers from the Mandarin API (filled at build time)
+  live: {
+    subheadline: "Havo orqali tez yetkazib berish. 1 kg \u2014 atigi {price} dan. {clients} mijoz bizga ishonadi.",
+    subheadlineNoClients: "Havo orqali tez yetkazib berish. 1 kg \u2014 atigi {price} dan.",
+    years: "{years} yildan beri",
+    clients: "{clients} mijoz",
+    delivery: "O\u2018rtacha {days} kunda",
+    subscribers: "{count} obunachi",
+    reviewsH2: "{clients} mijoz ishonchi",
+    reviewCount: "{count} ta baho",
+    reviewsH2Plain: "Mijozlarimiz fikri",
+    channelCta: "Telegram kanalimiz",
+  },
 } as const;
 
 export default content;

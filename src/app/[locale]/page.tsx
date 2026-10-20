@@ -14,6 +14,8 @@ import FAQ from "@/components/sections/FAQ";
 import FinalCta from "@/components/sections/FinalCta";
 import Reveal from "@/components/ui/Reveal";
 import { faqJsonLd, breadcrumbJsonLd } from "@/lib/structuredData";
+import { getLandingData } from "@/lib/landingData";
+import { buildLiveSections } from "@/lib/landingView";
 
 // Map next-intl locales → BCP-47 for og:locale
 const OG_LOCALE: Record<string, string> = {
@@ -82,6 +84,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     a: t.markup(`faq.items.${i}.a`, { bot: (chunks) => chunks }),
   }));
 
+  // Real numbers from the Mandarin API; null keeps the built-in copy.
+  const landing = await getLandingData();
+  const live = landing ? buildLiveSections(landing, locale, (key, values) => t(key, values)) : undefined;
+
   const faqLd = faqJsonLd(faqItems);
   const breadcrumbLd = breadcrumbJsonLd(locale);
 
@@ -89,14 +95,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <Hero />
-      <Reveal><TrustBar /></Reveal>
+      <Hero live={live?.hero} />
+      <Reveal><TrustBar live={live?.trustBar} /></Reveal>
       <Reveal><HowItWorks /></Reveal>
       <Reveal><TrackOrder /></Reveal>
       <Reveal><Calculator /></Reveal>
       <Reveal><Features /></Reveal>
-      <Reveal><Pricing /></Reveal>
-      <Reveal><Reviews /></Reveal>
+      <Reveal><Pricing live={live?.pricing} /></Reveal>
+      <Reveal><Reviews live={live?.reviews} /></Reveal>
       <Reveal><About /></Reveal>
       <Reveal><FAQ /></Reveal>
       <Reveal><FinalCta /></Reveal>

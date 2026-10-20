@@ -194,6 +194,19 @@ const content = {
     description: "Fast, affordable air cargo from China to Uzbekistan. From $9.5/kg. Register via Telegram bot. Trusted by 50,000+ customers.",
     keywords: ["Mandarin Cargo", "Cargo Mandarin", "Mandarin Cargo Uzbekistan", "Mandarin Cargo Tashkent", "china to uzbekistan cargo", "air cargo", "china warehouse", "uzbekistan delivery", "telegram cargo bot"],
   },
+  // Live numbers from the Mandarin API (filled at build time)
+  live: {
+    subheadline: "Fast air cargo from China to Uzbekistan. From {price}/kg. Trusted by {clients} customers.",
+    subheadlineNoClients: "Fast air cargo from China to Uzbekistan. From {price}/kg.",
+    years: "{years, plural, one {# year} other {# years}} in business",
+    clients: "{clients} clients",
+    delivery: "{days} days on average",
+    subscribers: "{count} subscribers",
+    reviewsH2: "Trusted by {clients} customers",
+    reviewCount: "{count, plural, one {# rating} other {# ratings}}",
+    reviewsH2Plain: "What our customers say",
+    channelCta: "Our Telegram channel",
+  },
 } as const;
 
 export default content;

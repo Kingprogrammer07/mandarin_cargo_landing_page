@@ -7,19 +7,32 @@ import SectionHeader from "@/components/ui/SectionHeader";
 
 const tierIcons = [Package, Tag, Boxes];
 
-export default function Pricing() {
-  const t = useTranslations("pricing");
+/** A tariff as managed in the admin panel, already in the page's language. */
+export interface PricingTierLive {
+  name: string;
+  price: string;
+  oldPrice: string | null;
+  desc: string;
+  badges: string[];
+  popular: boolean;
+}
 
-  const tiers = [0, 1, 2].map((i) => ({
-    name: t(`tiers.${i}.name`),
-    price: t(`tiers.${i}.price`),
-    oldPrice: t.has(`tiers.${i}.oldPrice`) ? t(`tiers.${i}.oldPrice`) : null,
-    unit: t(`tiers.${i}.unit`),
-    desc: t(`tiers.${i}.desc`),
-    badges: t.has(`tiers.${i}.badges`) ? (t.raw(`tiers.${i}.badges`) as string[]) : [],
-    popular: i === 0,
-    Icon: tierIcons[i],
-  }));
+export default function Pricing({ live }: { live?: PricingTierLive[] }) {
+  const t = useTranslations("pricing");
+  const unit = t("tiers.0.unit");
+
+  const tiers = live
+    ? live.map((tier, i) => ({ ...tier, unit, Icon: tierIcons[i % tierIcons.length] }))
+    : [0, 1, 2].map((i) => ({
+        name: t(`tiers.${i}.name`),
+        price: t(`tiers.${i}.price`),
+        oldPrice: t.has(`tiers.${i}.oldPrice`) ? t(`tiers.${i}.oldPrice`) : null,
+        unit: t(`tiers.${i}.unit`),
+        desc: t(`tiers.${i}.desc`),
+        badges: t.has(`tiers.${i}.badges`) ? (t.raw(`tiers.${i}.badges`) as string[]) : [],
+        popular: i === 0,
+        Icon: tierIcons[i],
+      }));
 
   const included = [
     t("included.0"),
@@ -35,7 +48,11 @@ export default function Pricing() {
         <SectionHeader eyebrow={t("eyebrow")} title={t("h2")} subtitle={t("subtitle")} />
 
         {/* Tier cards */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div
+          className={`mt-12 grid grid-cols-1 gap-6 ${
+            tiers.length >= 3 ? "md:grid-cols-3" : tiers.length === 2 ? "md:grid-cols-2" : ""
+          }`}
+        >
           {tiers.map((tier, i) => (
             <motion.div
               key={i}

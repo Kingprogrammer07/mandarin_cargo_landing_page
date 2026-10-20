@@ -193,6 +193,19 @@ const content = {
     description: "\u4e2d\u56fd\u5230\u4e4c\u5179\u522b\u514b\u65af\u5766\u5feb\u901f\u4fbf\u5b9c\u7684\u7a7a\u8fd0\u8d27\u4ee3\u670d\u52a1\u3002$9.5/\u516c\u65a4\u8d77\u3002\u901a\u8fc7Telegram\u673a\u5668\u4eba\u6ce8\u518c\u300250,000+\u5ba2\u6237\u4fe1\u8d56\u3002",
     keywords: ["Mandarin Cargo", "Cargo Mandarin", "Mandarin Cargo Uzbekistan", "Mandarin Cargo Tashkent", "\u4e2d\u56fd\u5230\u4e4c\u5179\u522b\u514b\u65af\u5766\u7269\u6d41", "\u7a7a\u8fd0\u8d27\u4ee3", "\u4e2d\u56fd\u4ed3\u5e93", "\u56fd\u9645\u5feb\u9012", "Telegram\u8d27\u8fd0\u673a\u5668\u4eba"],
   },
+  // Live numbers from the Mandarin API (filled at build time)
+  live: {
+    subheadline: "从中国到乌兹别克斯坦的快速空运货代。每公斤 {price} 起。{clients} 客户信赖。",
+    subheadlineNoClients: "从中国到乌兹别克斯坦的快速空运货代。每公斤 {price} 起。",
+    years: "{years}年行业经验",
+    clients: "{clients} 客户",
+    delivery: "平均 {days} 天送达",
+    subscribers: "{count} 订阅者",
+    reviewsH2: "{clients} 客户的信赖",
+    reviewCount: "{count} 条评分",
+    reviewsH2Plain: "客户评价",
+    channelCta: "我们的 Telegram 频道",
+  },
 } as const;
 
 export default content;
