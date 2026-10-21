@@ -52,7 +52,7 @@ export default function LanguageSwitcher({ openUp = false }: LanguageSwitcherPro
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={`${current.label} — language`}
-        className="flex h-11 items-center gap-1.5 rounded-full px-3 text-[0.9375rem] text-fg-2 transition-colors duration-150 hover:bg-white/5 hover:text-fg"
+        className="flex h-11 items-center gap-1.5 rounded-full px-3 text-[0.9375rem] text-fg-2 transition-colors duration-150 hover:bg-tint/5 hover:text-fg"
       >
         <Globe size={16} className="shrink-0" />
         <span>{current.label}</span>
@@ -79,7 +79,7 @@ export default function LanguageSwitcher({ openUp = false }: LanguageSwitcherPro
                   prefetch={false}
                   onClick={() => setOpen(false)}
                   className={`flex min-h-11 items-center justify-between gap-3 rounded-xl px-3 py-2 text-[0.9375rem] transition-colors ${
-                    isActive ? "font-medium text-brand-text" : "text-fg hover:bg-white/5"
+                    isActive ? "font-medium text-brand-text" : "text-fg hover:bg-tint/5"
                   }`}
                 >
                   <span className="flex items-center gap-2.5">

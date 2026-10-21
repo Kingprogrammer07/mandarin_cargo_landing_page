@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { site } from "@/config/site";
 import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 const navLinks = [
   { key: "how", href: "#how-it-works" },
@@ -74,14 +75,15 @@ export default function Header() {
                 key={link.key}
                 href={link.href}
                 onClick={(e) => handleAnchor(e, link.href)}
-                className="whitespace-nowrap rounded-full px-3.5 py-2 text-[0.9375rem] text-fg-2 transition-colors hover:bg-white/5 hover:text-fg"
+                className="whitespace-nowrap rounded-full px-2.5 py-2 text-[0.9375rem] text-fg-2 xl:px-3.5 transition-colors hover:bg-tint/5 hover:text-fg"
               >
                 {t(link.key)}
               </a>
             ))}
           </nav>
 
-          <div className="hidden shrink-0 items-center gap-2 lg:flex">
+          <div className="hidden shrink-0 items-center gap-1 lg:flex">
+            <ThemeToggle />
             <LanguageSwitcher />
             <a href={site.botUrl} target="_blank" rel="noopener noreferrer" className="btn btn-brand min-h-10 px-5 text-[0.9375rem]">
               {t("cta")}
@@ -89,6 +91,7 @@ export default function Header() {
           </div>
 
           <div className="ml-auto flex items-center gap-1 lg:hidden">
+            <ThemeToggle className="hidden min-[390px]:flex" />
             <a
               href={site.botUrl}
               target="_blank"
@@ -102,7 +105,7 @@ export default function Header() {
               onClick={() => setMobileOpen(true)}
               aria-label={t("menu")}
               aria-expanded={mobileOpen}
-              className="-mr-1.5 flex h-11 w-11 items-center justify-center rounded-full text-fg active:bg-white/10"
+              className="-mr-1.5 flex h-11 w-11 items-center justify-center rounded-full text-fg active:bg-tint/10"
             >
               <Menu size={22} />
             </button>
@@ -129,12 +132,15 @@ export default function Header() {
         }`}
       >
         <div className="mb-8 flex items-center justify-between">
-          <LanguageSwitcher />
+          <div className="flex items-center gap-1">
+            <LanguageSwitcher />
+            <ThemeToggle />
+          </div>
           <button
             type="button"
             onClick={() => setMobileOpen(false)}
             aria-label={t("close")}
-            className="-mr-2 flex h-11 w-11 items-center justify-center rounded-full text-fg active:bg-white/10"
+            className="-mr-2 flex h-11 w-11 items-center justify-center rounded-full text-fg active:bg-tint/10"
           >
             <X size={22} />
           </button>

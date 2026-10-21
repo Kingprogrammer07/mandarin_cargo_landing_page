@@ -15,6 +15,7 @@ import {
   serviceJsonLd,
 } from "@/lib/structuredData";
 import { getLandingData } from "@/lib/landingData";
+import { THEME_BOOT_SCRIPT } from "@/lib/theme";
 
 const sans = Geist({
   subsets: ["latin", "latin-ext", "cyrillic"],
@@ -61,8 +62,9 @@ export default async function LocaleLayout({
   const svcLd = serviceJsonLd();
 
   return (
-    <html lang={locale} className={`${sans.variable} ${mono.variable}`}>
+    <html lang={locale} className={`${sans.variable} ${mono.variable}`} data-theme="dark" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

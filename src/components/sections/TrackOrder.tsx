@@ -29,7 +29,7 @@ interface TrackResult {
 const statusStyle: Record<StepStatus, { dot: string; text: string }> = {
   available: { dot: "bg-success/15 text-success", text: "text-success" },
   pending: { dot: "bg-brand/15 text-brand-text", text: "text-brand-text" },
-  nodata: { dot: "bg-white/5 text-fg-3", text: "text-fg-3" },
+  nodata: { dot: "bg-tint/5 text-fg-3", text: "text-fg-3" },
 };
 
 function StatusIcon({ status }: { status: StepStatus }) {
@@ -141,7 +141,7 @@ export default function TrackOrder() {
         )}
 
         {error && (
-          <div className={`mt-6 rounded-2xl border p-4 t-small ${errorType === "network" ? "border-danger/30 bg-danger/10 text-danger" : "border-line bg-white/[0.03] text-fg"}`}>
+          <div className={`mt-6 rounded-2xl border p-4 t-small ${errorType === "network" ? "border-danger/30 bg-danger/10 text-danger" : "border-line bg-tint/[0.03] text-fg"}`}>
             <p className="font-medium">{error}</p>
             {errorType === "network" && (
               <button type="button" onClick={handleTrack} className="btn btn-ghost mt-3 min-h-11 px-5 text-sm">
@@ -154,7 +154,7 @@ export default function TrackOrder() {
 
         {result && (
           <div className="mt-6">
-            <div className="rounded-2xl border border-line bg-white/[0.03] p-5">
+            <div className="rounded-2xl border border-line bg-tint/[0.03] p-5">
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div className="min-w-0">
                   <p className="break-all font-mono font-medium tracking-wide">{result.track_code}</p>
@@ -169,7 +169,7 @@ export default function TrackOrder() {
                   <span className="t-small text-fg-3">{t("progressLabel")}</span>
                 </p>
               </div>
-              <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+              <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-tint/10">
                 <div className="h-full rounded-full bg-brand shadow-[0_0_12px_rgb(var(--brand-rgb)/0.8)] transition-[width] duration-700" style={{ width: `${Math.min(100, Math.max(0, result.progress_percentage))}%` }} />
               </div>
             </div>

@@ -133,7 +133,7 @@ const content = {
     channelCta: "Our Telegram channel",
   },
   page: {
-    nav: { how: "How it works", track: "Tracking", pricing: "Prices", faq: "Questions", contact: "Contact", cta: "Open the bot", menu: "Menu", close: "Close" },
+    nav: { how: "How it works", track: "Tracking", pricing: "Prices", faq: "Questions", contact: "Contact", cta: "Open the bot", menu: "Menu", close: "Close", toLight: "Switch to light mode", toDark: "Switch to dark mode" },
     hero: {
       h1: "Air cargo from China",
       lead: "Your Taobao, 1688 and Pinduoduo orders arrive at our warehouse in China, and we fly them to Tashkent.",

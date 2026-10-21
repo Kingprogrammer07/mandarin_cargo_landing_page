@@ -6,7 +6,6 @@ interface LogoProps {
 export default function Logo({ className = "", white = false }: LogoProps) {
   // The site is dark: the word mark is light, "Cargo" keeps the brand orange.
   const fill = white ? "#FFFFFF" : "#F26B1D";
-  const textFill = "#F2F3F5";
 
   return (
     <svg
@@ -29,7 +28,7 @@ export default function Logo({ className = "", white = false }: LogoProps) {
       <text
         x="68"
         y="30"
-        fill={textFill}
+        style={{ fill: "var(--fg)" }}
         fontFamily="system-ui, sans-serif"
         fontWeight="700"
         fontSize="26"

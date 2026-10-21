@@ -23,7 +23,7 @@ export default function About() {
 
         <div className="r card overflow-hidden" style={{ "--i": 1 } as React.CSSProperties}>
           <div className="relative aspect-[3/2] w-full">
-            <Image src="/office-tashkent-1.webp" alt="" fill sizes="(min-width: 1024px) 560px, 100vw" className="object-cover opacity-85" />
+            <Image src="/office-tashkent-1.webp" alt="" fill sizes="(min-width: 1024px) 560px, 100vw" className="photo object-cover" />
             <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-surface to-transparent to-50%" />
           </div>
           <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">

@@ -109,11 +109,23 @@ export default function RouteGlobe({ label, fromLabel, toLabel }: RouteGlobeProp
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
-    const brand = cssVar(canvas, "--brand", "#f26b1d");
-    const amberRgb = cssVar(canvas, "--amber-rgb", "255 154 60").split(" ").join(",");
-    const brandRgb = cssVar(canvas, "--brand-rgb", "242 107 29").split(" ").join(",");
-    const fg2 = cssVar(canvas, "--fg-2", "#a3a9b5");
     const font = getComputedStyle(document.body).fontFamily;
+    const rgb = (name: string, fallback: string) => cssVar(canvas, name, fallback).split(" ").join(",");
+    // Re-read whenever the theme flips (ThemeToggle sets data-theme on <html>).
+    const readPalette = () => ({
+      brand: cssVar(canvas, "--brand", "#f26b1d"),
+      amberRgb: rgb("--amber-rgb", "255 154 60"),
+      brandRgb: rgb("--brand-rgb", "242 107 29"),
+      fg2: cssVar(canvas, "--fg-2", "#a3a9b5"),
+      hi: cssVar(canvas, "--globe-hi", "#1a1712"),
+      mid: cssVar(canvas, "--globe-mid", "#0e1015"),
+      lo: cssVar(canvas, "--globe-lo", "#07090c"),
+      dotRgb: rgb("--globe-dot-rgb", "255 255 255"),
+      dotMax: Number(cssVar(canvas, "--globe-dot-max", "0.6")) || 0.6,
+      glow: Number(cssVar(canvas, "--globe-glow", "1")) || 1,
+      light: document.documentElement.dataset.theme === "light",
+    });
+    let pal = readPalette();
 
     const land = landPoints();
     const hub = toVec(...XIANYANG);
@@ -142,9 +154,10 @@ export default function RouteGlobe({ label, fromLabel, toLabel }: RouteGlobeProp
 
       // Atmosphere: warm light along the rim, fading into space.
       const halo = bctx.createRadialGradient(cx, cy, radius * 0.94, cx, cy, radius * 1.16);
+      const { amberRgb, brandRgb } = pal;
       halo.addColorStop(0, `rgba(${amberRgb},0)`);
-      halo.addColorStop(0.28, `rgba(${amberRgb},0.28)`);
-      halo.addColorStop(0.5, `rgba(${brandRgb},0.10)`);
+      halo.addColorStop(0.28, `rgba(${amberRgb},${0.28 * pal.glow})`);
+      halo.addColorStop(0.5, `rgba(${brandRgb},${0.1 * pal.glow})`);
       halo.addColorStop(1, `rgba(${brandRgb},0)`);
       bctx.fillStyle = halo;
       bctx.beginPath();
@@ -153,9 +166,9 @@ export default function RouteGlobe({ label, fromLabel, toLabel }: RouteGlobeProp
 
       // The night side: lit faintly from above.
       const body = bctx.createRadialGradient(cx, cy - radius * 0.9, radius * 0.1, cx, cy, radius);
-      body.addColorStop(0, "#1a1712");
-      body.addColorStop(0.45, "#0e1015");
-      body.addColorStop(1, "#07090c");
+      body.addColorStop(0, pal.hi);
+      body.addColorStop(0.45, pal.mid);
+      body.addColorStop(1, pal.lo);
       bctx.fillStyle = body;
       bctx.beginPath();
       bctx.arc(cx, cy, radius, 0, Math.PI * 2);
@@ -261,9 +274,12 @@ export default function RouteGlobe({ label, fromLabel, toLabel }: RouteGlobeProp
         if (p[2] <= 0.04 || p[1] > shownBottom + dot) continue;
         shades[Math.min(DOT_SHADES - 1, Math.floor(p[2] * DOT_SHADES))].rect(p[0] - dot / 2, p[1] - dot / 2, dot, dot);
       }
-      ctx.fillStyle = "#ffffff";
+      const { brand, amberRgb, brandRgb, fg2 } = pal;
+      // The comet's hot core: near-white at night, deep orange by day.
+      const core = pal.light ? brand : "#fff4e6";
+      ctx.fillStyle = `rgb(${pal.dotRgb})`;
       shades.forEach((path, i) => {
-        ctx.globalAlpha = 0.1 + 0.5 * ((i + 0.5) / DOT_SHADES);
+        ctx.globalAlpha = 0.1 + (pal.dotMax - 0.1) * ((i + 0.5) / DOT_SHADES);
         ctx.fill(path);
       });
       ctx.globalAlpha = 1;
@@ -323,10 +339,10 @@ export default function RouteGlobe({ label, fromLabel, toLabel }: RouteGlobeProp
       const headPoint = main[headIndex];
       if (visible(headPoint)) {
         ctx.lineWidth = 2.5;
-        ctx.strokeStyle = "#fff4e6";
+        ctx.strokeStyle = core;
         strokePath(main, Math.max(0, headIndex - Math.round(last * 0.12)), headIndex);
         const glow = ctx.createRadialGradient(headPoint[0], headPoint[1], 0, headPoint[0], headPoint[1], 26);
-        glow.addColorStop(0, "rgba(255,244,230,0.95)");
+        glow.addColorStop(0, pal.light ? `rgba(${brandRgb},0.95)` : "rgba(255,244,230,0.95)");
         glow.addColorStop(0.2, `rgba(${amberRgb},0.6)`);
         glow.addColorStop(1, `rgba(${amberRgb},0)`);
         ctx.fillStyle = glow;
@@ -358,13 +374,20 @@ export default function RouteGlobe({ label, fromLabel, toLabel }: RouteGlobeProp
         ctx.beginPath();
         ctx.arc(p[0], p[1], 4 + pulse * 16, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "#fff4e6";
+        ctx.fillStyle = core;
         ctx.beginPath();
         ctx.arc(p[0], p[1], 3.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = fg2;
-        ctx.textAlign = align;
-        ctx.fillText(text, p[0] + (align === "left" ? 14 : -14), p[1] - 14);
+        // Keep the name inside the canvas's visible width on narrow phones.
+        const textWidth = ctx.measureText(text).width;
+        const view = canvas.getBoundingClientRect();
+        const minX = -view.left + 8;
+        const maxX = window.innerWidth - view.left - 8;
+        let x = align === "left" ? p[0] + 14 : p[0] - 14 - textWidth;
+        x = Math.min(maxX - textWidth, Math.max(minX, x));
+        ctx.textAlign = "left";
+        ctx.fillText(text, x, p[1] - 14);
       };
       marker(hub, fromLabel, "left");
       marker(dest, toLabel, "right");
@@ -390,6 +413,12 @@ export default function RouteGlobe({ label, fromLabel, toLabel }: RouteGlobeProp
       start();
     });
     resizeObserver.observe(canvas);
+    const themeObserver = new MutationObserver(() => {
+      pal = readPalette();
+      paintBackdrop();
+      start();
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     const intersection = new IntersectionObserver(([entry]) => {
       onScreen = entry.isIntersecting;
       start();
@@ -443,6 +472,7 @@ export default function RouteGlobe({ label, fromLabel, toLabel }: RouteGlobeProp
       canvas.removeEventListener("pointercancel", onUp);
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();
+      themeObserver.disconnect();
       intersection.disconnect();
       document.removeEventListener("visibilitychange", start);
       reduceMotion.removeEventListener("change", start);

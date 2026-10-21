@@ -42,7 +42,7 @@ export default function Hero({ live }: { live?: LiveFacts }) {
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-b from-transparent to-night" />
 
         <div className="hero-copy relative mx-auto flex w-full max-w-[1200px] flex-col items-center px-5 pb-[calc(var(--cap)+1rem)] pt-28 text-center sm:px-8 sm:pt-36 lg:pt-40">
-          <p className="rise inline-flex items-center gap-2.5 rounded-full border border-line-2 bg-white/[0.03] py-1.5 pl-2 pr-4 text-sm text-fg-2 backdrop-blur" style={{ "--i": 0 } as React.CSSProperties}>
+          <p className="rise inline-flex items-center gap-2.5 rounded-full border border-line-2 bg-tint/[0.03] py-1.5 pl-2 pr-4 text-sm text-fg-2 backdrop-blur" style={{ "--i": 0 } as React.CSSProperties}>
             <span aria-hidden className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_rgb(var(--brand-rgb)/0.9)]" />
             <span>
               {t("fromShort")} <span aria-hidden>→</span> {t("toCity")}

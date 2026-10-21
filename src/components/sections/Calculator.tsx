@@ -88,7 +88,7 @@ export default function Calculator({ pricePerKg }: { pricePerKg: number }) {
             onClick={() => setWeight(w)}
             aria-pressed={weight === w}
             className={`min-h-11 whitespace-nowrap rounded-full text-[0.8125rem] tabular-nums sm:text-sm transition-colors active:scale-95 ${
-              weight === w ? "bg-white/10 text-fg shadow-[inset_0_0_0_1px_var(--line-2)]" : "text-fg-2 shadow-[inset_0_0_0_1px_var(--line)] hover:text-fg"
+              weight === w ? "bg-tint/10 text-fg shadow-[inset_0_0_0_1px_var(--line-2)]" : "text-fg-2 shadow-[inset_0_0_0_1px_var(--line)] hover:text-fg"
             }`}
           >
             {w} kg
@@ -103,7 +103,7 @@ export default function Calculator({ pricePerKg }: { pricePerKg: number }) {
         onClick={() => setWithDims((v) => !v)}
         className="mt-5 flex min-h-11 items-center gap-3 self-start text-left"
       >
-        <span aria-hidden className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${withDims ? "bg-brand" : "bg-white/15"}`}>
+        <span aria-hidden className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${withDims ? "bg-brand" : "bg-tint/15"}`}>
           <span className={`absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition-transform ${withDims ? "translate-x-5" : ""}`} />
         </span>
         <span className="t-small text-fg-2">{t("dims")}</span>

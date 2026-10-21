@@ -36,7 +36,7 @@ export default function Features({ price }: { price?: string | null }) {
           {/* Warehouse: photo, wide. */}
           <article data-spot className="r card overflow-hidden lg:col-span-2" style={{ "--i": 1 } as React.CSSProperties}>
             <div className="relative aspect-[16/9] w-full lg:aspect-[2/1]">
-              <Image src="/warehouse-china-1.webp" alt={items[1]?.title ?? ""} fill sizes="(min-width: 1024px) 800px, 100vw" className="object-cover opacity-80" />
+              <Image src="/warehouse-china-1.webp" alt={items[1]?.title ?? ""} fill sizes="(min-width: 1024px) 800px, 100vw" className="photo object-cover" />
               <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent" />
             </div>
             <div className="-mt-16 p-6 sm:p-8">
@@ -83,13 +83,13 @@ export default function Features({ price }: { price?: string | null }) {
           {/* Payment: a sample bill. */}
           <article data-spot className="r card flex flex-col justify-between gap-8 p-6 sm:p-8" style={{ "--i": 4 } as React.CSSProperties}>
             <CardText title={items[3]?.title ?? ""} desc={items[3]?.desc ?? ""} />
-            <div className="rounded-2xl border border-line bg-white/[0.02] p-4">
+            <div className="rounded-2xl border border-line bg-tint/[0.02] p-4">
               <dl className="t-small space-y-1.5 tabular-nums">
                 <div className="flex justify-between gap-4"><dt className="text-fg-3">{sampleKg} kg × ${perKg}</dt><dd className="font-medium">${(perKg * sampleKg).toFixed(2)}</dd></div>
               </dl>
               <ul className="mt-3 flex flex-wrap gap-1.5 border-t border-line pt-3">
                 {PAYMENTS.map((p) => (
-                  <li key={p} className="rounded-md bg-white/5 px-2 py-1 text-xs text-fg-2">{p}</li>
+                  <li key={p} className="rounded-md bg-tint/5 px-2 py-1 text-xs text-fg-2">{p}</li>
                 ))}
               </ul>
             </div>

@@ -14,7 +14,7 @@ export default function HowItWorks() {
 
   const details: Record<number, React.ReactNode> = {
     2: (
-      <div className="mt-5 grid gap-4 rounded-2xl border border-line bg-white/[0.02] p-5 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-8">
+      <div className="mt-5 grid gap-4 rounded-2xl border border-line bg-tint/[0.02] p-5 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-8">
         <div>
           <p className="t-small text-fg-3">{t("codeLabel")}</p>
           <p className="mt-1 font-mono text-3xl font-medium tracking-tight text-brand-text">{tOld("idCode")}</p>

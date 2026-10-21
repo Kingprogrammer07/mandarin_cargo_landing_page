@@ -11,6 +11,7 @@ const config: Config = {
         night: "rgb(var(--night-rgb) / <alpha-value>)",
         surface: "rgb(var(--surface-rgb) / <alpha-value>)",
         raised: "var(--raised)",
+        tint: "rgb(var(--tint-rgb) / <alpha-value>)",
         line: { DEFAULT: "var(--line)", 2: "var(--line-2)" },
         fg: { DEFAULT: "rgb(var(--fg-rgb) / <alpha-value>)", 2: "var(--fg-2)", 3: "var(--fg-3)" },
         brand: { DEFAULT: "rgb(var(--brand-rgb) / <alpha-value>)", hover: "var(--brand-hover)", text: "var(--brand-text)" },
