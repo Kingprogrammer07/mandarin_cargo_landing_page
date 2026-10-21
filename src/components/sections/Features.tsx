@@ -52,9 +52,13 @@ export default function Features({ price }: { price?: string | null }) {
             </div>
             <div className="relative mt-auto flex h-[420px] justify-center overflow-hidden sm:h-[480px] lg:h-auto lg:flex-1">
               <div aria-hidden className="absolute bottom-0 left-1/2 h-2/3 w-2/3 -translate-x-1/2 rounded-full bg-brand/25 blur-3xl" />
-              <Tilt max={8} className="absolute -top-[6%] left-[54%] w-[125%] max-w-[520px] -translate-x-1/2 lg:-top-[18%] lg:w-[150%]">
-                <Image src="/hero-app-dark-v2.webp" alt={t("appAlt")} width={1696} height={2528} sizes="560px" className="h-auto w-full" />
-              </Tilt>
+              {/* Position lives on the wrapper: Tilt writes its own inline
+                  transform, which would otherwise wipe out the centring. */}
+              <div className="absolute -top-[6%] left-[54%] w-[125%] max-w-[520px] -translate-x-1/2 lg:-top-[18%] lg:w-[150%]">
+                <Tilt max={6} className="duration-500">
+                  <Image src="/hero-app-dark-v2.webp" alt={t("appAlt")} width={1696} height={2528} sizes="560px" className="h-auto w-full" />
+                </Tilt>
+              </div>
             </div>
           </article>
 
