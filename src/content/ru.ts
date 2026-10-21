@@ -144,6 +144,8 @@ const content = {
       transit: "В пути",
       transitFallback: "3–7 дней",
       transitLive: "{days} дней",
+      fromShort: "Сяньян",
+      calcCta: "Рассчитать цену",
       clients: "Клиенты",
       since: "Работаем",
       sinceValue: "с 2019 года",

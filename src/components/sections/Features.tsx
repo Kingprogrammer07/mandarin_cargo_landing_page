@@ -1,107 +1,96 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { marketplaces, site } from "@/config/site";
+import Spotlight from "@/components/ui/Spotlight";
+import Tilt from "@/components/ui/Tilt";
 
 const PAYMENTS = ["Click", "Payme", "Uzum", "Uzcard", "Humo", "NBU", "Alipay"];
 
-/** A sample receipt for the payment sheet: weight × rate, paid on arrival. */
-function Receipt({ price }: { price: number }) {
-  const kg = 2.4;
+function CardText({ title, desc }: { title: string; desc: string }) {
   return (
-    <div className="mx-auto w-full max-w-[400px] bg-paper p-7 text-ink [clip-path:polygon(0_0,100%_0,100%_calc(100%-10px),95%_100%,90%_calc(100%-10px),85%_100%,80%_calc(100%-10px),75%_100%,70%_calc(100%-10px),65%_100%,60%_calc(100%-10px),55%_100%,50%_calc(100%-10px),45%_100%,40%_calc(100%-10px),35%_100%,30%_calc(100%-10px),25%_100%,20%_calc(100%-10px),15%_100%,10%_calc(100%-10px),5%_100%,0_calc(100%-10px))]">
-      <p className="font-display text-2xl font-bold tracking-tight">Mandarin Cargo</p>
-      <dl className="t-body mt-6 space-y-2 tabular-nums">
-        <div className="flex justify-between gap-4"><dt className="text-muted">XIY → TAS</dt><dd>{kg} kg</dd></div>
-        <div className="flex justify-between gap-4"><dt className="text-muted">${price} × {kg}</dt><dd>${(price * kg).toFixed(2)}</dd></div>
-      </dl>
-      <div className="perf-x mt-5" style={{ "--perf": "var(--paper-2)" } as React.CSSProperties} aria-hidden />
-      <ul className="t-lead mt-5 flex flex-wrap gap-x-5 gap-y-1 pb-5 font-medium">
-        {PAYMENTS.map((p) => <li key={p}>{p}</li>)}
-      </ul>
+    <div className="relative">
+      <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">{title}</h3>
+      <p className="t-body mt-2 max-w-[42ch] text-fg-2">{desc}</p>
     </div>
   );
 }
 
 /**
- * What the service takes on, as full-width sheets of coloured card, each
- * with its title band on top and its picture on the right.
+ * What the service takes on, as a bento of lit cards: the warehouse photo
+ * wide, the app tall, shops drifting past, and a sample bill.
  */
 export default function Features({ price }: { price?: string | null }) {
   const t = useTranslations("page.sheets");
   const tHow = useTranslations("howItWorks");
-  const tTrack = useTranslations("track");
-  const address = tHow.raw("address") as string[];
-  const stages = tTrack.raw("steps") as string[];
   const items = t.raw("items") as { title: string; desc: string }[];
+  const address = tHow.raw("address") as string[];
   const perKg = Number((price ?? "").replace("$", "")) || site.pricePerKg;
-
-  const sheets = [
-    {
-      tone: "bg-brand text-on-brand",
-      pictureFrame: "",
-      picture: (
-        <div className="flex h-full flex-col justify-center gap-1 p-6 sm:p-10">
-          {marketplaces.map((m) => (
-            <p key={m} className="font-display text-[clamp(1.75rem,4vw,3.5rem)] font-bold leading-[1.05] tracking-tight">{m}</p>
-          ))}
-        </div>
-      ),
-    },
-    {
-      tone: "bg-field text-on-field",
-      detail: (
-        <p lang="zh" className="t-body max-w-[30ch] text-on-field-2">{address.slice(1).join(" ")}</p>
-      ),
-      picture: <Image src="/warehouse-china-1.webp" alt={items[1]?.title ?? ""} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />,
-    },
-    {
-      tone: "bg-paper text-ink",
-      detail: (
-        <ol className="space-y-1">
-          {stages.map((stage, n) => (
-            <li key={stage} className={`font-display text-[clamp(1.125rem,1rem+0.6vw,1.5rem)] font-semibold tracking-tight ${n < 3 ? "text-ink" : "text-muted"}`}>
-              {stage}
-            </li>
-          ))}
-        </ol>
-      ),
-      picture: (
-        <div className="relative h-full bg-field">
-          <Image src="/hero-app-light-v2.webp" alt={t("appAlt")} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-contain p-2 sm:p-4" />
-        </div>
-      ),
-    },
-    {
-      tone: "bg-paper-2 text-ink",
-      picture: (
-        <div className="flex h-full items-center bg-ground p-6 sm:p-10">
-          <Receipt price={perKg} />
-        </div>
-      ),
-    },
-  ];
+  const sampleKg = 2.4;
 
   return (
-    <section id="features" aria-labelledby="features-title" className="bg-ground pt-24 lg:pt-40">
-      <h2 id="features-title" className="r t-head px-5 pb-12 sm:px-8" style={{ "--i": 0 } as React.CSSProperties}>
-        {t("h2")}
-      </h2>
-      <div>
-        {sheets.map((sheet, i) => (
-          <article
-            key={i}
-            className={`sheet lg:min-h-[64svh] ${sheet.tone}`}
-          >
-            <h3 className="flex h-[var(--sheet-band)] items-center px-5 font-display text-[clamp(1.25rem,2.6vw,2.5rem)] font-bold leading-none tracking-tight [grid-area:title] sm:px-8">
-              {items[i]?.title}
-            </h3>
-            <div className={`relative w-full [grid-area:pic] lg:aspect-auto ${"pictureFrame" in sheet ? sheet.pictureFrame : "aspect-[4/3]"}`}>{sheet.picture}</div>
-            <div className="flex flex-col gap-10 px-5 pb-10 pt-6 [grid-area:text] sm:px-8 lg:pb-14 lg:pt-2">
-              <p className="max-w-[40ch] text-[clamp(1.125rem,1rem+0.4vw,1.375rem)] leading-[1.45]">{items[i]?.desc}</p>
-              {"detail" in sheet && sheet.detail ? <div className="lg:mt-auto">{sheet.detail}</div> : null}
+    <section id="features" aria-labelledby="features-title" className="px-5 py-20 sm:px-8 lg:py-32">
+      <div className="mx-auto max-w-[1200px]">
+        <h2 id="features-title" className="r t-head max-w-[16ch]" style={{ "--i": 0 } as React.CSSProperties}>{t("h2")}</h2>
+
+        <Spotlight className="mt-12 grid gap-4 lg:mt-16 lg:grid-cols-3 lg:gap-5">
+          {/* Warehouse: photo, wide. */}
+          <article data-spot className="r card overflow-hidden lg:col-span-2" style={{ "--i": 1 } as React.CSSProperties}>
+            <div className="relative aspect-[16/9] w-full lg:aspect-[2/1]">
+              <Image src="/warehouse-china-1.webp" alt={items[1]?.title ?? ""} fill sizes="(min-width: 1024px) 800px, 100vw" className="object-cover opacity-80" />
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent" />
+            </div>
+            <div className="-mt-16 p-6 sm:p-8">
+              <CardText title={items[1]?.title ?? ""} desc={items[1]?.desc ?? ""} />
+              <p lang="zh" className="t-small relative mt-4 text-fg-3">{address.slice(1).join(" ")}</p>
             </div>
           </article>
-        ))}
+
+          {/* Tracking: the app, tall. */}
+          <article data-spot className="r card flex flex-col overflow-hidden lg:row-span-2" style={{ "--i": 2 } as React.CSSProperties}>
+            <div className="p-6 sm:p-8">
+              <CardText title={items[2]?.title ?? ""} desc={items[2]?.desc ?? ""} />
+            </div>
+            <div className="relative mt-auto flex h-[420px] justify-center overflow-hidden sm:h-[480px] lg:h-auto lg:flex-1">
+              <div aria-hidden className="absolute bottom-0 left-1/2 h-2/3 w-2/3 -translate-x-1/2 rounded-full bg-brand/25 blur-3xl" />
+              <Tilt max={8} className="absolute -top-[6%] left-[54%] w-[125%] max-w-[520px] -translate-x-1/2 lg:-top-[18%] lg:w-[150%]">
+                <Image src="/hero-app-dark-v2.webp" alt={t("appAlt")} width={1696} height={2528} sizes="560px" className="h-auto w-full" />
+              </Tilt>
+            </div>
+          </article>
+
+          {/* Shops: names drifting past. */}
+          <article data-spot className="r card flex flex-col justify-between gap-8 overflow-hidden p-6 sm:p-8" style={{ "--i": 3 } as React.CSSProperties}>
+            <CardText title={items[0]?.title ?? ""} desc={items[0]?.desc ?? ""} />
+            <div className="marquee-wrap fade-x -mx-6 overflow-hidden sm:-mx-8">
+              <ul className="marquee gap-2 px-6">
+                {[...marketplaces, ...marketplaces].map((m, i) => (
+                  <li
+                    key={`${m}-${i}`}
+                    aria-hidden={i >= marketplaces.length || undefined}
+                    className={`shrink-0 rounded-full border border-line px-4 py-2 text-[0.9375rem] text-fg-2 ${i >= marketplaces.length ? "motion-reduce:hidden" : ""}`}
+                  >
+                    {m}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </article>
+
+          {/* Payment: a sample bill. */}
+          <article data-spot className="r card flex flex-col justify-between gap-8 p-6 sm:p-8" style={{ "--i": 4 } as React.CSSProperties}>
+            <CardText title={items[3]?.title ?? ""} desc={items[3]?.desc ?? ""} />
+            <div className="rounded-2xl border border-line bg-white/[0.02] p-4">
+              <dl className="t-small space-y-1.5 tabular-nums">
+                <div className="flex justify-between gap-4"><dt className="text-fg-3">{sampleKg} kg × ${perKg}</dt><dd className="font-medium">${(perKg * sampleKg).toFixed(2)}</dd></div>
+              </dl>
+              <ul className="mt-3 flex flex-wrap gap-1.5 border-t border-line pt-3">
+                {PAYMENTS.map((p) => (
+                  <li key={p} className="rounded-md bg-white/5 px-2 py-1 text-xs text-fg-2">{p}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        </Spotlight>
       </div>
     </section>
   );

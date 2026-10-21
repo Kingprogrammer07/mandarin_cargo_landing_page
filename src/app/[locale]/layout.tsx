@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Onest, Unbounded } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -16,17 +16,17 @@ import {
 } from "@/lib/structuredData";
 import { getLandingData } from "@/lib/landingData";
 
-const display = Unbounded({
+const sans = Geist({
   subsets: ["latin", "latin-ext", "cyrillic"],
-  weight: ["600", "700"],
-  variable: "--font-display",
+  variable: "--font-sans",
   display: "swap",
 });
 
-const text = Onest({
-  subsets: ["latin", "latin-ext", "cyrillic"],
-  weight: ["400", "500", "600"],
-  variable: "--font-text",
+// Figures only: route codes, step numbers, the tracking code.
+const mono = Geist_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -61,7 +61,7 @@ export default async function LocaleLayout({
   const svcLd = serviceJsonLd();
 
   return (
-    <html lang={locale} className={`${display.variable} ${text.variable}`}>
+    <html lang={locale} className={`${sans.variable} ${mono.variable}`}>
       <head>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />

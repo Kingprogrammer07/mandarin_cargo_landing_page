@@ -3,7 +3,7 @@ import { routing } from "@/i18n/routing";
 import { site } from "@/config/site";
 import Hero from "@/components/sections/Hero";
 import HowItWorks from "@/components/sections/HowItWorks";
-import TrackOrder from "@/components/sections/TrackOrder";
+import Tools from "@/components/sections/Tools";
 import Features from "@/components/sections/Features";
 import Pricing from "@/components/sections/Pricing";
 import Proof from "@/components/sections/Proof";
@@ -94,8 +94,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <Hero live={live} />
+      <Reveal><Tools price={live?.price} /></Reveal>
       <Reveal><HowItWorks /></Reveal>
-      <Reveal><TrackOrder /></Reveal>
       <Reveal><Features price={live?.price} /></Reveal>
       <Reveal><Pricing tiers={live?.tiers} days={live?.days} /></Reveal>
       <Reveal><Proof live={live} /></Reveal>

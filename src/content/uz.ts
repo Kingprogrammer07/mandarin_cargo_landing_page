@@ -222,6 +222,8 @@ const content = {
       transit: "Yo‘lda",
       transitFallback: "3–7 kun",
       transitLive: "{days} kun",
+      fromShort: "Syanyan",
+      calcCta: "Narxni hisoblash",
       clients: "Mijozlar",
       since: "Ishlaymiz",
       sinceValue: "2019-yildan",

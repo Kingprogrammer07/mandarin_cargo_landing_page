@@ -144,6 +144,8 @@ const content = {
       transit: "In transit",
       transitFallback: "3–7 days",
       transitLive: "{days} days",
+      fromShort: "Xianyang",
+      calcCta: "Calculate price",
       clients: "Clients",
       since: "Working",
       sinceValue: "since 2019",

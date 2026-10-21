@@ -3,120 +3,161 @@
 @tailwind utilities;
 
 /*
- * The page is printed stationery: a parcel label, a ticket, a letter, a reply
- * card. Paper sits on a stone ground; one ink, one accent (the mandarin
- * orange), whole fields of colour instead of lines and shadows.
+ * Night sky over the route: a near-black ground, one warm accent (the
+ * mandarin orange) used as light, not as paint. Depth comes from 1px lines,
+ * soft glows and the globe, never from heavy shadows.
  */
 :root {
-  --ground: #E7E5E1;
-  --paper: #FFFFFF;
-  --paper-2: #F2F1EE;
-  --ink: #1A1A1A;
-  --ink-rgb: 26 26 26;
-  --paper-rgb: 255 255 255;
-  --muted-rgb: 87 83 78;
-  --danger-rgb: 200 30 30;
-  --muted: #57534E;
-  --field: #1A1A1A;
-  --on-field: #F4F3F0;
-  --on-field-2: #B8B3AB;
-  --border: #CFCBC4;
+  --night: #07090c;
+  --night-rgb: 7 9 12;
+  --surface: #0d1016;
+  --surface-rgb: 13 16 22;
+  --raised: #141821;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.14);
 
-  /* --brand fills buttons and fields; white on it clears 4.5:1.
-     The logo keeps its own #EA580C. */
-  --brand: #CF4A0C;
-  --brand-hover: #B23F09;
-  --brand-text: #B8410A;
-  --on-brand: #FFFFFF;
+  --fg: #f2f3f5;
+  --fg-rgb: 242 243 245;
+  --fg-2: #a3a9b5;
+  --fg-3: #7c8390;
 
-  --success: #15803D;
-  --danger: #C81E1E;
+  /* Dark text on the orange fill clears 6.5:1; --brand-text is the orange
+     used for words on the night ground (7:1). */
+  --brand: #f26b1d;
+  --brand-rgb: 242 107 29;
+  --brand-hover: #ff7d33;
+  --brand-text: #ff8a45;
+  --on-brand: #0b0c0e;
+  --amber: #ff9a3c;
+  --amber-rgb: 255 154 60;
 
-  /* Five sizes do all the work. */
+  --success: #34d399;
+  --danger-rgb: 248 113 113;
+
   --step-small: 0.875rem;
-  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
-  --step-head: clamp(1.75rem, 1.15rem + 2.6vw, 3.5rem);
-  --step-display: clamp(3.25rem, 1rem + 9vw, 8.5rem);
+  --step-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-lead: clamp(1.125rem, 1.02rem + 0.5vw, 1.375rem);
+  --step-head: clamp(2rem, 1.3rem + 2.8vw, 3.75rem);
+  --step-display: clamp(2.75rem, 1.2rem + 6.4vw, 6.5rem);
 
+  --radius: 20px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --cjk: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  color-scheme: dark;
 }
 
 @layer base {
-  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
-  body { color: var(--ink); background: var(--ground); font-size: var(--step-body); line-height: 1.5; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; background: var(--night); }
+  body { color: var(--fg); background: var(--night); font-size: var(--step-body); line-height: 1.55; }
   ::selection { background: var(--brand); color: var(--on-brand); }
-  :focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--brand-text); outline-offset: 3px; border-radius: 6px; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
 }
 
 @layer components {
-  .t-display { font-family: var(--font-display), var(--cjk); font-size: var(--step-display); font-weight: 700; line-height: 0.92; letter-spacing: -0.04em; }
-  .t-head { font-family: var(--font-display), var(--cjk); font-size: var(--step-head); font-weight: 700; line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance; }
-  .t-lead { font-size: var(--step-lead); line-height: 1.35; letter-spacing: -0.01em; }
-  .t-body { font-size: var(--step-body); line-height: 1.55; }
-  .t-small { font-size: var(--step-small); line-height: 1.45; }
+  .t-display { font-size: var(--step-display); font-weight: 600; line-height: 0.98; letter-spacing: -0.045em; text-wrap: balance; }
+  .t-head { font-size: var(--step-head); font-weight: 600; line-height: 1.04; letter-spacing: -0.04em; text-wrap: balance; }
+  .t-lead { font-size: var(--step-lead); line-height: 1.45; letter-spacing: -0.01em; }
+  .t-body { font-size: var(--step-body); line-height: 1.6; }
+  .t-small { font-size: var(--step-small); line-height: 1.5; }
 
-  /* One button shape for the whole page: square, flat, solid. */
+  /* Headline ink: white that cools to grey at the bottom, like lit metal. */
+  .ink-fade { background: linear-gradient(180deg, #fff 30%, #a9afba 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    min-height: 3.5rem; padding: 0 1.75rem; font-weight: 600; font-size: var(--step-body);
-    transition: background-color 0.2s, transform 0.15s var(--ease-out);
+    min-height: 3.25rem; padding: 0 1.625rem; border-radius: 999px;
+    font-weight: 500; font-size: 1rem; letter-spacing: -0.01em; white-space: nowrap;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.3s, transform 0.15s var(--ease-out);
   }
-  .btn:active { transform: scale(0.98); }
-  .btn-brand { background: var(--brand); color: var(--on-brand); }
-  .btn-brand:hover { background: var(--brand-hover); }
-  .btn-ink { background: var(--ink); color: var(--paper); }
-  .btn-ink:hover { background: #000; }
-  .btn-paper { background: var(--paper); color: var(--ink); }
-  .btn-paper:hover { background: var(--paper-2); }
+  .btn:active { transform: scale(0.97); }
+  .btn-brand {
+    background: var(--brand); color: var(--on-brand);
+    box-shadow: 0 0 0 1px rgb(var(--amber-rgb) / 0.5) inset, 0 8px 32px -8px rgb(var(--brand-rgb) / 0.7);
+  }
+  .btn-brand:hover { background: var(--brand-hover); box-shadow: 0 0 0 1px rgb(var(--amber-rgb) / 0.6) inset, 0 10px 44px -6px rgb(var(--brand-rgb) / 0.85); }
+  .btn-ghost { background: rgb(255 255 255 / 0.04); color: var(--fg); box-shadow: 0 0 0 1px var(--line-2) inset; }
+  .btn-ghost:hover { background: rgb(255 255 255 / 0.08); }
 
-  .link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; transition: text-decoration-thickness 0.15s; }
-  .link:hover { text-decoration-thickness: 2px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
 
-  /* A row of round holes: the perforation between two parts of a ticket. */
-  .perf-x { border-top: 6px dotted var(--perf, var(--ground)); }
-  .perf-y { border-left: 6px dotted var(--perf, var(--ground)); }
+  .link { text-decoration: underline; text-decoration-color: rgb(255 255 255 / 0.3); text-underline-offset: 0.22em; transition: text-decoration-color 0.15s; }
+  .link:hover { text-decoration-color: currentColor; }
+
+  .field {
+    width: 100%; height: 3.25rem; padding: 0 1rem; border-radius: 14px;
+    background: rgb(255 255 255 / 0.03); border: 1px solid var(--line-2); color: var(--fg);
+    font-size: 1rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field::placeholder { color: var(--fg-3); }
+  .field:focus { border-color: rgb(var(--brand-rgb) / 0.8); box-shadow: 0 0 0 4px rgb(var(--brand-rgb) / 0.15); }
 }
 
-:root { --cjk: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif; }
+/*
+ * Cursor light (components/ui/Spotlight.tsx): each card gets a soft orange
+ * glow under the pointer and its border lights up nearby. Mouse only.
+ */
+[data-spot] { position: relative; isolation: isolate; }
+[data-spot-on] [data-spot]::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: -1;
+  background: radial-gradient(420px circle at var(--spot-x, -999px) var(--spot-y, -999px), rgb(var(--brand-rgb) / 0.09), transparent 60%);
+}
+[data-spot-on] [data-spot]::after {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; padding: 1px;
+  background: radial-gradient(260px circle at var(--spot-x, -999px) var(--spot-y, -999px), rgb(var(--amber-rgb) / 0.55), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+
+/* Faint survey grid that fades out towards the edges. */
+.grid-lines {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 100%);
+}
+
+/* Shop names drifting past. */
+.marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+.marquee-wrap:hover .marquee { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+.fade-x {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* Hero copy drifts up and fades as the page scrolls (set by HeroParallax). */
+.hero-copy { transform: translate3d(0, calc(var(--hero-p, 0) * -60px), 0); opacity: calc(1 - var(--hero-p, 0) * 1.1); }
+
+@keyframes fadein { from { opacity: 0; } }
+
+/* First paint: the hero rises in once. */
+.rise { animation: rise 0.9s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 90ms); }
+@keyframes rise { from { opacity: 0; transform: translate3d(0, 18px, 0); } }
 
 /*
  * Section entrances (components/ui/Reveal.tsx). The static HTML is fully
  * visible; JS arms only sections below the fold, and each `.r` part rises in
  * order of its --i.
  */
-.reveal-armed .r { opacity: 0; transform: translate3d(0, 24px, 0); }
+.reveal-armed .r { opacity: 0; transform: translate3d(0, 28px, 0); filter: blur(6px); }
 .reveal-in .r {
-  opacity: 1; transform: none;
-  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  opacity: 1; transform: none; filter: none;
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out), filter 0.8s var(--ease-out);
   transition-delay: calc(var(--i, 0) * 80ms);
 }
+
+/* Accordion chevron. */
+details[open] > summary .chev { transform: rotate(45deg); }
+summary::-webkit-details-marker { display: none; }
+
 @media (prefers-reduced-motion: reduce) {
-  .reveal-armed .r { opacity: 1; transform: none; }
-}
-
-/* Hero photographs: slow crossfade, one at a time. */
-.xfade > * { opacity: 0; transition: opacity 1.6s ease; }
-.xfade > [data-on] { opacity: 1; }
-.kenburns { animation: kenburns 24s ease-in-out infinite alternate; }
-@keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.1); } }
-@media (prefers-reduced-motion: reduce) {
-  .xfade > * { transition: none; }
-  .kenburns { animation: none; }
-}
-
-/* Horizontal step row: no scrollbar chrome, snap per column. */
-.snap-row { scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-.snap-row::-webkit-scrollbar { display: none; }
-.snap-row > * { scroll-snap-align: start; }
-
-/* Height of each stacked sheet's title band (sections/Features.tsx). */
-:root { --sheet-band: 52px; }
-@media (min-width: 1024px) { :root { --sheet-band: 72px; } }
-.sheet { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto 1fr; grid-template-areas: "title" "pic" "text"; }
-@media (min-width: 1024px) {
-  .sheet { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: var(--sheet-band) 1fr; grid-template-areas: "title ." "text pic"; }
+  .reveal-armed .r { opacity: 1; transform: none; filter: none; }
+  .marquee { animation: none; flex-wrap: wrap; width: auto; }
+  .rise { animation: none; }
+  .hero-copy { transform: none; opacity: 1; }
 }

@@ -27,9 +27,9 @@ interface TrackResult {
 }
 
 const statusStyle: Record<StepStatus, { dot: string; text: string }> = {
-  available: { dot: "bg-success text-white", text: "text-success" },
-  pending: { dot: "bg-brand text-on-brand", text: "text-brand-text" },
-  nodata: { dot: "bg-paper-2 text-muted", text: "text-muted" },
+  available: { dot: "bg-success/15 text-success", text: "text-success" },
+  pending: { dot: "bg-brand/15 text-brand-text", text: "text-brand-text" },
+  nodata: { dot: "bg-white/5 text-fg-3", text: "text-fg-3" },
 };
 
 function StatusIcon({ status }: { status: StepStatus }) {
@@ -97,112 +97,105 @@ export default function TrackOrder() {
   };
 
   return (
-    <section id="track" aria-labelledby="track-title" className="bg-field py-24 text-on-field lg:py-40">
-      <div className="grid gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:gap-8">
-        <div className="lg:col-span-5">
-          <h2 id="track-title" className="r t-head" style={{ "--i": 0 } as React.CSSProperties}>{tp("h2")}</h2>
-          <p className="r t-body mt-5 max-w-[40ch] text-on-field" style={{ "--i": 1 } as React.CSSProperties}>{tp("lead")}</p>
+    <div className="flex h-full flex-col p-6 sm:p-8">
+      <h2 id="track-title" className="text-2xl font-semibold tracking-tight sm:text-[1.75rem]">{tp("h2")}</h2>
+      <p className="t-small mt-2 max-w-[46ch] text-fg-2">{tp("lead")}</p>
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleTrack();
+        }}
+        className="mt-8 flex flex-col gap-3 sm:flex-row"
+      >
+        <div className="relative min-w-0 flex-1">
+          <PackageSearch size={20} aria-hidden className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-fg-3" />
+          <input
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            placeholder={t("placeholder")}
+            aria-label={t("placeholder")}
+            autoCapitalize="characters"
+            autoComplete="off"
+            spellCheck={false}
+            className="field h-14 pl-12 font-mono uppercase tracking-wide placeholder:font-sans placeholder:normal-case placeholder:tracking-normal"
+          />
         </div>
+        <button type="submit" disabled={loading} className="btn btn-ghost h-14 disabled:opacity-60">
+          {loading ? <Loader2 size={18} className="animate-spin" aria-hidden /> : <Search size={18} aria-hidden />}
+          {loading ? t("checking") : t("button")}
+        </button>
+      </form>
 
-        <div className="r flex flex-col bg-paper text-ink sm:flex-row lg:col-span-7" style={{ "--i": 2, "--perf": "var(--field)" } as React.CSSProperties}>
-          <div className="perf-x sm:hidden" aria-hidden />
-          <div className="perf-y hidden sm:block" aria-hidden />
-          <div className="min-w-0 flex-1 p-5 sm:p-8">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleTrack();
-            }}
-            className="flex flex-col gap-3 sm:flex-row"
-          >
-            <div className="relative flex-1">
-              <PackageSearch size={20} aria-hidden className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-muted" />
-              <input
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder={t("placeholder")}
-                aria-label={t("placeholder")}
-                autoCapitalize="characters"
-                autoComplete="off"
-                spellCheck={false}
-                className="h-14 w-full border-0 border-b-2 border-ink/25 bg-transparent pl-8 pr-2 text-base uppercase tracking-wide text-ink outline-none transition-colors placeholder:normal-case placeholder:tracking-normal placeholder:text-muted/70 focus:border-brand"
-              />
-            </div>
-            <button type="submit" disabled={loading} className="btn btn-ink disabled:opacity-60">
-              {loading ? <Loader2 size={18} className="animate-spin" aria-hidden /> : <Search size={18} aria-hidden />}
-              {loading ? t("checking") : t("button")}
-            </button>
-          </form>
+      <div aria-live="polite" className="mt-auto">
+        {!error && !result && (
+          <ol className="relative mt-8 space-y-0" aria-label={tp("h2")}>
+            {stepTitles.map((title, i) => (
+              <li key={title} className="relative flex items-center gap-4 py-2.5">
+                {i < stepTitles.length - 1 && <span aria-hidden className="absolute left-[5px] top-1/2 h-full w-px bg-line-2" />}
+                <span aria-hidden className={`relative h-[11px] w-[11px] shrink-0 rounded-full border ${i === 0 ? "border-brand bg-brand shadow-[0_0_12px_rgb(var(--brand-rgb)/0.8)]" : "border-line-2 bg-night"}`} />
+                <span className={`t-small ${i === 0 ? "text-fg" : "text-fg-3"}`}>{title}</span>
+              </li>
+            ))}
+          </ol>
+        )}
 
-          <div aria-live="polite">
-            {!error && !result && (
-              <ol className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3" aria-label={tp("h2")}>
-                {stepTitles.map((title) => (
-                  <li key={title} className="t-small flex items-center gap-2 text-muted">
-                    <span aria-hidden className="h-2 w-2 shrink-0 bg-ink/25" />
-                    {title}
-                  </li>
-                ))}
-              </ol>
+        {error && (
+          <div className={`mt-6 rounded-2xl border p-4 t-small ${errorType === "network" ? "border-danger/30 bg-danger/10 text-danger" : "border-line bg-white/[0.03] text-fg"}`}>
+            <p className="font-medium">{error}</p>
+            {errorType === "network" && (
+              <button type="button" onClick={handleTrack} className="btn btn-ghost mt-3 min-h-11 px-5 text-sm">
+                <RefreshCw size={14} aria-hidden />
+                {t("button")}
+              </button>
             )}
+          </div>
+        )}
 
-            {error && (
-              <div className={`mt-6 p-4 t-small ${errorType === "network" ? "bg-danger/10 text-danger" : "bg-paper-2 text-ink"}`}>
-                <p className="font-medium">{error}</p>
-                {errorType === "network" && (
-                  <button type="button" onClick={handleTrack} className="btn btn-paper mt-3 min-h-11 px-5 text-sm">
-                    <RefreshCw size={14} aria-hidden />
-                    {t("button")}
-                  </button>
-                )}
-              </div>
-            )}
-
-            {result && (
-              <div className="mt-6">
-                <div className="flex flex-wrap items-end justify-between gap-3 bg-paper-2 p-5">
-                  <div className="min-w-0">
-                    <p className="break-all font-semibold tracking-wide">{result.track_code}</p>
-                    {result.weight && (
-                      <p className="t-small mt-1 text-muted">
-                        {t("weightLabel")}: <span className="font-semibold text-ink">{result.weight} kg</span>
-                      </p>
-                    )}
-                  </div>
-                  <p className="text-right">
-                    <span className="block font-display text-3xl font-bold leading-none tabular-nums">{result.progress_percentage}%</span>
-                    <span className="t-small text-muted">{t("progressLabel")}</span>
-                  </p>
-                  <div className="h-1.5 w-full bg-paper">
-                    <div className="h-full bg-brand transition-[width] duration-700" style={{ width: `${Math.min(100, Math.max(0, result.progress_percentage))}%` }} />
-                  </div>
+        {result && (
+          <div className="mt-6">
+            <div className="rounded-2xl border border-line bg-white/[0.03] p-5">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="break-all font-mono font-medium tracking-wide">{result.track_code}</p>
+                  {result.weight && (
+                    <p className="t-small mt-1 text-fg-3">
+                      {t("weightLabel")}: <span className="text-fg">{result.weight} kg</span>
+                    </p>
+                  )}
                 </div>
-
-                <ol className="mt-4 space-y-4">
-                  {result.steps.map((s, i) => {
-                    const st = statusStyle[s.status] ?? statusStyle.nodata;
-                    return (
-                      <li key={s.step} className="flex gap-4">
-                        <span className={`flex h-8 w-8 shrink-0 items-center justify-center ${st.dot}`}>
-                          <StatusIcon status={s.status} />
-                        </span>
-                        <div className="min-w-0 pt-0.5">
-                          <p className="font-semibold">{stepTitles[i] ?? s.title}</p>
-                          <p className={`t-small font-medium ${st.text}`}>
-                            {statusLabel(s.status)}
-                            {s.updated_at && <span className="font-normal text-muted">, {formatDate(s.updated_at)}</span>}
-                          </p>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ol>
+                <p className="text-right">
+                  <span className="block text-3xl font-semibold leading-none tabular-nums">{result.progress_percentage}%</span>
+                  <span className="t-small text-fg-3">{t("progressLabel")}</span>
+                </p>
               </div>
-            )}
+              <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                <div className="h-full rounded-full bg-brand shadow-[0_0_12px_rgb(var(--brand-rgb)/0.8)] transition-[width] duration-700" style={{ width: `${Math.min(100, Math.max(0, result.progress_percentage))}%` }} />
+              </div>
+            </div>
+
+            <ol className="mt-4 space-y-3">
+              {result.steps.map((s, i) => {
+                const st = statusStyle[s.status] ?? statusStyle.nodata;
+                return (
+                  <li key={s.step} className="flex gap-3">
+                    <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${st.dot}`}>
+                      <StatusIcon status={s.status} />
+                    </span>
+                    <div className="min-w-0 pt-0.5">
+                      <p className="font-medium">{stepTitles[i] ?? s.title}</p>
+                      <p className={`t-small ${st.text}`}>
+                        {statusLabel(s.status)}
+                        {s.updated_at && <span className="text-fg-3">, {formatDate(s.updated_at)}</span>}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
-          </div>
-        </div>
+        )}
       </div>
-    </section>
+    </div>
   );
 }

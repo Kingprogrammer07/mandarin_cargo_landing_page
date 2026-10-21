@@ -143,6 +143,8 @@ const content = {
       transit: "运输时间",
       transitFallback: "3–7天",
       transitLive: "{days}天",
+      fromShort: "咸阳",
+      calcCta: "计算运费",
       clients: "客户",
       since: "运营",
       sinceValue: "始于2019年",
