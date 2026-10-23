@@ -6,7 +6,7 @@ import { Globe, ChevronDown, Check } from "lucide-react";
 import { usePathname, Link } from "@/i18n/navigation";
 
 // A dropdown really floats over the page, so it may cast a shadow.
-const MENU_SHADOW = "shadow-[0_16px_40px_-8px_rgba(0,0,0,0.6)]"; // taste-skill-ignore
+const MENU_SHADOW = "shadow-[0_12px_32px_-8px_rgba(0,0,0,0.25)]"; // taste-skill-ignore
 
 const locales = [
   { code: "uz", label: "UZ", name: "O‘zbekcha" },
@@ -16,11 +16,12 @@ const locales = [
 ];
 
 interface LanguageSwitcherProps {
+  dark?: boolean;
   /** Open the list above the button (footer: no room below). */
   openUp?: boolean;
 }
 
-export default function LanguageSwitcher({ openUp = false }: LanguageSwitcherProps) {
+export default function LanguageSwitcher({ dark = false, openUp = dark }: LanguageSwitcherProps) {
   const pathname = usePathname(); // locale-stripped path (next-intl)
   const currentLocale = useLocale();
   const current = locales.find((l) => l.code === currentLocale) ?? locales[0];
@@ -52,7 +53,9 @@ export default function LanguageSwitcher({ openUp = false }: LanguageSwitcherPro
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={`${current.label} — language`}
-        className="flex h-11 items-center gap-1.5 rounded-full px-3 text-[0.9375rem] text-fg-2 transition-colors duration-150 hover:bg-tint/5 hover:text-fg"
+        className={`flex h-11 items-center gap-1.5 px-3 text-[0.9375rem] font-medium transition-colors duration-150 ${
+          dark ? "text-white/70 hover:bg-white/10 hover:text-white" : "text-ink hover:bg-paper-2"
+        }`}
       >
         <Globe size={16} className="shrink-0" />
         <span>{current.label}</span>
@@ -65,7 +68,7 @@ export default function LanguageSwitcher({ openUp = false }: LanguageSwitcherPro
       {open && (
         <ul
           role="listbox"
-          className={`absolute z-50 w-48 rounded-2xl border border-line-2 bg-raised p-1.5 ${MENU_SHADOW} ${
+          className={`absolute z-50 w-48 bg-paper py-1.5 ${MENU_SHADOW} ${
             openUp ? "bottom-full left-0 mb-2 origin-bottom-left" : "right-0 mt-2 origin-top-right"
           }`}
         >
@@ -78,12 +81,12 @@ export default function LanguageSwitcher({ openUp = false }: LanguageSwitcherPro
                   locale={locale.code}
                   prefetch={false}
                   onClick={() => setOpen(false)}
-                  className={`flex min-h-11 items-center justify-between gap-3 rounded-xl px-3 py-2 text-[0.9375rem] transition-colors ${
-                    isActive ? "font-medium text-brand-text" : "text-fg hover:bg-tint/5"
+                  className={`flex items-center justify-between gap-3 min-h-11 px-3.5 py-2 text-[0.9375rem] transition-colors ${
+                    isActive ? "font-semibold text-brand-text" : "text-ink hover:bg-paper-2"
                   }`}
                 >
                   <span className="flex items-center gap-2.5">
-                    <span className="w-7 font-mono text-xs text-fg-3">{locale.label}</span>
+                    <span className="w-7 text-sm font-semibold text-muted">{locale.label}</span>
                     <span>{locale.name}</span>
                   </span>
                   {isActive && <Check size={15} className="shrink-0 text-brand-text" />}

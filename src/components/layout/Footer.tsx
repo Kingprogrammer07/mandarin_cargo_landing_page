@@ -1,64 +1,70 @@
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { site } from "@/config/site";
 import Logo from "@/components/Logo";
-import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
+/** Twelve half-round scallops along the top edge of the postcard. */
+function scallopPath(count: number) {
+  const w = 100 / count;
+  let d = "M0 8";
+  for (let i = 0; i < count; i++) d += ` a${w / 2} 8 0 0 1 ${w} 0`;
+  return `${d} V9 H0 Z`;
+}
+
+/**
+ * The back of the card: a sign-off on the left, the address block on the
+ * right with a stamp above it, and the imprint along the bottom.
+ */
 export default function Footer() {
   const t = useTranslations("page.footer");
-  const tn = useTranslations("page.nav");
   const year = new Date().getFullYear();
 
-  const contacts = [
+  const lines = [
     { href: `tel:${site.phoneRaw}`, label: site.phone },
-    { href: site.channelUrl, label: "Telegram", external: true },
-    { href: site.instagram, label: "Instagram", external: true },
+    { href: site.channelUrl, label: "Telegram: @mandarin_cargo", external: true },
+    { href: site.instagram, label: "Instagram: mandarin_cargo", external: true },
     { href: `mailto:${site.email}`, label: site.email },
-  ];
-  const nav = [
-    { href: "#how-it-works", key: "how" },
-    { href: "#track", key: "track" },
-    { href: "#pricing", key: "pricing" },
-    { href: "#faq", key: "faq" },
   ];
 
   return (
-    <footer id="contact" className="border-t border-line px-5 pb-10 pt-16 sm:px-8 lg:pt-20">
-      <div className="mx-auto grid max-w-[1200px] gap-12 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <Logo className="h-9 w-auto" />
-          <p className="mt-6 text-2xl font-semibold tracking-tight">{t("signoff")}</p>
-          <p className="t-body mt-2 max-w-[36ch] text-fg-2">{t("message")}</p>
-          <p className="t-small mt-6 max-w-[36ch] text-fg-3">{site.address}</p>
+    <footer id="contact" className="bg-ground pt-24 sm:px-8 sm:pb-8 lg:pt-32">
+      <div className="mx-auto max-w-[1200px]">
+        <svg aria-hidden viewBox="0 0 100 9" preserveAspectRatio="none" className="block h-4 w-full text-paper sm:h-5">
+          <path d={scallopPath(6)} fill="currentColor" className="sm:hidden" />
+          <path d={scallopPath(12)} fill="currentColor" className="hidden sm:block" />
+        </svg>
+        <div className="grid gap-12 bg-paper px-5 pb-8 pt-8 sm:px-12 sm:pt-12 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <Logo className="h-10 w-auto" />
+            <p className="t-head mt-8">{t("signoff")}</p>
+            <p className="t-body mt-4 max-w-[36ch]">{t("message")}</p>
+          </div>
+          <div className="relative">
+            <div className="absolute right-0 top-0 w-16 bg-paper-2 p-1.5 sm:w-[88px]">
+              <div className="relative aspect-[3/4] w-full overflow-hidden">
+                <Image src="/warehouse-china-2.webp" alt={t("stampAlt")} fill sizes="88px" className="object-cover" />
+              </div>
+            </div>
+            <ul className="space-y-3 pr-20 pt-2 text-[1.0625rem] sm:pr-28 sm:text-lg lg:pt-24">
+              <li className="text-muted">{site.address}</li>
+              {lines.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    className="link inline-flex min-h-11 items-center break-all"
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p className="t-small text-center text-muted lg:col-span-2">
+            {t("imprint", { year })}.{" "}
+            <a href={site.developer} target="_blank" rel="noopener noreferrer" className="link">{t("developer")}</a>
+          </p>
         </div>
-        <ul className="space-y-1 lg:col-span-4">
-          {contacts.map((c) => (
-            <li key={c.href}>
-              <a
-                href={c.href}
-                {...(c.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="inline-flex min-h-11 items-center break-all text-fg-2 transition-colors hover:text-fg"
-              >
-                {c.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <nav aria-label={tn("menu")} className="lg:col-span-3">
-          <ul className="space-y-1">
-            {nav.map((n) => (
-              <li key={n.key}>
-                <a href={n.href} className="inline-flex min-h-11 items-center text-fg-2 transition-colors hover:text-fg">{tn(n.key)}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-      <div className="mx-auto mt-14 flex max-w-[1200px] flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="t-small text-fg-3">
-          {t("imprint", { year })}.{" "}
-          <a href={site.developer} target="_blank" rel="noopener noreferrer" className="link">{t("developer")}</a>
-        </p>
-        <LanguageSwitcher openUp />
       </div>
     </footer>
   );

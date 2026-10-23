@@ -133,7 +133,7 @@ const content = {
     channelCta: "Наш Telegram-канал",
   },
   page: {
-    nav: { how: "Как это работает", track: "Отслеживание", pricing: "Цены", faq: "Вопросы", contact: "Контакты", cta: "Открыть бот", menu: "Меню", close: "Закрыть", toLight: "Включить светлую тему", toDark: "Включить тёмную тему" },
+    nav: { how: "Как это работает", track: "Отслеживание", pricing: "Цены", faq: "Вопросы", contact: "Контакты", cta: "Открыть бот", menu: "Меню", close: "Закрыть" },
     hero: {
       h1: "Авиакарго из Китая",
       lead: "Заказы с Taobao, 1688 и Pinduoduo приходят на наш склад в Китае, а мы привозим их самолётом в Ташкент.",
@@ -144,8 +144,6 @@ const content = {
       transit: "В пути",
       transitFallback: "3–7 дней",
       transitLive: "{days} дней",
-      fromShort: "Сяньян",
-      calcCta: "Рассчитать цену",
       clients: "Клиенты",
       since: "Работаем",
       sinceValue: "с 2019 года",

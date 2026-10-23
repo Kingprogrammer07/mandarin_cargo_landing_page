@@ -4,8 +4,8 @@ interface LogoProps {
 }
 
 export default function Logo({ className = "", white = false }: LogoProps) {
-  // The site is dark: the word mark is light, "Cargo" keeps the brand orange.
-  const fill = white ? "#FFFFFF" : "#F26B1D";
+  const fill = white ? "#FFFFFF" : "#EA580C";
+  const textFill = white ? "#FFFFFF" : "#0F172A";
 
   return (
     <svg
@@ -13,7 +13,6 @@ export default function Logo({ className = "", white = false }: LogoProps) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-hidden="true"
     >
       {/* Mandarin icon — native SVG <image>, scales with viewBox */}
       <image
@@ -28,9 +27,9 @@ export default function Logo({ className = "", white = false }: LogoProps) {
       <text
         x="68"
         y="30"
-        style={{ fill: "var(--fg)" }}
+        fill={textFill}
         fontFamily="system-ui, sans-serif"
-        fontWeight="700"
+        fontWeight="800"
         fontSize="26"
         letterSpacing="-0.02em"
       >

@@ -211,7 +211,7 @@ const content = {
     channelCta: "Telegram kanalimiz",
   },
   page: {
-    nav: { how: "Jarayon", track: "Kuzatish", pricing: "Narxlar", faq: "Savollar", contact: "Aloqa", cta: "Botni ochish", menu: "Menyu", close: "Yopish", toLight: "Yorug‘ rejimga o‘tish", toDark: "Qorong‘i rejimga o‘tish" },
+    nav: { how: "Jarayon", track: "Kuzatish", pricing: "Narxlar", faq: "Savollar", contact: "Aloqa", cta: "Botni ochish", menu: "Menyu", close: "Yopish" },
     hero: {
       h1: "Xitoydan havo kargo",
       lead: "Taobao, 1688 va Pinduoduo buyurtmalaringiz Xitoydagi omborimizga tushadi, biz ularni samolyotda Toshkentga olib kelamiz.",
@@ -222,8 +222,6 @@ const content = {
       transit: "Yo‘lda",
       transitFallback: "3–7 kun",
       transitLive: "{days} kun",
-      fromShort: "Syanyan",
-      calcCta: "Narxni hisoblash",
       clients: "Mijozlar",
       since: "Ishlaymiz",
       sinceValue: "2019-yildan",

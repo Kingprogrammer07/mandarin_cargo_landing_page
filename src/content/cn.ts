@@ -132,7 +132,7 @@ const content = {
     channelCta: "我们的 Telegram 频道",
   },
   page: {
-    nav: { how: "流程", track: "物流追踪", pricing: "价格", faq: "常见问题", contact: "联系", cta: "打开机器人", menu: "菜单", close: "关闭", toLight: "切换到浅色模式", toDark: "切换到深色模式" },
+    nav: { how: "流程", track: "物流追踪", pricing: "价格", faq: "常见问题", contact: "联系", cta: "打开机器人", menu: "菜单", close: "关闭" },
     hero: {
       h1: "中国空运到塔什干",
       lead: "您在淘宝、1688和拼多多的订单送到我们的中国仓库，我们再用飞机运到塔什干。",
@@ -143,8 +143,6 @@ const content = {
       transit: "运输时间",
       transitFallback: "3–7天",
       transitLive: "{days}天",
-      fromShort: "咸阳",
-      calcCta: "计算运费",
       clients: "客户",
       since: "运营",
       sinceValue: "始于2019年",

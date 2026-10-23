@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Onest, Unbounded } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -15,19 +15,18 @@ import {
   serviceJsonLd,
 } from "@/lib/structuredData";
 import { getLandingData } from "@/lib/landingData";
-import { THEME_BOOT_SCRIPT } from "@/lib/theme";
 
-const sans = Geist({
+const display = Unbounded({
   subsets: ["latin", "latin-ext", "cyrillic"],
-  variable: "--font-sans",
+  weight: ["600", "700"],
+  variable: "--font-display",
   display: "swap",
 });
 
-// Figures only: route codes, step numbers, the tracking code.
-const mono = Geist_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
+const text = Onest({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["400", "500", "600"],
+  variable: "--font-text",
   display: "swap",
 });
 
@@ -62,9 +61,8 @@ export default async function LocaleLayout({
   const svcLd = serviceJsonLd();
 
   return (
-    <html lang={locale} className={`${sans.variable} ${mono.variable}`} data-theme="dark" suppressHydrationWarning>
+    <html lang={locale} className={`${display.variable} ${text.variable}`}>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
